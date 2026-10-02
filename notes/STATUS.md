@@ -5,6 +5,8 @@
 - Phase 0 repository inspection.
 - Initial functional repository skeleton.
 - Lightweight project and research documentation placeholders.
+- Git repository initialization with `main` as the default branch.
+- Private GitHub repository baseline at `dlxik/AGORA`.
 
 ## In progress
 
@@ -12,7 +14,6 @@
 
 ## Pending
 
-- Git repository initialization and reviewed baseline, if requested.
 - CTQ source pool.
 - CTQ information-availability timeline.
 - Temporal argument schema finalization.
@@ -24,7 +25,6 @@
 
 - Data serialization format and identifier conventions.
 - Final research question wording.
-- Git initialization workflow for the currently unversioned directory.
 
 ## Files changed
 
@@ -39,4 +39,3 @@
 | Arguments | 0 |
 | Relations | 0 |
 | Graph snapshots | 0 |
-

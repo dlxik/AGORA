@@ -20,7 +20,6 @@
 
 ## U-004: Git baseline workflow
 
-- Status: open
-- Question: Should this directory be initialized as a new Git repository, or is there an existing repository or remote that should be used?
-- Impact: A component branch cannot be created safely until the repository baseline is established.
-
+- Status: resolved
+- Resolution: The directory was initialized as a new Git repository with `main` as the default branch and `https://github.com/dlxik/AGORA.git` as `origin`.
+- Impact: Component branches can now be created from the reviewed setup baseline.

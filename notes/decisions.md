@@ -18,3 +18,8 @@
 - Decision: Do not collect sources, create timelines, annotate arguments, build graphs, or implement agents or solver logic during setup.
 - Rationale: Preserve the supervisor review boundary between repository setup and research work.
 
+## D-004: Private GitHub baseline
+
+- Status: approved
+- Decision: Initialize Git with `main` as the default branch and publish the setup baseline to the private `dlxik/AGORA` GitHub repository.
+- Rationale: Establish version control while keeping unpublished research preparation non-public by default.
