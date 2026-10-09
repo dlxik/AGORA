@@ -109,6 +109,11 @@ def _validate(
 
     mapped_ids: list[str] = []
     for viewpoint in viewpoint_mapping.get("viewpoints", []):
+        for field in ("viewpoint_id", "kind", "name", "position_summary", "inclusion_rule", "argument_ids"):
+            if not viewpoint.get(field):
+                errors.append(f"Viewpoint thiếu trường bắt buộc {field}: {viewpoint.get('viewpoint_id', '?')}")
+        if viewpoint.get("kind") not in {"collective", "contextual"}:
+            errors.append(f"Viewpoint có kind không hợp lệ: {viewpoint.get('viewpoint_id', '?')}")
         mapped_ids.extend(viewpoint.get("argument_ids", []))
     if len(mapped_ids) != len(set(mapped_ids)):
         errors.append("Một argument được gán vào nhiều viewpoint")

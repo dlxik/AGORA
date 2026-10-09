@@ -58,6 +58,9 @@ button.active { color:#fff; background:var(--blue); border-color:var(--blue); }
 .event-card { display:grid; grid-template-columns:180px 1fr 1fr; gap:14px; margin-top:12px; }
 .event-card > div { background:#f4f7fb; border:1px solid #e1e7ef; border-radius:9px; padding:9px 11px; min-height:66px; }
 .event-card .event-main { grid-row:span 1; }
+.transition-summary { margin-top:10px; padding:9px 11px; border:1px solid #d8e4f2; border-radius:9px; background:#f8fbff; }
+.transition-summary .summary-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:5px; }
+.transition-summary .summary-detail { margin-top:6px; color:#526176; font-size:12px; }
 .eyebrow { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:800; }
 #timestampTitle { font-size:17px; font-weight:800; margin:3px 0; }
 .layout { display:grid; grid-template-columns:minmax(0,1fr) 350px; gap:14px; padding:14px; }
@@ -73,7 +76,10 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .node { cursor:grab; }
 .node:active { cursor:grabbing; }
 .node rect { stroke-width:2.5; filter:drop-shadow(0 3px 4px #1b365522); }
-.node.new rect { stroke:var(--cyan)!important; stroke-width:5; filter:drop-shadow(0 0 7px #00a8c766); }
+.node.historical { opacity:.46; }
+.node.new .new-halo { display:block; }
+.new-halo { display:none; fill:none; stroke:var(--cyan); stroke-width:4; stroke-dasharray:7 4; filter:drop-shadow(0 0 5px #00a8c777); }
+.node.contextual rect { stroke-dasharray:7 4; }
 .node text { pointer-events:none; font-weight:750; fill:#172335; text-anchor:middle; }
 .node .sub { font-size:10px; font-weight:600; fill:#526176; }
 .edge-visible { fill:none; stroke-width:2.2; opacity:.82; stroke-linecap:round; }
@@ -99,9 +105,15 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .pill.undecided { color:#8a5907; background:#fff0cd; }
 .pill.support { color:#176b49; background:#dff5ea; }
 .pill.attack { color:#a52f2f; background:#fde5e5; }
+.pill.activity { color:#44556b; background:#e8edf4; }
+.why-changed { margin-top:14px; padding:11px 12px; border-left:4px solid var(--cyan); border-radius:6px; background:#eefbfe; }
+.why-changed h3 { margin-top:0; color:#12647a; }
 .legend { display:flex; flex-wrap:wrap; gap:10px 16px; padding:10px 14px; border-top:1px solid var(--line); background:#fff; }
 .legend-item { display:flex; align-items:center; gap:6px; color:#526176; }
 .dot { width:12px; height:12px; border-radius:3px; }
+.dot.historical { opacity:.42; }
+.dot.contextual { border-style:dashed!important; }
+.source-badge { width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow:0 0 0 1px #8491a2; }
 .line-key { width:26px; height:0; border-top:3px solid; position:relative; }
 .line-key:after { content:'›'; position:absolute; right:-2px; top:-12px; font-size:18px; font-weight:900; }
 .method-note { margin:0 14px 14px; padding:11px 13px; color:#46566b; background:#eef4ff; border-left:4px solid var(--blue); border-radius:6px; }
@@ -135,6 +147,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     <div><div class="eyebrow">Thông tin công khai</div><div id="publicInfo"></div></div>
     <div><div class="eyebrow">Thông tin chính thức</div><div id="officialInfo"></div></div>
   </div>
+  <div class="transition-summary" id="transitionSummary"></div>
 </section>
 
 <main class="layout">
@@ -159,8 +172,8 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     <div class="graph-wrap" id="graphWrap">
       <svg id="graph" viewBox="0 0 1180 650" role="img" aria-label="Đồ thị lập luận CTQ tương tác">
         <defs>
-          <marker id="arrowSupport" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#279567"/></marker>
-          <marker id="arrowAttack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d14e4e"/></marker>
+          <marker id="arrowSupport" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#279567"/></marker>
+          <marker id="arrowAttack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d14e4e"/></marker>
         </defs>
         <rect id="graphBg" width="1180" height="650" fill="transparent"/>
         <g id="viewport"><g id="edges"></g><g id="nodes"></g></g>
@@ -172,11 +185,15 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
       <span class="legend-item"><span class="dot" style="background:#dff5ea;border:2px solid #23845b"></span>accepted</span>
       <span class="legend-item"><span class="dot" style="background:#fde5e5;border:2px solid #c94646"></span>rejected</span>
       <span class="legend-item"><span class="dot" style="background:#fff0cd;border:2px solid #b97812"></span>undecided</span>
-      <span class="legend-item"><span class="dot" style="background:white;border:3px solid #00a8c7"></span>mới tại mốc này</span>
+      <span class="legend-item"><span class="dot" style="background:white;border:3px dashed #00a8c7"></span>mới tại mốc này</span>
+      <span class="legend-item"><span class="dot historical" style="background:#dff5ea;border:2px solid #334155"></span>lịch sử (mờ)</span>
       <span class="legend-item"><span class="line-key" style="border-color:#279567;color:#279567"></span>support</span>
       <span class="legend-item"><span class="line-key" style="border-color:#d14e4e;color:#d14e4e"></span>attack</span>
-      <span class="legend-item"><span class="dot" style="background:#fff;border:2px solid #2264d1"></span>có official_document</span>
-      <span class="legend-item"><span class="dot" style="background:#fff;border:2px solid #7656a8"></span>có authority_statement</span>
+      <span class="legend-item"><span class="source-badge" style="background:#2264d1"></span>official_document</span>
+      <span class="legend-item"><span class="source-badge" style="background:#7656a8"></span>authority_statement</span>
+      <span class="legend-item"><span class="source-badge" style="background:#f09a32"></span>social</span>
+      <span class="legend-item"><span class="source-badge" style="background:#7b8796"></span>news</span>
+      <span class="legend-item"><span class="dot contextual" style="background:#e8f0ff;border:2px solid #315f9e"></span>lớp bối cảnh/thể chế</span>
     </div>
     <p class="method-note" id="methodNote"></p>
   </section>
@@ -188,12 +205,14 @@ const SNAPSHOTS = __SNAPSHOTS__;
 const MAPPING_METHOD = __MAPPING_METHOD__;
 const NS = 'http://www.w3.org/2000/svg';
 const initialParams = new URLSearchParams(location.search);
-const initialTime = Math.max(0,Math.min(5,Number(initialParams.get('t')||0)));
+const requestedTime = Number(initialParams.get('t')||0);
+const initialTime = Number.isFinite(requestedTime)?Math.max(0,Math.min(5,requestedTime)):0;
 const initialMode = initialParams.get('mode')==='viewpoints'?'viewpoints':'arguments';
 const state = {
   time:initialTime, mode:initialMode, argType:'all', showSupport:true, showAttack:true,
   showRejected:true, showUndecided:true, onlyNew:false, playing:null,
-  transform:{x:0,y:0,k:1}, positions:{arguments:{},viewpoints:{}}
+  transform:{x:0,y:0,k:1}, positions:{arguments:{},viewpoints:{}},
+  pinned:{arguments:new Set(),viewpoints:new Set()}, layoutSignature:{arguments:'',viewpoints:''}
 };
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -209,8 +228,8 @@ function statusStyle(status) {
 
 function argumentPasses(arg) {
   if (state.argType !== 'all' && arg.arg_type !== state.argType) return false;
-  if (!state.showRejected && arg.status === 'rejected') return false;
-  if (!state.showUndecided && arg.status === 'undecided') return false;
+  if (!state.showRejected && arg.semantic_status === 'rejected') return false;
+  if (!state.showUndecided && arg.semantic_status === 'undecided') return false;
   if (state.onlyNew && !arg.newly_introduced) return false;
   return true;
 }
@@ -225,51 +244,68 @@ function filteredData() {
   );
   if (state.mode === 'arguments') return {nodes:args,edges:relations,arguments:args};
 
-  const nodes = snap.viewpoints.map(v => {
-    const active = v.arguments.filter(argumentPasses);
-    const counts = {accepted:0,rejected:0,undecided:0};
-    const composition = {};
-    active.forEach(a => {
-      counts[a.status]++;
-      a.sources.forEach(s => composition[s.source_type]=(composition[s.source_type]||0)+1);
-    });
-    return {...v,arguments:active,active_argument_ids:active.map(a=>a.id),status_counts:counts,source_composition:composition};
-  }).filter(v=>v.arguments.length);
+  const nodes = snap.viewpoints;
   const viewpointIds = new Set(nodes.map(v=>v.id));
-  const edges = snap.viewpoint_relations.map(edge => {
-    const underlying = edge.argument_relations.filter(r => visibleIds.has(r.source_arg) && visibleIds.has(r.target_arg));
-    return {...edge,argument_relations:underlying,relation_ids:underlying.map(r=>r.relation_id)};
-  }).filter(edge => edge.argument_relations.length && viewpointIds.has(edge.source) && viewpointIds.has(edge.target) &&
+  const edges = snap.viewpoint_relations.filter(edge => viewpointIds.has(edge.source) && viewpointIds.has(edge.target) &&
     ((edge.relation_type==='support' && state.showSupport) || (edge.relation_type==='attack' && state.showAttack)));
-  return {nodes,edges,arguments:args};
+  return {nodes,edges,arguments:snap.arguments};
 }
 
-function initialPosition(id, mode) {
-  if (mode === 'viewpoints') {
-    const n = Number(id.replace(/\D/g,'')) || 1;
-    const angle = -Math.PI/2 + (n-1)*2*Math.PI/7;
-    return {x:590+270*Math.cos(angle),y:325+245*Math.sin(angle)};
-  }
-  const n = Number(id.replace(/\D/g,'')) || 1;
-  const inner = n <= 9;
-  const count = inner ? 9 : 18;
-  const slot = inner ? n-1 : n-10;
-  const angle = -Math.PI/2 + slot*2*Math.PI/count;
-  const rx = inner ? 245 : 485, ry = inner ? 155 : 275;
-  return {x:590+rx*Math.cos(angle),y:325+ry*Math.sin(angle)};
+function hashNumber(value) {
+  let h=2166136261;
+  for(const c of value){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}
+  return (h>>>0)/4294967295;
 }
 
 function positionFor(id) {
   const cache = state.positions[state.mode];
-  if (!cache[id]) cache[id] = initialPosition(id,state.mode);
+  if (!cache[id]) cache[id] = {x:590,y:325};
   return cache[id];
 }
 
-function edgePath(a,b) {
+function ensureLayout(data,forceReset=false) {
+  const mode=state.mode, cache=state.positions[mode], pinned=state.pinned[mode];
+  const signature=data.nodes.map(n=>n.id).sort().join('|')+'::'+data.edges.map(e=>`${e.source}>${e.target}:${e.relation_type}`).sort().join('|');
+  if(!forceReset && state.layoutSignature[mode]===signature) return;
+  if(forceReset){state.positions[mode]={};state.pinned[mode]=new Set();state.layoutSignature[mode]='';}
+  const positions=state.positions[mode], previouslyPlaced=new Set(Object.keys(positions));
+  const neighbors=new Map(data.nodes.map(n=>[n.id,[]]));
+  data.edges.forEach(e=>{neighbors.get(e.source)?.push(e.target);neighbors.get(e.target)?.push(e.source);});
+  data.nodes.forEach((node,index)=>{
+    if(positions[node.id]) return;
+    const known=(neighbors.get(node.id)||[]).map(id=>positions[id]).filter(Boolean);
+    const jx=(hashNumber(node.id+'x')-.5)*80, jy=(hashNumber(node.id+'y')-.5)*80;
+    if(known.length){positions[node.id]={x:known.reduce((s,p)=>s+p.x,0)/known.length+jx,y:known.reduce((s,p)=>s+p.y,0)/known.length+jy};}
+    else {const angle=2*Math.PI*hashNumber(node.id),radius=75+220*hashNumber(node.id+'r');positions[node.id]={x:590+radius*Math.cos(angle),y:325+radius*.75*Math.sin(angle)};}
+  });
+  const anchors=Object.fromEntries(data.nodes.map(n=>[n.id,{...positions[n.id]}]));
+  const iterations=previouslyPlaced.size?80:190, ideal=mode==='arguments'?205:270, minDistance=mode==='arguments'?156:205;
+  for(let step=0;step<iterations;step++){
+    const delta=Object.fromEntries(data.nodes.map(n=>[n.id,{x:0,y:0}]));
+    for(let i=0;i<data.nodes.length;i++) for(let j=i+1;j<data.nodes.length;j++){
+      const a=data.nodes[i].id,b=data.nodes[j].id,pa=positions[a],pb=positions[b];
+      let dx=pb.x-pa.x,dy=pb.y-pa.y,dist=Math.max(2,Math.hypot(dx,dy));
+      if(dist<3){dx=(hashNumber(a+b)-.5)*2;dy=(hashNumber(b+a)-.5)*2;dist=Math.max(2,Math.hypot(dx,dy));}
+      const repulse=Math.min(18,11500/(dist*dist))+(dist<minDistance?(minDistance-dist)*.045:0),ux=dx/dist,uy=dy/dist;
+      delta[a].x-=ux*repulse;delta[a].y-=uy*repulse;delta[b].x+=ux*repulse;delta[b].y+=uy*repulse;
+    }
+    data.edges.forEach(e=>{const a=positions[e.source],b=positions[e.target];if(!a||!b)return;const dx=b.x-a.x,dy=b.y-a.y,d=Math.max(2,Math.hypot(dx,dy)),pull=(d-ideal)*.018,ux=dx/d,uy=dy/d;delta[e.source].x+=ux*pull;delta[e.source].y+=uy*pull;delta[e.target].x-=ux*pull;delta[e.target].y-=uy*pull;});
+    data.nodes.forEach(n=>{const p=positions[n.id],d=delta[n.id],anchor=anchors[n.id],anchorStrength=previouslyPlaced.has(n.id)?.075:.008;d.x+=(590-p.x)*.006+(anchor.x-p.x)*anchorStrength;d.y+=(325-p.y)*.006+(anchor.y-p.y)*anchorStrength;});
+    const cap=7*(1-step/iterations)+.7;
+    data.nodes.forEach(n=>{if(state.pinned[mode].has(n.id))return;const p=positions[n.id],d=delta[n.id],mag=Math.max(1,Math.hypot(d.x,d.y)),scale=Math.min(1,cap/mag);p.x=Math.max(92,Math.min(1088,p.x+d.x*scale));p.y=Math.max(55,Math.min(595,p.y+d.y*scale));});
+  }
+  state.layoutSignature[mode]=signature;
+}
+
+function edgePath(a,b,index=0,total=1) {
   const dx=b.x-a.x, dy=b.y-a.y, d=Math.max(1,Math.hypot(dx,dy));
-  const ux=dx/d, uy=dy/d, shorten=state.mode==='arguments'?78:92;
-  const x1=a.x+ux*shorten, y1=a.y+uy*shorten, x2=b.x-ux*shorten, y2=b.y-uy*shorten;
-  return {d:`M ${x1} ${y1} L ${x2} ${y2}`};
+  const ux=dx/d, uy=dy/d, halfWidth=state.mode==='arguments'?71:88,halfHeight=state.mode==='arguments'?31:37;
+  const borderDistance=Math.min(halfWidth/Math.max(.001,Math.abs(ux)),halfHeight/Math.max(.001,Math.abs(uy)));
+  const startCut=Math.min(borderDistance+3,Math.max(4,d/2-4)),endCut=Math.min(borderDistance+10,Math.max(4,d/2-4));
+  const x1=a.x+ux*startCut, y1=a.y+uy*startCut, x2=b.x-ux*endCut, y2=b.y-uy*endCut;
+  if(total===1) return {d:`M ${x1} ${y1} L ${x2} ${y2}`};
+  const offset=(index-(total-1)/2)*38,nx=-uy,ny=ux,cx=(x1+x2)/2+nx*offset,cy=(y1+y2)/2+ny*offset;
+  return {d:`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`};
 }
 
 function moveTooltip(event) {
@@ -285,13 +321,14 @@ function hideTooltip(){const tooltip=$('hoverTooltip');tooltip.classList.remove(
 function nodeTooltip(node) {
   if(state.mode==='viewpoints') {
     const counts=node.status_counts, composition=Object.entries(node.source_composition).map(([k,v])=>`${esc(k)}: ${v}`).join(' · ');
-    return `<strong>${esc(node.id)} — ${esc(node.name)}</strong><div class="tooltip-meta">Viewpoint agent · ${node.arguments.length}/${node.all_argument_ids.length} argument đang active</div>
+    return `<strong>${esc(node.id)} — ${esc(node.name)}</strong><div class="tooltip-meta">${node.kind==='contextual'?'Lớp bối cảnh/thể chế':'Viewpoint tập thể'} · ${node.active_argument_ids.length} active · ${node.historical_argument_ids.length} lịch sử</div>
       <div class="tooltip-row">${esc(node.description)}</div>
       <div class="tooltip-row"><b>Trạng thái:</b> accepted ${counts.accepted} · rejected ${counts.rejected} · undecided ${counts.undecided}</div>
       <div class="tooltip-row"><b>Argument active:</b> ${node.active_argument_ids.map(esc).join(', ')}</div>
+      <div class="tooltip-row"><b>Tương tác:</b> vào S${node.incoming_support}/A${node.incoming_attack} · ra S${node.outgoing_support}/A${node.outgoing_attack}</div>
       <div class="tooltip-sources"><b>Nguồn:</b> ${composition||'Không có'}</div>`;
   }
-  return `<strong>${esc(node.id)} — ${esc(node.arg_type)}</strong><div class="tooltip-meta">introduced_at: ${esc(node.introduced_at)}${node.active_until?' · active_until: '+esc(node.active_until):''} · status: ${esc(node.status||'null (lịch sử)')}</div>
+  return `<strong>${esc(node.id)} — ${esc(node.arg_type)}</strong><div class="tooltip-meta">introduced_at: ${esc(node.introduced_at)}${node.active_until?' · active_until: '+esc(node.active_until):''} · ${esc(node.activity)} · status: ${esc(node.semantic_status)}</div>
     <div class="tooltip-row"><b>Premise:</b> ${esc(node.premise)}</div>
     <div class="tooltip-row"><b>Rule:</b> ${node.rule?esc(node.rule):'<i>null — không có rule được nguồn hỗ trợ trực tiếp</i>'}</div>
     <div class="tooltip-row"><b>Conclusion:</b> ${esc(node.conclusion)}</div>
@@ -300,6 +337,7 @@ function nodeTooltip(node) {
 function edgeTooltip(edge) {
   if(state.mode==='viewpoints') return `<strong>${esc(edge.source)} → ${esc(edge.target)}</strong><div class="tooltip-meta">${esc(edge.relation_type)} · ${edge.relation_ids.length} quan hệ argument nền</div>
     <div class="tooltip-row"><b>Relation IDs:</b> ${edge.relation_ids.map(esc).join(', ')}</div>
+    <div class="tooltip-row"><b>Mới tại mốc này:</b> ${(edge.new_relation_ids||[]).map(esc).join(', ')||'Không'}</div>
     <div class="tooltip-row"><b>Liên kết nền:</b> ${edge.argument_relations.map(r=>`${esc(r.source_arg)} → ${esc(r.target_arg)}`).join('; ')}</div>
     <div class="tooltip-sources"><b>Evidence:</b> ${edge.evidence_sources.map(esc).join(', ')}</div>`;
   return `<strong>${esc(edge.id)} — ${esc(edge.relation_type)}</strong><div class="tooltip-meta">${esc(edge.source)} → ${esc(edge.target)} · introduced_at: ${esc(edge.introduced_at)} · confidence: ${esc(edge.confidence)}</div>
@@ -311,16 +349,19 @@ function edgeTooltip(edge) {
 function render() {
   updateTimeline();
   const data=filteredData(), edgesLayer=$('edges'), nodesLayer=$('nodes');
+  ensureLayout(data);
   edgesLayer.replaceChildren(); nodesLayer.replaceChildren();
-  const nodeById=new Map(data.nodes.map(n=>[n.id,n]));
+  const pairGroups=new Map();
+  data.edges.forEach(edge=>{const key=[edge.source,edge.target].sort().join('|');if(!pairGroups.has(key))pairGroups.set(key,[]);pairGroups.get(key).push(edge);});
 
   data.edges.forEach(edge => {
-    const p=edgePath(positionFor(edge.source),positionFor(edge.target));
+    const siblings=pairGroups.get([edge.source,edge.target].sort().join('|')),p=edgePath(positionFor(edge.source),positionFor(edge.target),siblings.indexOf(edge),siblings.length);
     const group=document.createElementNS(NS,'g');
     const visible=document.createElementNS(NS,'path');
     visible.setAttribute('d',p.d);
     visible.setAttribute('class','edge-visible'+(edge.newly_introduced?' edge-new':''));
     visible.setAttribute('stroke',edge.relation_type==='support'?'#279567':'#d14e4e');
+    if(state.mode==='viewpoints') visible.setAttribute('stroke-width',String(2+Math.min(6,edge.relation_ids.length*1.25)));
     visible.setAttribute('marker-end',`url(#arrow${edge.relation_type==='support'?'Support':'Attack'})`);
     const hit=document.createElementNS(NS,'path');
     hit.setAttribute('d',p.d); hit.setAttribute('class','edge-hit');
@@ -336,33 +377,36 @@ function render() {
 
   data.nodes.forEach(node => {
     const p=positionFor(node.id), group=document.createElementNS(NS,'g');
-    group.setAttribute('class','node'+((node.newly_introduced||node.newly_active_arguments)?' new':''));
+    const isNew=node.newly_introduced||(node.newly_active_arguments&&node.newly_active_arguments.length);
+    const historical=state.mode==='arguments'&&node.activity==='historical';
+    group.setAttribute('class','node'+(isNew?' new':'')+(historical?' historical':'')+(node.kind==='contextual'?' contextual':''));
     group.setAttribute('transform',`translate(${p.x} ${p.y})`); group.dataset.id=node.id;
     const rect=document.createElementNS(NS,'rect');
     const w=state.mode==='arguments'?142:176, h=state.mode==='arguments'?62:74;
+    const halo=document.createElementNS(NS,'rect');halo.setAttribute('class','new-halo');halo.setAttribute('x',-w/2-6);halo.setAttribute('y',-h/2-6);halo.setAttribute('width',w+12);halo.setAttribute('height',h+12);halo.setAttribute('rx',16);
     rect.setAttribute('x',-w/2); rect.setAttribute('y',-h/2); rect.setAttribute('width',w); rect.setAttribute('height',h); rect.setAttribute('rx',12);
     if (state.mode==='arguments') {
-      const style=statusStyle(node.status); rect.setAttribute('fill',style.fill);
-      let stroke=style.stroke;
-      if (node.sources.some(s=>s.source_type==='official_document')) stroke='#2264d1';
-      else if (node.sources.some(s=>s.source_type==='authority_statement')) stroke='#7656a8';
-      rect.setAttribute('stroke',stroke);
+      const style=statusStyle(node.semantic_status); rect.setAttribute('fill',style.fill);rect.setAttribute('stroke','#334155');
     } else { rect.setAttribute('fill','#e8f0ff'); rect.setAttribute('stroke','#315f9e'); }
     const title=document.createElementNS(NS,'title');
     title.textContent=state.mode==='arguments' ? `${node.id} — ${node.conclusion}` : `${node.id} — ${node.name}`;
     const line1=document.createElementNS(NS,'text'); line1.setAttribute('y',-9); line1.setAttribute('font-size','12'); line1.textContent=node.id;
     const line2=document.createElementNS(NS,'text'); line2.setAttribute('y',8); line2.setAttribute('font-size','10');
-    line2.textContent=state.mode==='arguments'?`${node.arg_type} · ${node.status||'status null'}`:truncate(node.name,28);
+    line2.textContent=state.mode==='arguments'?`${node.arg_type} · ${node.semantic_status}`:truncate(node.name,28);
     const line3=document.createElementNS(NS,'text'); line3.setAttribute('y',23); line3.setAttribute('class','sub');
-    line3.textContent=state.mode==='arguments'?(node.newly_introduced?'Mới tại mốc này':node.temporal_role):`${node.arguments.length} lập luận · A${node.status_counts.accepted}/R${node.status_counts.rejected}/U${node.status_counts.undecided}`;
-    group.append(rect,title,line1,line2,line3);
+    line3.textContent=state.mode==='arguments'?(node.newly_introduced?'Mới tại mốc này':node.activity==='historical'?'Lịch sử · status được giữ':node.temporal_role):`${node.active_argument_ids.length} active · ${node.historical_argument_ids.length} lịch sử`;
+    group.append(halo,rect,title,line1,line2,line3);
+    if(state.mode==='arguments'){
+      const priority=['official_document','authority_statement','social','news'],type=priority.find(k=>node.sources.some(s=>s.source_type===k))||'news';
+      const badge=document.createElementNS(NS,'circle');badge.setAttribute('cx',w/2-10);badge.setAttribute('cy',-h/2+10);badge.setAttribute('r',6);badge.setAttribute('fill',({official_document:'#2264d1',authority_statement:'#7656a8',social:'#f09a32',news:'#7b8796'})[type]);badge.setAttribute('stroke','#fff');badge.setAttribute('stroke-width','2');group.appendChild(badge);
+    }
     group.addEventListener('click',e=>{e.stopPropagation();showNodeDetail(node);});
     group.addEventListener('mouseenter',e=>showTooltip(nodeTooltip(node),e));
     group.addEventListener('mousemove',moveTooltip); group.addEventListener('mouseleave',hideTooltip);
     group.addEventListener('pointerdown',e=>{hideTooltip();startNodeDrag(e);});
     nodesLayer.appendChild(group);
   });
-  $('graphSummary').textContent=`${data.nodes.length} node · ${data.edges.length} cạnh · ${data.arguments.length} lập luận đang lọc`;
+  $('graphSummary').textContent=`${data.nodes.length} node · ${data.edges.length} cạnh · ${data.arguments.length} lập luận ${state.mode==='viewpoints'?'khả dụng':'đang lọc'}`;
   applyTransform();
 }
 
@@ -375,6 +419,8 @@ function updateTimeline() {
   $('timestampEvent').textContent=t.event;
   $('publicInfo').textContent=t.public_information_available;
   $('officialInfo').textContent=t.official_information_available;
+  const c=SNAPSHOTS[state.time].changes||{},changed=(c.changed_statuses||[]).map(x=>`${x.arg_id}: ${x.from} → ${x.to}`),activity=(c.activity_changes||[]).map(x=>`${x.arg_id}: ${x.from} → ${x.to}`),agentChanges=(c.new_viewpoint_interactions||[]).map(x=>`${x.source} → ${x.target} (${x.relation_type}: ${x.relation_ids.join(', ')})`);
+  $('transitionSummary').innerHTML=`<div class="eyebrow">${esc(c.transition||'Snapshot hiện tại')}</div><div class="summary-row"><span class="pill">+${(c.new_arguments||[]).length} argument</span><span class="pill support">+${(c.new_support_relations||[]).length} support</span><span class="pill attack">+${(c.new_attack_relations||[]).length} attack</span><span class="pill">${changed.length} đổi status</span><span class="pill activity">${activity.length} đổi activity</span></div><div class="summary-detail">${[changed.length?'Status: '+changed.join('; '):'',activity.length?'Activity: '+activity.join('; '):'',agentChanges.length?'Tương tác viewpoint mới: '+agentChanges.join('; '):''].filter(Boolean).map(esc).join('<br>')||'Không có thay đổi so với snapshot trước.'}</div>`;
   [...$('ticks').children].forEach((el,i)=>el.classList.toggle('active',i===state.time));
 }
 
@@ -384,30 +430,38 @@ function sourceList(argument) {
 }
 
 function argumentBlock(a) {
-  return `<div><h3>${esc(a.id)} <span class="pill ${esc(a.status)}">${esc(a.status)}</span></h3>
-    <p><b>Kết luận:</b> ${esc(a.conclusion)}</p><p><b>Nguồn:</b> ${a.source_ids.map(esc).join(', ')}</p></div>`;
+  return `<div><h3>${esc(a.id)} <span class="pill ${esc(a.semantic_status)}">${esc(a.semantic_status)}</span> <span class="pill activity">${esc(a.activity)}</span></h3>
+    <p><b>Kết luận:</b> ${esc(a.conclusion)}</p><p><b>Mốc:</b> ${esc(a.introduced_at)}${a.active_until?' → '+esc(a.active_until):''} · <b>Nguồn:</b> ${a.source_ids.map(esc).join(', ')}</p></div>`;
 }
 
 function showNodeDetail(node) {
   if (state.mode==='viewpoints') {
     const composition=Object.entries(node.source_composition).map(([k,v])=>`<span class="pill">${esc(k)}: ${v}</span>`).join(' ');
-    $('detailPanel').innerHTML=`<div class="eyebrow">Viewpoint agent</div><h2>${esc(node.id)} — ${esc(node.name)}</h2>
+    const incident=SNAPSHOTS[state.time].new_viewpoint_interactions.filter(e=>e.source===node.id||e.target===node.id);
+    const changes=node.state_change;
+    $('detailPanel').innerHTML=`<div class="eyebrow">${node.kind==='contextual'?'Lớp bối cảnh/thể chế':'Viewpoint agent tập thể'}</div><h2>${esc(node.id)} — ${esc(node.name)}</h2>
       <p>${esc(node.description)}</p>
+      <h3>Trạng thái quan điểm</h3><p><b>Tóm tắt:</b> ${esc(node.position_summary)}</p><p><b>Quy tắc bao gồm:</b> ${esc(node.inclusion_rule)}</p>
       <p><span class="pill accepted">accepted ${node.status_counts.accepted}</span><span class="pill rejected">rejected ${node.status_counts.rejected}</span><span class="pill undecided">undecided ${node.status_counts.undecided}</span></p>
-      <h3>Lập luận đang active (${node.arguments.length}/${node.all_argument_ids.length})</h3>${node.arguments.map(argumentBlock).join('')||'<p>Không có.</p>'}
+      <p><b>Active:</b> ${node.active_argument_ids.map(esc).join(', ')||'Không có'}<br><b>Lịch sử:</b> ${node.historical_argument_ids.map(esc).join(', ')||'Không có'}</p>
+      <h3>Lập luận khả dụng (${node.arguments.length}/${node.all_argument_ids.length})</h3>${node.arguments.map(argumentBlock).join('')||'<p>Không có.</p>'}
       <h3>Thành phần nguồn</h3><p>${composition||'Không có.'}</p>
-      <h3>Quan hệ incident</h3><p>support: ${node.support_relations} · attack: ${node.attack_relations}</p>
+      <h3>Tương tác có căn cứ</h3><p>Vào: support ${node.incoming_support} · attack ${node.incoming_attack}<br>Ra: support ${node.outgoing_support} · attack ${node.outgoing_attack}</p>
+      <ul>${incident.map(e=>`<li>${esc(e.source)} → ${esc(e.target)} · ${esc(e.relation_type)} · mới: ${e.new_relation_ids.map(esc).join(', ')}</li>`).join('')||'<li>Không có tương tác liên-viewpoint mới tại mốc này.</li>'}</ul>
+      <div class="why-changed"><h3>WHY THIS CHANGED</h3><p><b>Argument mới active:</b> ${changes.newly_active.map(esc).join(', ')||'Không'}<br><b>Chuyển lịch sử:</b> ${changes.became_historical.map(esc).join(', ')||'Không'}</p><p><b>Đổi phân bố status:</b> ${Object.entries(changes.status_count_changes).map(([k,v])=>`${esc(k)} ${v.from}→${v.to}`).join('; ')||'Không'}<br><b>Đổi quan hệ:</b> ${Object.entries(changes.relation_count_changes).map(([k,v])=>`${esc(k)} ${v.from}→${v.to}`).join('; ')||'Không'}</p></div>
       <h3>Quy tắc dựng agent</h3><p>${esc(MAPPING_METHOD)}</p>`;
     return;
   }
-  const statusLabel=node.status||'null (lịch sử)';
-  $('detailPanel').innerHTML=`<div class="eyebrow">Argument node</div><h2>${esc(node.id)} <span class="pill ${esc(node.status||'')}">${esc(statusLabel)}</span></h2>
-    <p><span class="pill">${esc(node.arg_type)}</span><span class="pill">${esc(node.temporal_role)}</span>${node.newly_introduced?'<span class="pill">mới tại mốc này</span>':''}</p>
+  const explanation=node.change_explanation;
+  $('detailPanel').innerHTML=`<div class="eyebrow">Argument node</div><h2>${esc(node.id)} <span class="pill ${esc(node.semantic_status)}">${esc(node.semantic_status)}</span></h2>
+    <p><span class="pill">${esc(node.arg_type)}</span><span class="pill">${esc(node.temporal_role)}</span><span class="pill activity">${esc(node.activity)}</span>${node.newly_introduced?'<span class="pill">mới tại mốc này</span>':''}</p>
     <h3>Premise</h3><p>${esc(node.premise)}</p>
     <h3>Rule</h3><p>${node.rule?esc(node.rule):'<i>null — không có quy tắc được nguồn hỗ trợ trực tiếp</i>'}</p>
     <h3>Conclusion</h3><p>${esc(node.conclusion)}</p>
     <h3>Thời gian và trạng thái</h3><p>introduced_at: <b>${esc(node.introduced_at)}</b>${node.active_until?' · active_until: <b>'+esc(node.active_until)+'</b>':''}</p>
-    <p>${esc(node.status_reason)}</p><p><b>Grounded by:</b> ${node.grounded_by.map(esc).join(', ')}</p>
+    <p><b>Status basis:</b> ${esc(node.status_basis)}${node.status_basis==='carried_forward'?' từ '+esc(node.status_timestamp):''}</p><p>${esc(node.status_reason)}</p><p><b>Grounded by:</b> ${node.grounded_by.map(esc).join(', ')}</p>
+    <h3>Quan hệ đi vào</h3><p><b>Support:</b> ${node.incoming_support.map(esc).join(', ')||'Không'}<br><b>Attack:</b> ${node.incoming_attack.map(esc).join(', ')||'Không'}</p>
+    <div class="why-changed"><h3>WHY THIS CHANGED</h3>${explanation.changed?`<p><b>Status:</b> ${explanation.status_change?esc(explanation.status_change.from)+' → '+esc(explanation.status_change.to):'không đổi'}<br><b>Activity:</b> ${explanation.activity_change?esc(explanation.activity_change.from)+' → '+esc(explanation.activity_change.to):'không đổi'}</p><p><b>Argument chứng cứ mới:</b> ${explanation.new_evidence_arguments.map(esc).join(', ')||'Không'}<br><b>Quan hệ liên quan:</b> ${explanation.relevant_relation_ids.map(esc).join(', ')||'Không'}<br><b>Nguồn:</b> ${explanation.evidence_sources.map(esc).join(', ')||'Không'}</p><ul>${explanation.interpretation.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p>Không có thay đổi semantic/activity tại mốc này; trạng thái được giữ từ dữ liệu đã biết.</p>'}</div>
     <h3>Nguồn</h3>${sourceList(node)}`;
 }
 
@@ -415,6 +469,7 @@ function showEdgeDetail(edge) {
   if (state.mode==='viewpoints') {
     $('detailPanel').innerHTML=`<div class="eyebrow">Viewpoint relation tổng hợp</div><h2>${esc(edge.source)} → ${esc(edge.target)}</h2>
       <p><span class="pill ${esc(edge.relation_type)}">${esc(edge.relation_type)}</span> · ${edge.relation_ids.length} quan hệ nền</p>
+      <p><b>Mới tại mốc này:</b> ${edge.new_relation_ids.map(esc).join(', ')||'Không'}</p>
       <h3>Quan hệ argument có thể truy nguyên</h3><ul>${edge.argument_relations.map(r=>`<li>${esc(r.relation_id)}: ${esc(r.source_arg)} → ${esc(r.target_arg)}${r.conflict_type?' · '+esc(r.conflict_type):''}</li>`).join('')}</ul>
       <h3>Evidence sources</h3><p>${edge.evidence_sources.map(esc).join(', ')}</p>`;
     return;
@@ -429,19 +484,20 @@ function showEdgeDetail(edge) {
 
 function setMode(mode) {
   state.mode=mode; $('argumentMode').classList.toggle('active',mode==='arguments'); $('viewpointMode').classList.toggle('active',mode==='viewpoints');
+  $('argumentFilters').style.display=mode==='arguments'?'flex':'none';
   $('methodNote').textContent=mode==='viewpoints' ? MAPPING_METHOD : 'Node và cạnh được dựng trực tiếp từ CSV canonical; không có status, source hoặc relation nào được suy đoán.';
   $('detailPanel').innerHTML='<div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div>';
   render();
 }
 
 function applyTransform(){ $('viewport').setAttribute('transform',`translate(${state.transform.x} ${state.transform.y}) scale(${state.transform.k})`); }
-function resetView(){ state.transform={x:0,y:0,k:1}; applyTransform(); }
+function resetView(){ state.transform={x:0,y:0,k:1};state.layoutSignature[state.mode]='';ensureLayout(filteredData(),true);render(); }
 function graphPoint(event) {
   const svg=$('graph'), pt=svg.createSVGPoint(); pt.x=event.clientX; pt.y=event.clientY;
   const p=pt.matrixTransform($('viewport').getScreenCTM().inverse()); return {x:p.x,y:p.y};
 }
 let dragging=null, panning=null;
-function startNodeDrag(event){ event.stopPropagation(); const id=event.currentTarget.dataset.id; const p=positionFor(id), g=graphPoint(event); dragging={id,dx:p.x-g.x,dy:p.y-g.y,pointer:event.pointerId}; $('graph').setPointerCapture(event.pointerId); }
+function startNodeDrag(event){ event.stopPropagation(); const id=event.currentTarget.dataset.id; const p=positionFor(id), g=graphPoint(event); state.pinned[state.mode].add(id);dragging={id,dx:p.x-g.x,dy:p.y-g.y,pointer:event.pointerId}; $('graph').setPointerCapture(event.pointerId); }
 $('graph').addEventListener('pointerdown',event=>{ if(event.target.closest('.node'))return; panning={x:event.clientX,y:event.clientY,tx:state.transform.x,ty:state.transform.y,pointer:event.pointerId}; $('graph').setPointerCapture(event.pointerId); $('graph').classList.add('panning'); });
 $('graph').addEventListener('pointermove',event=>{
   if(dragging){const p=graphPoint(event);state.positions[state.mode][dragging.id]={x:p.x+dragging.dx,y:p.y+dragging.dy};render();}

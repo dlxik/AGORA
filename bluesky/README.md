@@ -25,27 +25,32 @@ Lõi AGORA vẫn là lập luận: trích xuất, nguồn, thời gian, trạng 
 | `t5` | 2026-08-19 | Kết quả thi lại và các diễn giải có giới hạn. |
 | `t6` | 2026-10-01 | Điều tra mở rộng tới tất cả phòng và tất cả môn. |
 
-Mỗi snapshot tuân theo `G_t = (A_t, E_t, state_t)`. Argument chỉ xuất hiện sau `introduced_at`; sau `active_until`, nó có thể được giữ như node lịch sử nếu cần làm đích của quan hệ thời gian. Node lịch sử hiển thị `status = null`, không dùng status cuối để giả lập status hiện tại. Relation chỉ xuất hiện khi đã được giới thiệu, còn hiệu lực và cả hai đầu đã tồn tại. Status được đọc nguyên trạng từ CSV; loader báo lỗi nếu một argument đang active lại thiếu status.
+Mỗi snapshot tuân theo `G_t = (A_t, E_t, state_t)`. Argument chỉ xuất hiện sau `introduced_at`; sau `active_until`, nó được giữ như node lịch sử nếu cần làm đích của quan hệ thời gian. Hai chiều được tách rõ:
+
+- `semantic_status`: `accepted`, `rejected` hoặc `undecided`; node lịch sử giữ status gần nhất đã được ghi trong CSV, kèm `status_basis=carried_forward` và `status_timestamp`, không biến thành null;
+- `activity`: `active` hoặc `historical`, điều khiển độ mờ trực quan nhưng không thay đổi ý nghĩa semantic.
+
+Relation chỉ xuất hiện khi đã được giới thiệu, còn hiệu lực và cả hai đầu đã tồn tại. Loader báo lỗi nếu một argument active thiếu status, hoặc node lịch sử không có status trước đó để truy nguyên.
 
 ## Đồ thị lập luận thời gian
 
 Chế độ **Argument Graph** hiển thị:
 
-- node argument với P/R/C, loại `A_K`/`A_D`, nguồn, vai trò thời gian và status;
+- node argument với P/R/C, loại `A_K`/`A_D`, nguồn, vai trò thời gian, semantic status và activity;
 - màu riêng cho `accepted`, `rejected`, `undecided`;
-- viền nổi bật cho argument mới tại mốc đang xem;
+- halo nét đứt cho argument mới, độ mờ cho node lịch sử và badge nhỏ cho nhóm nguồn;
 - cạnh có hướng `source_arg -> target_arg`, phân biệt support và attack;
-- detail panel chứa conflict type, confidence và evidence sources.
+- detail panel chứa conflict type, confidence, evidence sources và khối `WHY THIS CHANGED` dựa trên status reason/quan hệ có thật.
 
 Rule null được giữ null và hiển thị rõ; demo không tạo lại các quy tắc ngầm định đã bị loại khỏi canonical data.
 
 ## Phân cụm quan điểm và viewpoint agents
 
-Mapping thủ công nằm tại `bluesky/data/viewpoint_mapping.json`. Bảy cụm phủ đúng 27 lập luận, không trùng nhau. Phân nhóm dựa trên kết luận và vai trò thời gian, không thay đổi nội dung hay trạng thái của argument.
+Mapping thủ công nằm tại `bluesky/data/viewpoint_mapping.json`. Tám viewpoint tập thể và một lớp bối cảnh/thể chế phủ đúng 27 lập luận, không trùng nhau. Phân nhóm dựa trên kết luận, vai trò thời gian và quy tắc bao gồm được ghi tường minh; không thay đổi nội dung hay trạng thái của argument. Các argument `A_K` đặt nền thẩm quyền/thủ tục được tách vào `CTX01` thay vì bị diễn giải như một quan điểm công chúng đồng nhất.
 
-Trong **Viewpoint Agent View**, một node là một cụm quan điểm có ít nhất một argument active tại mốc hiện tại. Node hiển thị số argument active và phân bố status. Thành phần nguồn được tính trực tiếp từ source IDs. Không có công thức strength ẩn hoặc hằng số tùy ý; quy mô được mô tả bằng số argument active.
+Trong **Viewpoint Agent View**, một node xuất hiện khi cụm đã có ít nhất một argument khả dụng. State gồm argument active/lịch sử, phân bố semantic status, thành phần nguồn và số quan hệ support/attack vào/ra. State diff ghi argument mới active, argument chuyển lịch sử, thay đổi phân bố status và thay đổi quan hệ. Thành phần nguồn được tính trực tiếp từ source IDs; không có công thức strength ẩn.
 
-Quan hệ liên cụm được tổng hợp khi relation nền nối hai argument thuộc hai cụm khác nhau. Click cạnh agent sẽ hiện đầy đủ relation ID và cặp argument nền.
+Quan hệ liên cụm được tổng hợp khi relation nền nối hai argument thuộc hai cụm khác nhau. Độ dày cạnh phản ánh số relation nền; click/hover hiện đầy đủ relation ID, cặp argument, evidence source và relation mới tại mốc đó.
 
 Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện qua argument thật có `official_document` hoặc `authority_statement`, được nhận diện bằng viền node và metadata nguồn.
 
@@ -58,7 +63,10 @@ Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện
 - kéo node, kéo nền để pan, cuộn chuột để zoom;
 - hover argument để xem premise/rule/conclusion, thời gian, status và nguồn;
 - hover viewpoint agent để xem argument active, phân bố status và thành phần nguồn;
-- hover cạnh thẳng có hướng để xem relation/conflict/evidence; click để giữ provenance trong detail panel.
+- hover cạnh có hướng để xem relation/conflict/evidence; click để giữ provenance trong detail panel;
+- layout force-directed xác định theo topology; node mới khởi tạo gần hàng xóm đã có, node cũ có lực neo để giữ mental map qua các mốc;
+- kéo node sẽ ghim vị trí; nút đặt lại xóa ghim và tính lại layout; cạnh chỉ uốn cong khi nhiều relation chồng cùng một cặp node;
+- phần tóm tắt cạnh timeline báo argument/relation mới, đổi status/activity và tương tác viewpoint mới.
 
 Visualization dùng SVG/JavaScript nhúng, không cần CDN hoặc frontend framework.
 
@@ -73,7 +81,7 @@ Dữ liệu thật được đọc trực tiếp từ các tệp canonical trong
 - `data/annotations/ctq_arguments.csv`
 - `data/sources/ctq_sources.csv`
 
-Phần mô hình hóa thủ công duy nhất là việc gán 27 argument vào bảy viewpoint. Demo không sửa claim, không tạo status, relation, timestamp hay source mới.
+Phần mô hình hóa thủ công duy nhất là việc gán 27 argument vào tám viewpoint và một lớp bối cảnh. Demo không sửa claim, không tạo status, relation, timestamp hay source mới. Nội dung giải thích chỉ ghép theo mẫu xác định từ `reason`, relation notes/endpoints và evidence source đã có.
 
 ## Chạy demo
 
@@ -96,8 +104,9 @@ python -m bluesky.demo --open
 ## Hạn chế
 
 - Phân cụm viewpoint là quyết định nghiên cứu thủ công, chưa được đánh giá liên mã hóa.
-- Layout SVG ưu tiên demo offline và khả năng truy nguyên, chưa phải thuật toán bố trí graph tối ưu.
-- Status chỉ có ở những mốc argument được canonical data coi là active; demo không nội suy khoảng trống. Node lịch sử không có status được hiển thị màu xám.
+- Layout force-directed chạy phía client và ưu tiên ổn định mental map; chưa tối ưu cho đồ thị lớn hơn nhiều so với 27 argument.
+- Carry-forward chỉ giữ status gần nhất đã ghi cho node lịch sử; không tuyên bố đây là một đánh giá canonical mới tại mốc sau.
+- `WHY THIS CHANGED` là giải thích rule-based có provenance, không phải suy luận nhân quả hoàn chỉnh.
 - Aggregation agent chỉ đếm và truy nguyên quan hệ; chưa triển khai belief revision hay solver.
 - Một số metadata nguồn còn bất định như đã ghi trong dataset.
 
