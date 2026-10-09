@@ -48,16 +48,24 @@ Rule null được giữ null và hiển thị rõ; demo không tạo lại các
 
 Mapping thủ công nằm tại `bluesky/data/viewpoint_mapping.json`. Tám viewpoint tập thể và một lớp bối cảnh/thể chế phủ đúng 27 lập luận, không trùng nhau. Phân nhóm dựa trên kết luận, vai trò thời gian và quy tắc bao gồm được ghi tường minh; không thay đổi nội dung hay trạng thái của argument. Các argument `A_K` đặt nền thẩm quyền/thủ tục được tách vào `CTX01` thay vì bị diễn giải như một quan điểm công chúng đồng nhất.
 
-Trong **Viewpoint Agent View**, một node xuất hiện khi cụm đã có ít nhất một argument khả dụng. State gồm argument active/lịch sử, phân bố semantic status, thành phần nguồn và số quan hệ support/attack vào/ra. State diff ghi argument mới active, argument chuyển lịch sử, thay đổi phân bố status và thay đổi quan hệ. Thành phần nguồn được tính trực tiếp từ source IDs; không có công thức strength ẩn.
+Trong **Agent Society View**, một node xuất hiện khi cụm đã có ít nhất một argument khả dụng. Đây là các **argument-grounded reactive viewpoint agents**, chưa phải agent tự trị. State gồm argument active/lịch sử, phân bố semantic status, thành phần nguồn và số quan hệ support/attack vào/ra. State diff ghi argument mới active, argument chuyển lịch sử, thay đổi phân bố status và thay đổi quan hệ. Thành phần nguồn được tính trực tiếp từ source IDs; không có công thức strength ẩn.
 
 Quan hệ liên cụm được tổng hợp khi relation nền nối hai argument thuộc hai cụm khác nhau. Độ dày cạnh phản ánh số relation nền; click/hover hiện đầy đủ relation ID, cặp argument, evidence source và relation mới tại mốc đó.
+
+Mỗi snapshot có `transition_events` được sinh theo thứ tự ba giai đoạn:
+
+1. thông tin mới: argument được giới thiệu, đổi status hoặc chuyển historical;
+2. tương tác agent: relation mới được tổng hợp thành support/attack giữa viewpoint, vẫn giữ relation ID, cặp argument và evidence source;
+3. cập nhật state: before/after của argument counts, status counts và quan hệ vào/ra.
+
+Event không phải hội thoại hay hành động tự phát. Tất cả đều được suy ra xác định từ snapshot diff, relation diff, mapping và viewpoint state diff.
 
 Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện qua argument thật có `official_document` hoặc `authority_statement`, được nhận diện bằng viền node và metadata nguồn.
 
 ## Điều khiển visualization
 
 - slider sáu vị trí, nút Trước/Sau và Phát/Dừng;
-- chuyển giữa Argument Graph và Viewpoint Agent;
+- chuyển giữa Argument Graph và Agent Society View;
 - lọc tất cả, `A_K`, `A_D`;
 - bật/tắt support, attack, rejected, undecided hoặc chỉ node mới;
 - kéo node, kéo nền để pan, cuộn chuột để zoom;
@@ -67,6 +75,9 @@ Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện
 - layout force-directed xác định theo topology; node mới khởi tạo gần hàng xóm đã có, node cũ có lực neo để giữ mental map qua các mốc;
 - kéo node sẽ ghim vị trí; nút đặt lại xóa ghim và tính lại layout; cạnh chỉ uốn cong khi nhiều relation chồng cùng một cặp node;
 - phần tóm tắt cạnh timeline báo argument/relation mới, đổi status/activity và tương tác viewpoint mới.
+- Agent Activity panel luôn tóm tắt chuỗi `new information → agent interaction → state update` ở mốc đang xem;
+- khi đổi mốc trong Agent Society View, demo lần lượt hiện thông tin mới, cạnh tương tác `NEW`, rồi badge state diff trong khoảng 1,35 giây;
+- Play tự chuyển sang Agent Society View và chạy `t1 → ... → t6` với nhịp 2,6 giây/mốc.
 
 Visualization dùng SVG/JavaScript nhúng, không cần CDN hoặc frontend framework.
 
@@ -107,6 +118,7 @@ python -m bluesky.demo --open
 - Layout force-directed chạy phía client và ưu tiên ổn định mental map; chưa tối ưu cho đồ thị lớn hơn nhiều so với 27 argument.
 - Carry-forward chỉ giữ status gần nhất đã ghi cho node lịch sử; không tuyên bố đây là một đánh giá canonical mới tại mốc sau.
 - `WHY THIS CHANGED` là giải thích rule-based có provenance, không phải suy luận nhân quả hoàn chỉnh.
+- Event stream mô tả phản ứng có căn cứ của viewpoint đối với graph; chưa có LLM dialogue, planning, belief-strength, chính sách hành động hay tối ưu thuyết phục.
 - Aggregation agent chỉ đếm và truy nguyên quan hệ; chưa triển khai belief revision hay solver.
 - Một số metadata nguồn còn bất định như đã ghi trong dataset.
 

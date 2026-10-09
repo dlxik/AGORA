@@ -87,6 +87,7 @@ def add_viewpoint_layers(
         ]
 
     _add_agent_state_diffs(snapshots)
+    _add_transition_events(snapshots, argument_to_viewpoint)
     return snapshots
 
 
@@ -172,4 +173,132 @@ def _add_agent_state_diffs(snapshots: list[dict[str, Any]]) -> None:
                 "status_count_changes": count_changes,
                 "relation_count_changes": relation_changes,
             }
+        previous_nodes = current_nodes
+
+
+def _agent_state(node: dict[str, Any] | None) -> dict[str, Any]:
+    if node is None:
+        return {
+            "active_arguments": 0,
+            "historical_arguments": 0,
+            "accepted": 0,
+            "rejected": 0,
+            "undecided": 0,
+            "incoming_support": 0,
+            "incoming_attack": 0,
+            "outgoing_support": 0,
+            "outgoing_attack": 0,
+        }
+    return {
+        "active_arguments": len(node["active_argument_ids"]),
+        "historical_arguments": len(node["historical_argument_ids"]),
+        "accepted": node["status_counts"]["accepted"],
+        "rejected": node["status_counts"]["rejected"],
+        "undecided": node["status_counts"]["undecided"],
+        "incoming_support": node["incoming_support"],
+        "incoming_attack": node["incoming_attack"],
+        "outgoing_support": node["outgoing_support"],
+        "outgoing_attack": node["outgoing_attack"],
+    }
+
+
+def _add_transition_events(
+    snapshots: list[dict[str, Any]], argument_to_viewpoint: dict[str, str]
+) -> None:
+    """Build a deterministic, provenance-grounded event stream for each snapshot."""
+    previous_nodes: dict[str, dict[str, Any]] = {}
+
+    for snapshot in snapshots:
+        timestamp_id = snapshot["timestamp"]["timestamp_id"]
+        arguments = {argument["id"]: argument for argument in snapshot["arguments"]}
+        relations = {relation["id"]: relation for relation in snapshot["relations"]}
+        current_nodes = {node["id"]: node for node in snapshot["viewpoints"]}
+        events: list[dict[str, Any]] = []
+
+        for argument_id in snapshot["changes"]["new_arguments"]:
+            argument = arguments[argument_id]
+            events.append({
+                "type": "argument_introduced",
+                "stage": "new_information",
+                "timestamp": timestamp_id,
+                "argument_id": argument_id,
+                "agent_id": argument_to_viewpoint[argument_id],
+                "conclusion": argument["conclusion"],
+                "source_ids": argument["source_ids"],
+            })
+
+        for change in snapshot["changes"]["changed_statuses"]:
+            argument = arguments[change["arg_id"]]
+            events.append({
+                "type": "argument_status_changed",
+                "stage": "new_information",
+                "timestamp": timestamp_id,
+                "argument_id": change["arg_id"],
+                "agent_id": argument_to_viewpoint[change["arg_id"]],
+                "from": change["from"],
+                "to": change["to"],
+                "grounded_by": argument["grounded_by"],
+            })
+
+        for change in snapshot["changes"]["activity_changes"]:
+            if change["to"] != "historical":
+                continue
+            events.append({
+                "type": "argument_became_historical",
+                "stage": "new_information",
+                "timestamp": timestamp_id,
+                "argument_id": change["arg_id"],
+                "agent_id": argument_to_viewpoint[change["arg_id"]],
+            })
+
+        for interaction in snapshot["new_viewpoint_interactions"]:
+            new_relation_ids = interaction["new_relation_ids"]
+            new_relation_set = set(new_relation_ids)
+            argument_pairs = [
+                [item["source_arg"], item["target_arg"]]
+                for item in interaction["argument_relations"]
+                if item["relation_id"] in new_relation_set
+            ]
+            evidence_sources: list[str] = []
+            for relation_id in new_relation_ids:
+                for source_id in relations[relation_id]["evidence_sources"]:
+                    if source_id not in evidence_sources:
+                        evidence_sources.append(source_id)
+            events.append({
+                "type": "agent_interaction_started",
+                "stage": "agent_interaction",
+                "timestamp": timestamp_id,
+                "source_agent": interaction["source"],
+                "target_agent": interaction["target"],
+                "relation_type": interaction["relation_type"],
+                "relation_ids": new_relation_ids,
+                "argument_pairs": argument_pairs,
+                "evidence_sources": evidence_sources,
+            })
+
+        for node in snapshot["viewpoints"]:
+            change = node["state_change"]
+            if not any((
+                change["newly_active"],
+                change["became_historical"],
+                change["status_count_changes"],
+                change["relation_count_changes"],
+            )):
+                continue
+            before = _agent_state(previous_nodes.get(node["id"]))
+            after = _agent_state(node)
+            events.append({
+                "type": "agent_state_changed",
+                "stage": "state_update",
+                "timestamp": timestamp_id,
+                "agent_id": node["id"],
+                "before": before,
+                "after": after,
+                "newly_active": change["newly_active"],
+                "became_historical": change["became_historical"],
+                "status_count_changes": change["status_count_changes"],
+                "relation_count_changes": change["relation_count_changes"],
+            })
+
+        snapshot["transition_events"] = events
         previous_nodes = current_nodes

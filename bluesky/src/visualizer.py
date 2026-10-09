@@ -64,7 +64,7 @@ button.active { color:#fff; background:var(--blue); border-color:var(--blue); }
 .eyebrow { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:800; }
 #timestampTitle { font-size:17px; font-weight:800; margin:3px 0; }
 .layout { display:grid; grid-template-columns:minmax(0,1fr) 350px; gap:14px; padding:14px; }
-.canvas-panel,.detail-panel,.controls { background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 3px 16px #17304f0d; }
+.canvas-panel,.detail-panel,.activity-panel,.controls { background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 3px 16px #17304f0d; }
 .toolbar { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; padding:11px 13px; border-bottom:1px solid var(--line); }
 .mode-switch { display:flex; gap:4px; padding-right:12px; border-right:1px solid var(--line); }
 .filter-group { display:flex; align-items:center; gap:8px; }
@@ -83,8 +83,14 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .node text { pointer-events:none; font-weight:750; fill:#172335; text-anchor:middle; }
 .node .sub { font-size:10px; font-weight:600; fill:#526176; }
 .edge-visible { fill:none; stroke-width:2.2; opacity:.82; stroke-linecap:round; }
+.agent-edge-old { opacity:.46; }
+.edge-new-interaction { opacity:1; stroke-width:6!important; filter:drop-shadow(0 0 6px currentColor); animation:edgePulse 1.15s ease-in-out 2; }
 .edge-hit { fill:none; stroke:transparent; stroke-width:14; cursor:pointer; }
 .edge-new { stroke-width:4; filter:drop-shadow(0 0 3px #00a8c7); }
+.edge-new-label { font-size:10px; font-weight:900; fill:#0c5272; text-anchor:middle; paint-order:stroke; stroke:#fff; stroke-width:4px; stroke-linejoin:round; pointer-events:none; }
+.state-badge rect { fill:#153e73; stroke:#fff; stroke-width:2; filter:drop-shadow(0 3px 5px #17304f44); }
+.state-badge text { fill:#fff; font-size:9px; font-weight:850; text-anchor:middle; pointer-events:none; }
+@keyframes edgePulse { 0%,100%{opacity:.78} 50%{opacity:1;stroke-width:8} }
 .hover-tooltip { position:absolute; display:none; z-index:15; width:min(430px,calc(100% - 24px)); max-height:430px; overflow:hidden; pointer-events:none; color:#172335; background:#fffffff7; border:1px solid #b8c6d6; border-radius:10px; padding:11px 13px; box-shadow:0 12px 35px #17304f30; backdrop-filter:blur(5px); }
 .hover-tooltip.visible { display:block; }
 .hover-tooltip strong { display:block; margin-bottom:4px; font-size:14px; color:#113a70; }
@@ -92,13 +98,32 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .hover-tooltip .tooltip-row { margin-top:5px; }
 .hover-tooltip .tooltip-sources { margin-top:7px; padding-top:6px; border-top:1px solid #e1e7ef; font-size:12px; color:#4b5b70; }
 .graph-summary { position:absolute; left:12px; bottom:10px; background:#ffffffec; border:1px solid var(--line); border-radius:8px; padding:6px 9px; color:var(--muted); }
-.detail-panel { padding:16px; min-height:650px; overflow:auto; max-height:756px; }
+.side-rail { display:flex; flex-direction:column; gap:12px; min-width:0; }
+.detail-panel { padding:16px; min-height:300px; overflow:auto; max-height:756px; }
 .detail-panel h2 { margin:0 0 5px; font-size:19px; }
 .detail-panel h3 { margin:18px 0 6px; font-size:14px; }
 .detail-panel p { margin:6px 0; }
 .detail-panel ul { padding-left:19px; }
 .detail-panel a { color:var(--blue); overflow-wrap:anywhere; }
+.state-compare { width:100%; border-collapse:collapse; font-size:12px; margin:7px 0; }
+.state-compare th,.state-compare td { padding:5px 6px; border-bottom:1px solid #e3e9f0; text-align:right; }
+.state-compare th:first-child,.state-compare td:first-child { text-align:left; }
 .detail-placeholder { color:var(--muted); padding-top:35px; text-align:center; }
+.activity-panel { display:none; padding:14px; max-height:440px; overflow:auto; }
+.activity-panel.visible { display:block; }
+.activity-panel h2 { margin:0 0 3px; font-size:18px; }
+.activity-panel .transition-label { color:var(--blue); font-weight:850; margin-bottom:10px; }
+.activity-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:5px; align-items:center; margin:8px 0 10px; }
+.activity-flow span { padding:6px 4px; border-radius:7px; background:#edf3fb; color:#23466f; text-align:center; font-size:10px; font-weight:850; }
+.activity-flow i { color:#7a889a; font-style:normal; }
+.activity-stage { margin:11px 0 5px; padding-top:9px; border-top:1px solid #e3e9f0; font-size:11px; font-weight:900; letter-spacing:.5px; color:#526176; }
+.activity-event { position:relative; margin:6px 0; padding:8px 9px 8px 12px; border-radius:7px; background:#f4f7fb; border-left:3px solid #97a5b7; font-size:12px; }
+.activity-event.interaction.support { border-color:var(--support); background:#edf9f3; }
+.activity-event.interaction.attack { border-color:var(--attack); background:#fff1f1; }
+.activity-event.state { border-color:var(--blue); background:#eef4ff; }
+.activity-event.pending { opacity:.32; }
+.activity-event.current { box-shadow:0 0 0 2px #00a8c733; }
+.activity-event b { color:#183a65; }
 .pill { display:inline-block; padding:2px 7px; border-radius:999px; font-size:11px; font-weight:800; margin:2px 3px 2px 0; background:#edf1f6; }
 .pill.accepted { color:#176b49; background:#dff5ea; }
 .pill.rejected { color:#a52f2f; background:#fde5e5; }
@@ -119,6 +144,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .method-note { margin:0 14px 14px; padding:11px 13px; color:#46566b; background:#eef4ff; border-left:4px solid var(--blue); border-radius:6px; }
 @media (max-width:980px) {
   .layout { grid-template-columns:1fr; }
+  .side-rail { display:grid; grid-template-columns:1fr; }
   .detail-panel { min-height:240px; max-height:none; }
   .event-card { grid-template-columns:1fr; }
   .ticks { margin-left:0; margin-right:0; }
@@ -155,7 +181,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     <div class="toolbar">
       <div class="mode-switch">
         <button class="active" id="argumentMode">Argument Graph</button>
-        <button id="viewpointMode">Viewpoint Agent</button>
+        <button id="viewpointMode">Agent Society View</button>
       </div>
       <div class="filter-group" id="argumentFilters">
         <label>Loại <select id="argType"><option value="all">Tất cả</option><option value="A_K">A_K</option><option value="A_D">A_D</option></select></label>
@@ -197,7 +223,10 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     </div>
     <p class="method-note" id="methodNote"></p>
   </section>
-  <aside class="detail-panel" id="detailPanel"><div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div></aside>
+  <aside class="side-rail">
+    <section class="activity-panel" id="agentActivity"></section>
+    <section class="detail-panel" id="detailPanel"><div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div></section>
+  </aside>
 </main>
 
 <script>
@@ -212,7 +241,8 @@ const state = {
   time:initialTime, mode:initialMode, argType:'all', showSupport:true, showAttack:true,
   showRejected:true, showUndecided:true, onlyNew:false, playing:null,
   transform:{x:0,y:0,k:1}, positions:{arguments:{},viewpoints:{}},
-  pinned:{arguments:new Set(),viewpoints:new Set()}, layoutSignature:{arguments:'',viewpoints:''}
+  pinned:{arguments:new Set(),viewpoints:new Set()}, layoutSignature:{arguments:'',viewpoints:''},
+  transitionStage:3, transitionTimers:[]
 };
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -246,7 +276,11 @@ function filteredData() {
 
   const nodes = snap.viewpoints;
   const viewpointIds = new Set(nodes.map(v=>v.id));
-  const edges = snap.viewpoint_relations.filter(edge => viewpointIds.has(edge.source) && viewpointIds.has(edge.target) &&
+  const edges = snap.viewpoint_relations.map(edge=>{
+    if(state.transitionStage>1||!edge.new_relation_ids.length)return edge;
+    const newIds=new Set(edge.new_relation_ids),argument_relations=edge.argument_relations.filter(r=>!newIds.has(r.relation_id));
+    return {...edge,relation_ids:edge.relation_ids.filter(id=>!newIds.has(id)),new_relation_ids:[],argument_relations,newly_introduced:false};
+  }).filter(edge => edge.relation_ids.length && viewpointIds.has(edge.source) && viewpointIds.has(edge.target) &&
     ((edge.relation_type==='support' && state.showSupport) || (edge.relation_type==='attack' && state.showAttack)));
   return {nodes,edges,arguments:snap.arguments};
 }
@@ -297,15 +331,15 @@ function ensureLayout(data,forceReset=false) {
   state.layoutSignature[mode]=signature;
 }
 
-function edgePath(a,b,index=0,total=1) {
+function edgePath(a,b,index=0,total=1,directionSign=1) {
   const dx=b.x-a.x, dy=b.y-a.y, d=Math.max(1,Math.hypot(dx,dy));
   const ux=dx/d, uy=dy/d, halfWidth=state.mode==='arguments'?71:88,halfHeight=state.mode==='arguments'?31:37;
   const borderDistance=Math.min(halfWidth/Math.max(.001,Math.abs(ux)),halfHeight/Math.max(.001,Math.abs(uy)));
   const startCut=Math.min(borderDistance+3,Math.max(4,d/2-4)),endCut=Math.min(borderDistance+10,Math.max(4,d/2-4));
   const x1=a.x+ux*startCut, y1=a.y+uy*startCut, x2=b.x-ux*endCut, y2=b.y-uy*endCut;
-  if(total===1) return {d:`M ${x1} ${y1} L ${x2} ${y2}`};
-  const offset=(index-(total-1)/2)*38,nx=-uy,ny=ux,cx=(x1+x2)/2+nx*offset,cy=(y1+y2)/2+ny*offset;
-  return {d:`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`};
+  if(total===1) return {d:`M ${x1} ${y1} L ${x2} ${y2}`,label:{x:(x1+x2)/2,y:(y1+y2)/2-7}};
+  const offset=(index-(total-1)/2)*38*directionSign,nx=-uy,ny=ux,cx=(x1+x2)/2+nx*offset,cy=(y1+y2)/2+ny*offset;
+  return {d:`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`,label:{x:(x1+2*cx+x2)/4,y:(y1+2*cy+y2)/4-7}};
 }
 
 function moveTooltip(event) {
@@ -336,6 +370,7 @@ function nodeTooltip(node) {
 }
 function edgeTooltip(edge) {
   if(state.mode==='viewpoints') return `<strong>${esc(edge.source)} → ${esc(edge.target)}</strong><div class="tooltip-meta">${esc(edge.relation_type)} · ${edge.relation_ids.length} quan hệ argument nền</div>
+    <div class="tooltip-row"><b>${edge.new_relation_ids.length?'NEW tại '+esc(SNAPSHOTS[state.time].timestamp.timestamp_id):'Tương tác đã có'}</b></div>
     <div class="tooltip-row"><b>Relation IDs:</b> ${edge.relation_ids.map(esc).join(', ')}</div>
     <div class="tooltip-row"><b>Mới tại mốc này:</b> ${(edge.new_relation_ids||[]).map(esc).join(', ')||'Không'}</div>
     <div class="tooltip-row"><b>Liên kết nền:</b> ${edge.argument_relations.map(r=>`${esc(r.source_arg)} → ${esc(r.target_arg)}`).join('; ')}</div>
@@ -346,8 +381,49 @@ function edgeTooltip(edge) {
     <div class="tooltip-sources"><b>Evidence:</b> ${edge.evidence_sources.map(esc).join(', ')}</div>`;
 }
 
+const stageOrder={new_information:1,agent_interaction:2,state_update:3};
+const stageLabels={new_information:'1. NEW INFORMATION / EVIDENCE',agent_interaction:'2. AGENT INTERACTION',state_update:'3. AGENT STATE UPDATE'};
+function eventHtml(event) {
+  if(event.type==='argument_introduced') return `<b>+ ${esc(event.argument_id)} entered ${esc(event.agent_id)}</b><br><small>Nguồn: ${event.source_ids.map(esc).join(', ')}</small>`;
+  if(event.type==='argument_status_changed') return `<b>${esc(event.argument_id)} status changed</b><br>${esc(event.from)} → ${esc(event.to)} · ${esc(event.agent_id)}<br><small>Grounded by: ${event.grounded_by.map(esc).join(', ')}</small>`;
+  if(event.type==='argument_became_historical') return `<b>${esc(event.argument_id)} became historical</b><br>${esc(event.agent_id)}`;
+  if(event.type==='agent_interaction_started') return `<b>${esc(event.source_agent)} → ${esc(event.target_agent)}</b> <span class="pill ${esc(event.relation_type)}">${esc(event.relation_type.toUpperCase())}</span><br>via ${event.relation_ids.map(esc).join(', ')}<br>${event.argument_pairs.map(p=>`${esc(p[0])} → ${esc(p[1])}`).join('<br>')}<br><small>Evidence: ${event.evidence_sources.map(esc).join(', ')||'Không có source ID riêng'}</small>`;
+  const changed=[];
+  if(event.newly_active.length)changed.push(`+${event.newly_active.length} active argument`);
+  if(event.became_historical.length)changed.push(`+${event.became_historical.length} historical`);
+  Object.entries(event.status_count_changes).forEach(([k,v])=>changed.push(`${esc(k)}: ${v.from} → ${v.to}`));
+  Object.entries(event.relation_count_changes).forEach(([k,v])=>changed.push(`${esc(k.replaceAll('_',' '))}: ${v.from} → ${v.to}`));
+  return `<b>${esc(event.agent_id)}</b><br>${changed.join('<br>')}`;
+}
+function renderAgentActivity() {
+  const panel=$('agentActivity');
+  panel.classList.toggle('visible',state.mode==='viewpoints');
+  if(state.mode!=='viewpoints')return;
+  const snap=SNAPSHOTS[state.time],events=snap.transition_events||[];
+  const infoCount=events.filter(e=>e.stage==='new_information').length,interactionCount=events.filter(e=>e.stage==='agent_interaction').length,stateCount=events.filter(e=>e.stage==='state_update').length;
+  const groups=['new_information','agent_interaction','state_update'].map(stage=>{
+    const items=events.filter(e=>e.stage===stage),rank=stageOrder[stage];
+    const eventItems=items.length?items.map(e=>`<div class="activity-event ${e.type==='agent_interaction_started'?'interaction '+esc(e.relation_type):e.type==='agent_state_changed'?'state':''} ${rank>state.transitionStage?'pending':rank===state.transitionStage?'current':''}">${eventHtml(e)}</div>`).join(''):`<div class="activity-event ${rank>state.transitionStage?'pending':''}">Không có sự kiện mới.</div>`;
+    return `<div class="activity-stage">${stageLabels[stage]}</div>${eventItems}`;
+  }).join('');
+  panel.innerHTML=`<h2>Agent Activity</h2><div class="transition-label">${esc(snap.changes.transition)}</div><div class="activity-flow"><span>${infoCount} thông tin mới</span><i>→</i><span>${interactionCount} tương tác</span><i>→</i><span>${stateCount} state update</span></div>${groups}`;
+}
+function stateBadgeText(node) {
+  const c=node.state_change,parts=[];
+  if(c.newly_active.length)parts.push(`+${c.newly_active.length} args`);
+  const attack=c.relation_count_changes.incoming_attack,support=c.relation_count_changes.incoming_support;
+  if(attack&&attack.to-attack.from)parts.push(`${attack.to-attack.from>0?'+':''}${attack.to-attack.from} atk in`);
+  if(support&&support.to-support.from)parts.push(`${support.to-support.from>0?'+':''}${support.to-support.from} sup in`);
+  const statusEvents=SNAPSHOTS[state.time].transition_events.filter(e=>e.type==='argument_status_changed'&&e.agent_id===node.id).length;
+  if(!parts.length&&statusEvents)parts.push(`${statusEvents} status changed`);
+  if(!parts.length&&c.became_historical.length)parts.push(`+${c.became_historical.length} historical`);
+  if(!parts.length){const first=Object.entries(c.relation_count_changes)[0];if(first){const [key,v]=first,delta=v.to-v.from;parts.push(`${delta>0?'+':''}${delta} ${key.replace('incoming_','in ').replace('outgoing_','out ')}`);}}
+  return parts.slice(0,3).join(' · ');
+}
+
 function render() {
   updateTimeline();
+  renderAgentActivity();
   const data=filteredData(), edgesLayer=$('edges'), nodesLayer=$('nodes');
   ensureLayout(data);
   edgesLayer.replaceChildren(); nodesLayer.replaceChildren();
@@ -355,11 +431,12 @@ function render() {
   data.edges.forEach(edge=>{const key=[edge.source,edge.target].sort().join('|');if(!pairGroups.has(key))pairGroups.set(key,[]);pairGroups.get(key).push(edge);});
 
   data.edges.forEach(edge => {
-    const siblings=pairGroups.get([edge.source,edge.target].sort().join('|')),p=edgePath(positionFor(edge.source),positionFor(edge.target),siblings.indexOf(edge),siblings.length);
+    const siblings=pairGroups.get([edge.source,edge.target].sort().join('|')),p=edgePath(positionFor(edge.source),positionFor(edge.target),siblings.indexOf(edge),siblings.length,edge.source<edge.target?1:-1);
     const group=document.createElementNS(NS,'g');
     const visible=document.createElementNS(NS,'path');
     visible.setAttribute('d',p.d);
-    visible.setAttribute('class','edge-visible'+(edge.newly_introduced?' edge-new':''));
+    const isNewInteraction=state.mode==='viewpoints'&&edge.new_relation_ids.length&&state.transitionStage>=2;
+    visible.setAttribute('class','edge-visible'+(edge.newly_introduced?' edge-new':'')+(state.mode==='viewpoints'&&!isNewInteraction?' agent-edge-old':'')+(isNewInteraction?' edge-new-interaction':''));
     visible.setAttribute('stroke',edge.relation_type==='support'?'#279567':'#d14e4e');
     if(state.mode==='viewpoints') visible.setAttribute('stroke-width',String(2+Math.min(6,edge.relation_ids.length*1.25)));
     visible.setAttribute('marker-end',`url(#arrow${edge.relation_type==='support'?'Support':'Attack'})`);
@@ -372,7 +449,9 @@ function render() {
     hit.appendChild(title); hit.addEventListener('click',e=>{e.stopPropagation();showEdgeDetail(edge);});
     hit.addEventListener('mouseenter',e=>showTooltip(edgeTooltip(edge),e));
     hit.addEventListener('mousemove',moveTooltip); hit.addEventListener('mouseleave',hideTooltip);
-    group.append(visible,hit); edgesLayer.appendChild(group);
+    group.append(visible,hit);
+    if(isNewInteraction){const label=document.createElementNS(NS,'text');label.setAttribute('class','edge-new-label');label.setAttribute('x',p.label.x);label.setAttribute('y',p.label.y);label.textContent='NEW';group.appendChild(label);}
+    edgesLayer.appendChild(group);
   });
 
   data.nodes.forEach(node => {
@@ -399,6 +478,9 @@ function render() {
     if(state.mode==='arguments'){
       const priority=['official_document','authority_statement','social','news'],type=priority.find(k=>node.sources.some(s=>s.source_type===k))||'news';
       const badge=document.createElementNS(NS,'circle');badge.setAttribute('cx',w/2-10);badge.setAttribute('cy',-h/2+10);badge.setAttribute('r',6);badge.setAttribute('fill',({official_document:'#2264d1',authority_statement:'#7656a8',social:'#f09a32',news:'#7b8796'})[type]);badge.setAttribute('stroke','#fff');badge.setAttribute('stroke-width','2');group.appendChild(badge);
+    } else if(state.transitionStage>=3) {
+      const badgeText=stateBadgeText(node);
+      if(badgeText){const badge=document.createElementNS(NS,'g');badge.setAttribute('class','state-badge');badge.setAttribute('transform',`translate(0 ${-h/2-18})`);const bw=Math.max(82,Math.min(190,badgeText.length*5.4+18)),bg=document.createElementNS(NS,'rect');bg.setAttribute('x',-bw/2);bg.setAttribute('y',-11);bg.setAttribute('width',bw);bg.setAttribute('height',20);bg.setAttribute('rx',10);const text=document.createElementNS(NS,'text');text.setAttribute('y',3);text.textContent=badgeText;const title=document.createElementNS(NS,'title');title.textContent='Thay đổi từ mốc trước: '+badgeText;badge.append(bg,text,title);group.appendChild(badge);}
     }
     group.addEventListener('click',e=>{e.stopPropagation();showNodeDetail(node);});
     group.addEventListener('mouseenter',e=>showTooltip(nodeTooltip(node),e));
@@ -434,19 +516,29 @@ function argumentBlock(a) {
     <p><b>Kết luận:</b> ${esc(a.conclusion)}</p><p><b>Mốc:</b> ${esc(a.introduced_at)}${a.active_until?' → '+esc(a.active_until):''} · <b>Nguồn:</b> ${a.source_ids.map(esc).join(', ')}</p></div>`;
 }
 
+function stateComparison(event) {
+  if(!event)return '<p>Không có state diff cho agent tại mốc này.</p>';
+  const labels={active_arguments:'Active arguments',historical_arguments:'Historical arguments',accepted:'Accepted',rejected:'Rejected',undecided:'Undecided',incoming_support:'Incoming support',incoming_attack:'Incoming attack',outgoing_support:'Outgoing support',outgoing_attack:'Outgoing attack'};
+  return `<table class="state-compare"><thead><tr><th>Metric</th><th>Before</th><th>After</th></tr></thead><tbody>${Object.entries(labels).map(([key,label])=>`<tr><td>${label}</td><td>${event.before[key]}</td><td>${event.after[key]}</td></tr>`).join('')}</tbody></table>`;
+}
+
 function showNodeDetail(node) {
   if (state.mode==='viewpoints') {
     const composition=Object.entries(node.source_composition).map(([k,v])=>`<span class="pill">${esc(k)}: ${v}</span>`).join(' ');
     const incident=SNAPSHOTS[state.time].new_viewpoint_interactions.filter(e=>e.source===node.id||e.target===node.id);
     const changes=node.state_change;
+    const stateEvent=SNAPSHOTS[state.time].transition_events.find(e=>e.type==='agent_state_changed'&&e.agent_id===node.id);
     $('detailPanel').innerHTML=`<div class="eyebrow">${node.kind==='contextual'?'Lớp bối cảnh/thể chế':'Viewpoint agent tập thể'}</div><h2>${esc(node.id)} — ${esc(node.name)}</h2>
       <p>${esc(node.description)}</p>
-      <h3>Trạng thái quan điểm</h3><p><b>Tóm tắt:</b> ${esc(node.position_summary)}</p><p><b>Quy tắc bao gồm:</b> ${esc(node.inclusion_rule)}</p>
+      <p><i>Argument-grounded reactive viewpoint agent; không phải agent tự trị.</i></p>
+      <h3>CURRENT STATE</h3><p><b>Tóm tắt:</b> ${esc(node.position_summary)}</p><p><b>Quy tắc bao gồm:</b> ${esc(node.inclusion_rule)}</p>
       <p><span class="pill accepted">accepted ${node.status_counts.accepted}</span><span class="pill rejected">rejected ${node.status_counts.rejected}</span><span class="pill undecided">undecided ${node.status_counts.undecided}</span></p>
       <p><b>Active:</b> ${node.active_argument_ids.map(esc).join(', ')||'Không có'}<br><b>Lịch sử:</b> ${node.historical_argument_ids.map(esc).join(', ')||'Không có'}</p>
+      <p><b>Quan hệ vào:</b> support ${node.incoming_support} · attack ${node.incoming_attack}<br><b>Quan hệ ra:</b> support ${node.outgoing_support} · attack ${node.outgoing_attack}</p>
+      <h3>CHANGE FROM PREVIOUS TIMESTAMP</h3>${stateComparison(stateEvent)}
       <h3>Lập luận khả dụng (${node.arguments.length}/${node.all_argument_ids.length})</h3>${node.arguments.map(argumentBlock).join('')||'<p>Không có.</p>'}
       <h3>Thành phần nguồn</h3><p>${composition||'Không có.'}</p>
-      <h3>Tương tác có căn cứ</h3><p>Vào: support ${node.incoming_support} · attack ${node.incoming_attack}<br>Ra: support ${node.outgoing_support} · attack ${node.outgoing_attack}</p>
+      <h3>Tương tác mới có căn cứ</h3>
       <ul>${incident.map(e=>`<li>${esc(e.source)} → ${esc(e.target)} · ${esc(e.relation_type)} · mới: ${e.new_relation_ids.map(esc).join(', ')}</li>`).join('')||'<li>Không có tương tác liên-viewpoint mới tại mốc này.</li>'}</ul>
       <div class="why-changed"><h3>WHY THIS CHANGED</h3><p><b>Argument mới active:</b> ${changes.newly_active.map(esc).join(', ')||'Không'}<br><b>Chuyển lịch sử:</b> ${changes.became_historical.map(esc).join(', ')||'Không'}</p><p><b>Đổi phân bố status:</b> ${Object.entries(changes.status_count_changes).map(([k,v])=>`${esc(k)} ${v.from}→${v.to}`).join('; ')||'Không'}<br><b>Đổi quan hệ:</b> ${Object.entries(changes.relation_count_changes).map(([k,v])=>`${esc(k)} ${v.from}→${v.to}`).join('; ')||'Không'}</p></div>
       <h3>Quy tắc dựng agent</h3><p>${esc(MAPPING_METHOD)}</p>`;
@@ -483,6 +575,7 @@ function showEdgeDetail(edge) {
 }
 
 function setMode(mode) {
+  state.transitionTimers.forEach(clearTimeout);state.transitionTimers=[];state.transitionStage=3;
   state.mode=mode; $('argumentMode').classList.toggle('active',mode==='arguments'); $('viewpointMode').classList.toggle('active',mode==='viewpoints');
   $('argumentFilters').style.display=mode==='arguments'?'flex':'none';
   $('methodNote').textContent=mode==='viewpoints' ? MAPPING_METHOD : 'Node và cạnh được dựng trực tiếp từ CSV canonical; không có status, source hoặc relation nào được suy đoán.';
@@ -507,10 +600,20 @@ $('graph').addEventListener('pointerup',()=>{dragging=null;panning=null;$('graph
 $('graph').addEventListener('wheel',event=>{event.preventDefault();state.transform.k=Math.max(.45,Math.min(2.4,state.transform.k*(event.deltaY<0?1.12:.89)));applyTransform();},{passive:false});
 $('graph').addEventListener('click',event=>{if(event.target.id==='graph'||event.target.id==='graphBg')$('detailPanel').innerHTML='<div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div>';});
 
-function setTime(index){ state.time=Math.max(0,Math.min(5,index)); render(); }
+function setTime(index,animate=true){
+  const next=Math.max(0,Math.min(5,index)),changed=next!==state.time;
+  state.transitionTimers.forEach(clearTimeout);state.transitionTimers=[];state.time=next;
+  if(animate&&changed&&state.mode==='viewpoints'){
+    state.transitionStage=1;render();
+    state.transitionTimers.push(setTimeout(()=>{state.transitionStage=2;render();},650));
+    state.transitionTimers.push(setTimeout(()=>{state.transitionStage=3;render();},1350));
+  } else {state.transitionStage=3;render();}
+}
 function togglePlay(){
   if(state.playing){clearInterval(state.playing);state.playing=null;$('playButton').textContent='▶ Phát';return;}
-  $('playButton').textContent='⏸ Dừng';state.playing=setInterval(()=>{if(state.time===5){togglePlay();return;}setTime(state.time+1);},1700);
+  if(state.mode!=='viewpoints')setMode('viewpoints');
+  if(state.time===5)setTime(0,false);
+  $('playButton').textContent='⏸ Dừng';state.playing=setInterval(()=>{if(state.time===5){togglePlay();return;}setTime(state.time+1,true);},2600);
 }
 
 SNAPSHOTS.forEach((snap,index)=>{const tick=document.createElement('span');tick.textContent=snap.timestamp.timestamp_id;tick.onclick=()=>setTime(index);$('ticks').appendChild(tick);});
