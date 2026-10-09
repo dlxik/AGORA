@@ -1,0 +1,47 @@
+{
+  "method": "Phân nhóm thủ công, loại trừ lẫn nhau, dựa trên kết luận và vai trò thời gian của 27 lập luận đã chọn. Nhóm không thay đổi nội dung hay trạng thái của lập luận.",
+  "viewpoints": [
+    {
+      "viewpoint_id": "VP01",
+      "name": "Xác minh trước khi kết luận",
+      "description": "Ưu tiên chứng cứ, cập nhật nhận định sơ bộ và kiểm tra thẩm quyền trước khi chốt biện pháp.",
+      "argument_ids": ["CTQ-A002", "CTQ-A003", "CTQ-A004", "CTQ-A008", "CTQ-A014"]
+    },
+    {
+      "viewpoint_id": "VP02",
+      "name": "Giới hạn phạm vi ở môn Toán",
+      "description": "Cho rằng chứng cứ ở giai đoạn đầu hỗ trợ hoặc chưa vượt quá phạm vi môn Toán.",
+      "argument_ids": ["CTQ-A009", "CTQ-A011"]
+    },
+    {
+      "viewpoint_id": "VP03",
+      "name": "Không thi lại, xử lý nghiêm",
+      "description": "Phản đối thi lại và ưu tiên hủy kết quả để bảo đảm tính nhất quán của chế tài.",
+      "argument_ids": ["CTQ-A012"]
+    },
+    {
+      "viewpoint_id": "VP04",
+      "name": "Cá thể hóa trách nhiệm",
+      "description": "Phân biệt độ tin cậy của kỳ thi với lỗi cá nhân và yêu cầu chứng cứ riêng cho từng thí sinh.",
+      "argument_ids": ["CTQ-A007", "CTQ-A013", "CTQ-A020", "CTQ-A021", "CTQ-A025", "CTQ-A027"]
+    },
+    {
+      "viewpoint_id": "VP05",
+      "name": "Thi lại toàn bộ và thủ tục chính thức",
+      "description": "Tập hợp căn cứ thẩm quyền, liêm chính, triển khai, tính tương xứng và tuyển sinh cho biện pháp thi lại toàn bộ.",
+      "argument_ids": ["CTQ-A001", "CTQ-A005", "CTQ-A010", "CTQ-A015", "CTQ-A016", "CTQ-A017", "CTQ-A018", "CTQ-A022"]
+    },
+    {
+      "viewpoint_id": "VP06",
+      "name": "Diễn giải kết quả thi lại",
+      "description": "Dùng phân bố kết quả lần hai để đánh giá độ tin cậy nhưng không suy lỗi cá nhân.",
+      "argument_ids": ["CTQ-A019", "CTQ-A023"]
+    },
+    {
+      "viewpoint_id": "VP07",
+      "name": "Sai phạm hệ thống và chứng cứ muộn",
+      "description": "Theo dõi sự mở rộng từ chứng cứ coi thi ban đầu tới phạm vi tất cả phòng và tất cả môn.",
+      "argument_ids": ["CTQ-A006", "CTQ-A024", "CTQ-A026"]
+    }
+  ]
+}
