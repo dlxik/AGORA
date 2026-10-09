@@ -56,7 +56,9 @@ Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện
 - lọc tất cả, `A_K`, `A_D`;
 - bật/tắt support, attack, rejected, undecided hoặc chỉ node mới;
 - kéo node, kéo nền để pan, cuộn chuột để zoom;
-- hover để xem tóm tắt, click để mở provenance chi tiết.
+- hover argument để xem premise/rule/conclusion, thời gian, status và nguồn;
+- hover viewpoint agent để xem argument active, phân bố status và thành phần nguồn;
+- hover cạnh thẳng có hướng để xem relation/conflict/evidence; click để giữ provenance trong detail panel.
 
 Visualization dùng SVG/JavaScript nhúng, không cần CDN hoặc frontend framework.
 

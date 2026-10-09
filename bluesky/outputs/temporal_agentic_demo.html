@@ -20,10 +20,18 @@ header p { margin:0; color:#d7e5ff; max-width:980px; }
 button,.mode-button { border:1px solid #bdc9d7; background:#fff; color:var(--ink); border-radius:8px; padding:7px 12px; cursor:pointer; font-weight:600; }
 button:hover { border-color:var(--blue); color:var(--blue); }
 button.active { color:#fff; background:var(--blue); border-color:var(--blue); }
-#timeSlider { flex:1; accent-color:var(--blue); }
-.ticks { display:grid; grid-template-columns:repeat(6,1fr); margin:4px 58px 0 158px; color:var(--muted); font-weight:700; }
-.ticks span { text-align:center; cursor:pointer; }
-.ticks span.active { color:var(--blue); }
+.slider-wrap { flex:1; display:flex; align-items:center; gap:12px; min-width:260px; }
+#timeSlider { --progress:0%; appearance:none; flex:1; height:7px; border-radius:999px; cursor:pointer; outline:none; background:linear-gradient(90deg,var(--blue) 0 var(--progress),#ced7e2 var(--progress) 100%); }
+#timeSlider::-webkit-slider-thumb { appearance:none; width:23px; height:23px; border-radius:50%; background:#fff; border:6px solid var(--blue); box-shadow:0 2px 8px #17304f55; cursor:grab; }
+#timeSlider:active::-webkit-slider-thumb { cursor:grabbing; transform:scale(1.08); }
+#timeSlider::-moz-range-thumb { width:13px; height:13px; border-radius:50%; background:#fff; border:6px solid var(--blue); box-shadow:0 2px 8px #17304f55; cursor:grab; }
+#timeSlider:focus-visible { box-shadow:0 0 0 4px #2264d122; }
+#timeValue { min-width:38px; text-align:center; padding:4px 8px; border-radius:999px; color:#fff; background:var(--blue); font-weight:800; }
+.ticks { display:grid; grid-template-columns:repeat(6,1fr); margin:7px 102px 0 208px; color:var(--muted); font-weight:700; }
+.ticks span { position:relative; text-align:center; cursor:pointer; padding-top:7px; user-select:none; }
+.ticks span::before { content:''; position:absolute; top:-7px; left:50%; width:8px; height:8px; border-radius:50%; background:#c4ceda; transform:translateX(-50%); }
+.ticks span:hover,.ticks span.active { color:var(--blue); }
+.ticks span.active::before { background:var(--blue); box-shadow:0 0 0 4px #2264d11f; }
 .event-card { display:grid; grid-template-columns:180px 1fr 1fr; gap:14px; margin-top:12px; }
 .event-card > div { background:#f4f7fb; border:1px solid #e1e7ef; border-radius:9px; padding:9px 11px; min-height:66px; }
 .event-card .event-main { grid-row:span 1; }
@@ -45,10 +53,15 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .node.new rect { stroke:var(--cyan)!important; stroke-width:5; filter:drop-shadow(0 0 7px #00a8c766); }
 .node text { pointer-events:none; font-weight:750; fill:#172335; text-anchor:middle; }
 .node .sub { font-size:10px; font-weight:600; fill:#526176; }
-.edge-visible { fill:none; stroke-width:2.4; opacity:.84; }
+.edge-visible { fill:none; stroke-width:2.2; opacity:.82; stroke-linecap:round; }
 .edge-hit { fill:none; stroke:transparent; stroke-width:14; cursor:pointer; }
 .edge-new { stroke-width:4; filter:drop-shadow(0 0 3px #00a8c7); }
-.edge-label { font-size:10px; font-weight:800; paint-order:stroke; stroke:#fff; stroke-width:4; text-anchor:middle; pointer-events:none; }
+.hover-tooltip { position:absolute; display:none; z-index:15; width:min(430px,calc(100% - 24px)); max-height:430px; overflow:hidden; pointer-events:none; color:#172335; background:#fffffff7; border:1px solid #b8c6d6; border-radius:10px; padding:11px 13px; box-shadow:0 12px 35px #17304f30; backdrop-filter:blur(5px); }
+.hover-tooltip.visible { display:block; }
+.hover-tooltip strong { display:block; margin-bottom:4px; font-size:14px; color:#113a70; }
+.hover-tooltip .tooltip-meta { margin-bottom:7px; color:#5c6b7f; font-size:12px; }
+.hover-tooltip .tooltip-row { margin-top:5px; }
+.hover-tooltip .tooltip-sources { margin-top:7px; padding-top:6px; border-top:1px solid #e1e7ef; font-size:12px; color:#4b5b70; }
 .graph-summary { position:absolute; left:12px; bottom:10px; background:#ffffffec; border:1px solid var(--line); border-radius:8px; padding:6px 9px; color:var(--muted); }
 .detail-panel { padding:16px; min-height:650px; overflow:auto; max-height:756px; }
 .detail-panel h2 { margin:0 0 5px; font-size:19px; }
@@ -87,7 +100,10 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
   <div class="timeline-top">
     <button id="prevButton" title="Mốc trước">← Trước</button>
     <button id="playButton" title="Phát hoặc tạm dừng">▶ Phát</button>
-    <input id="timeSlider" type="range" min="0" max="5" step="1" value="0" aria-label="Mốc thời gian">
+    <div class="slider-wrap">
+      <input id="timeSlider" type="range" min="0" max="5" step="1" value="0" aria-label="Kéo để chọn một trong sáu mốc thời gian">
+      <output id="timeValue" for="timeSlider" aria-live="polite">t1</output>
+    </div>
     <button id="nextButton" title="Mốc sau">Sau →</button>
   </div>
   <div class="ticks" id="ticks"></div>
@@ -117,7 +133,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
         <button id="resetView">Đặt lại khung nhìn</button>
       </div>
     </div>
-    <div class="graph-wrap">
+    <div class="graph-wrap" id="graphWrap">
       <svg id="graph" viewBox="0 0 1180 650" role="img" aria-label="Đồ thị lập luận CTQ tương tác">
         <defs>
           <marker id="arrowSupport" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#279567"/></marker>
@@ -127,6 +143,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
         <g id="viewport"><g id="edges"></g><g id="nodes"></g></g>
       </svg>
       <div class="graph-summary" id="graphSummary"></div>
+      <div class="hover-tooltip" id="hoverTooltip" role="tooltip"></div>
     </div>
     <div class="legend">
       <span class="legend-item"><span class="dot" style="background:#dff5ea;border:2px solid #23845b"></span>accepted</span>
@@ -225,13 +242,47 @@ function positionFor(id) {
   return cache[id];
 }
 
-function edgePath(a,b,type) {
+function edgePath(a,b) {
   const dx=b.x-a.x, dy=b.y-a.y, d=Math.max(1,Math.hypot(dx,dy));
   const ux=dx/d, uy=dy/d, shorten=state.mode==='arguments'?78:92;
   const x1=a.x+ux*shorten, y1=a.y+uy*shorten, x2=b.x-ux*shorten, y2=b.y-uy*shorten;
-  const offset=type==='support'?-12:12;
-  const mx=(x1+x2)/2-uy*offset, my=(y1+y2)/2+ux*offset;
-  return {d:`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`,mx,my};
+  return {d:`M ${x1} ${y1} L ${x2} ${y2}`};
+}
+
+function moveTooltip(event) {
+  const tooltip=$('hoverTooltip'), wrap=$('graphWrap'), box=wrap.getBoundingClientRect();
+  let left=event.clientX-box.left+16, top=event.clientY-box.top+16;
+  const width=tooltip.offsetWidth||400, height=tooltip.offsetHeight||180;
+  if(left+width>box.width-8) left=event.clientX-box.left-width-16;
+  if(top+height>box.height-8) top=event.clientY-box.top-height-16;
+  tooltip.style.left=`${Math.max(8,left)}px`; tooltip.style.top=`${Math.max(8,top)}px`;
+}
+function showTooltip(html,event){const tooltip=$('hoverTooltip');tooltip.innerHTML=html;tooltip.classList.add('visible');moveTooltip(event);}
+function hideTooltip(){const tooltip=$('hoverTooltip');tooltip.classList.remove('visible');}
+function nodeTooltip(node) {
+  if(state.mode==='viewpoints') {
+    const counts=node.status_counts, composition=Object.entries(node.source_composition).map(([k,v])=>`${esc(k)}: ${v}`).join(' · ');
+    return `<strong>${esc(node.id)} — ${esc(node.name)}</strong><div class="tooltip-meta">Viewpoint agent · ${node.arguments.length}/${node.all_argument_ids.length} argument đang active</div>
+      <div class="tooltip-row">${esc(node.description)}</div>
+      <div class="tooltip-row"><b>Trạng thái:</b> accepted ${counts.accepted} · rejected ${counts.rejected} · undecided ${counts.undecided}</div>
+      <div class="tooltip-row"><b>Argument active:</b> ${node.active_argument_ids.map(esc).join(', ')}</div>
+      <div class="tooltip-sources"><b>Nguồn:</b> ${composition||'Không có'}</div>`;
+  }
+  return `<strong>${esc(node.id)} — ${esc(node.arg_type)}</strong><div class="tooltip-meta">introduced_at: ${esc(node.introduced_at)}${node.active_until?' · active_until: '+esc(node.active_until):''} · status: ${esc(node.status||'null (lịch sử)')}</div>
+    <div class="tooltip-row"><b>Premise:</b> ${esc(node.premise)}</div>
+    <div class="tooltip-row"><b>Rule:</b> ${node.rule?esc(node.rule):'<i>null — không có rule được nguồn hỗ trợ trực tiếp</i>'}</div>
+    <div class="tooltip-row"><b>Conclusion:</b> ${esc(node.conclusion)}</div>
+    <div class="tooltip-sources"><b>Nguồn:</b> ${node.source_ids.map(esc).join(', ')} · <b>Vai trò:</b> ${esc(node.temporal_role)}</div>`;
+}
+function edgeTooltip(edge) {
+  if(state.mode==='viewpoints') return `<strong>${esc(edge.source)} → ${esc(edge.target)}</strong><div class="tooltip-meta">${esc(edge.relation_type)} · ${edge.relation_ids.length} quan hệ argument nền</div>
+    <div class="tooltip-row"><b>Relation IDs:</b> ${edge.relation_ids.map(esc).join(', ')}</div>
+    <div class="tooltip-row"><b>Liên kết nền:</b> ${edge.argument_relations.map(r=>`${esc(r.source_arg)} → ${esc(r.target_arg)}`).join('; ')}</div>
+    <div class="tooltip-sources"><b>Evidence:</b> ${edge.evidence_sources.map(esc).join(', ')}</div>`;
+  return `<strong>${esc(edge.id)} — ${esc(edge.relation_type)}</strong><div class="tooltip-meta">${esc(edge.source)} → ${esc(edge.target)} · introduced_at: ${esc(edge.introduced_at)} · confidence: ${esc(edge.confidence)}</div>
+    <div class="tooltip-row"><b>Conflict type:</b> ${esc(edge.conflict_type||'null')}</div>
+    <div class="tooltip-row">${esc(edge.notes)}</div>
+    <div class="tooltip-sources"><b>Evidence:</b> ${edge.evidence_sources.map(esc).join(', ')}</div>`;
 }
 
 function render() {
@@ -241,7 +292,7 @@ function render() {
   const nodeById=new Map(data.nodes.map(n=>[n.id,n]));
 
   data.edges.forEach(edge => {
-    const p=edgePath(positionFor(edge.source),positionFor(edge.target),edge.relation_type);
+    const p=edgePath(positionFor(edge.source),positionFor(edge.target));
     const group=document.createElementNS(NS,'g');
     const visible=document.createElementNS(NS,'path');
     visible.setAttribute('d',p.d);
@@ -255,11 +306,9 @@ function render() {
       ? `${edge.id}: ${edge.source} → ${edge.target} (${edge.relation_type})`
       : `${edge.source} → ${edge.target}: ${edge.relation_type} (${edge.relation_ids.length} quan hệ)`;
     hit.appendChild(title); hit.addEventListener('click',e=>{e.stopPropagation();showEdgeDetail(edge);});
-    const label=document.createElementNS(NS,'text');
-    label.setAttribute('x',p.mx); label.setAttribute('y',p.my-4); label.setAttribute('class','edge-label');
-    label.setAttribute('fill',edge.relation_type==='support'?'#176b49':'#a52f2f');
-    label.textContent=edge.relation_type==='support'?'+':'−';
-    group.append(visible,hit,label); edgesLayer.appendChild(group);
+    hit.addEventListener('mouseenter',e=>showTooltip(edgeTooltip(edge),e));
+    hit.addEventListener('mousemove',moveTooltip); hit.addEventListener('mouseleave',hideTooltip);
+    group.append(visible,hit); edgesLayer.appendChild(group);
   });
 
   data.nodes.forEach(node => {
@@ -285,7 +334,9 @@ function render() {
     line3.textContent=state.mode==='arguments'?(node.newly_introduced?'Mới tại mốc này':node.temporal_role):`${node.arguments.length} lập luận · A${node.status_counts.accepted}/R${node.status_counts.rejected}/U${node.status_counts.undecided}`;
     group.append(rect,title,line1,line2,line3);
     group.addEventListener('click',e=>{e.stopPropagation();showNodeDetail(node);});
-    group.addEventListener('pointerdown',startNodeDrag);
+    group.addEventListener('mouseenter',e=>showTooltip(nodeTooltip(node),e));
+    group.addEventListener('mousemove',moveTooltip); group.addEventListener('mouseleave',hideTooltip);
+    group.addEventListener('pointerdown',e=>{hideTooltip();startNodeDrag(e);});
     nodesLayer.appendChild(group);
   });
   $('graphSummary').textContent=`${data.nodes.length} node · ${data.edges.length} cạnh · ${data.arguments.length} lập luận đang lọc`;
@@ -295,6 +346,8 @@ function render() {
 function updateTimeline() {
   const t=SNAPSHOTS[state.time].timestamp;
   $('timeSlider').value=state.time;
+  $('timeSlider').style.setProperty('--progress',`${state.time/5*100}%`);
+  $('timeValue').value=t.timestamp_id; $('timeValue').textContent=t.timestamp_id;
   $('timestampTitle').textContent=`${t.timestamp_id} · ${t.date_start}${t.date_end!==t.date_start?' → '+t.date_end:''} · ${t.label}`;
   $('timestampEvent').textContent=t.event;
   $('publicInfo').textContent=t.public_information_available;
