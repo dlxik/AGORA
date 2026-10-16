@@ -64,6 +64,10 @@ Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện
 
 ## Điều khiển visualization
 
+- desktop dùng workspace một màn hình: trang không cuộn, graph tự chiếm chiều cao còn lại và chỉ inspector bên phải cuộn nội dung;
+- timeline giữ slider luôn hiển thị, còn metadata mốc và transition summary nằm trong mục `Chi tiết mốc và thay đổi` có thể mở/đóng;
+- inspector bên phải dùng hai tab `Hoạt động` và `Chi tiết`; click node/cạnh tự chuyển sang tab Chi tiết, không xếp hai panel cuộn chồng lên nhau;
+- trên màn hình hẹp, layout chuyển về một cột và dùng một luồng cuộn trang thông thường;
 - slider sáu vị trí, nút Trước/Sau và Phát/Dừng;
 - chuyển giữa Argument Graph và Agent Society View;
 - lọc tất cả, `A_K`, `A_D`;

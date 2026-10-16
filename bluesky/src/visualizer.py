@@ -34,11 +34,12 @@ HTML_TEMPLATE = r'''<!doctype html>
   --red:#c94646; --amber:#b97812; --support:#279567; --attack:#d14e4e;
 }
 * { box-sizing:border-box; }
-body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.45 Inter,Segoe UI,Arial,sans-serif; }
-header { background:linear-gradient(120deg,#12213a,#173e78); color:white; padding:22px 28px 18px; }
-header h1 { margin:0 0 5px; font-size:24px; letter-spacing:.1px; }
+html,body { height:100%; }
+body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.45 Inter,Segoe UI,Arial,sans-serif; display:flex; flex-direction:column; overflow:hidden; }
+header { flex:none; background:linear-gradient(120deg,#12213a,#173e78); color:white; padding:13px 24px 11px; }
+header h1 { margin:0 0 3px; font-size:21px; letter-spacing:.1px; }
 header p { margin:0; color:#d7e5ff; max-width:980px; }
-.timeline-shell { background:#fff; border-bottom:1px solid var(--line); padding:14px 24px 12px; position:sticky; top:0; z-index:20; }
+.timeline-shell { flex:none; background:#fff; border-bottom:1px solid var(--line); padding:10px 24px 9px; z-index:20; }
 .timeline-top { display:flex; gap:10px; align-items:center; }
 button,.mode-button { border:1px solid #bdc9d7; background:#fff; color:var(--ink); border-radius:8px; padding:7px 12px; cursor:pointer; font-weight:600; }
 button:hover { border-color:var(--blue); color:var(--blue); }
@@ -55,22 +56,29 @@ button.active { color:#fff; background:var(--blue); border-color:var(--blue); }
 .ticks span::before { content:''; position:absolute; top:-7px; left:50%; width:8px; height:8px; border-radius:50%; background:#c4ceda; transform:translateX(-50%); }
 .ticks span:hover,.ticks span.active { color:var(--blue); }
 .ticks span.active::before { background:var(--blue); box-shadow:0 0 0 4px #2264d11f; }
-.event-card { display:grid; grid-template-columns:180px 1fr 1fr; gap:14px; margin-top:12px; }
+.timeline-details { margin-top:8px; }
+.timeline-details summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:7px 10px; border:1px solid #d8e4f2; border-radius:8px; background:#f8fbff; color:#23466f; cursor:pointer; font-weight:800; list-style:none; }
+.timeline-details summary::-webkit-details-marker { display:none; }
+.timeline-details summary::before { content:'▸'; margin-right:3px; transition:transform .18s ease; }
+.timeline-details[open] summary::before { transform:rotate(90deg); }
+.timeline-summary-label { margin-left:auto; color:var(--muted); font-size:12px; font-weight:650; }
+.event-card { display:grid; grid-template-columns:180px 1fr 1fr; gap:10px; margin-top:8px; }
 .event-card > div { background:#f4f7fb; border:1px solid #e1e7ef; border-radius:9px; padding:9px 11px; min-height:66px; }
 .event-card .event-main { grid-row:span 1; }
-.transition-summary { margin-top:10px; padding:9px 11px; border:1px solid #d8e4f2; border-radius:9px; background:#f8fbff; }
+.transition-summary { margin-top:8px; padding:8px 10px; border:1px solid #d8e4f2; border-radius:9px; background:#f8fbff; }
 .transition-summary .summary-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:5px; }
 .transition-summary .summary-detail { margin-top:6px; color:#526176; font-size:12px; }
 .eyebrow { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); font-weight:800; }
 #timestampTitle { font-size:17px; font-weight:800; margin:3px 0; }
-.layout { display:grid; grid-template-columns:minmax(0,1fr) 350px; gap:14px; padding:14px; }
-.canvas-panel,.detail-panel,.activity-panel,.controls { background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 3px 16px #17304f0d; }
+.layout { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) minmax(330px,380px); gap:12px; padding:12px; }
+.canvas-panel,.side-rail,.controls { background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 3px 16px #17304f0d; }
+.canvas-panel { min-height:0; display:flex; flex-direction:column; overflow:hidden; }
 .toolbar { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; padding:11px 13px; border-bottom:1px solid var(--line); }
 .mode-switch { display:flex; gap:4px; padding-right:12px; border-right:1px solid var(--line); }
 .filter-group { display:flex; align-items:center; gap:8px; }
 .filter-group label { display:flex; align-items:center; gap:4px; color:#405065; }
 select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; background:#fff; }
-.graph-wrap { position:relative; height:650px; overflow:hidden; border-radius:0 0 12px 12px; background:radial-gradient(circle at 50% 45%,#fff 0,#f8faff 70%,#f1f5fb 100%); }
+.graph-wrap { position:relative; flex:1; min-height:260px; overflow:hidden; background:radial-gradient(circle at 50% 45%,#fff 0,#f8faff 70%,#f1f5fb 100%); }
 #graph { width:100%; height:100%; touch-action:none; cursor:grab; }
 #graph.panning { cursor:grabbing; }
 .node { cursor:grab; }
@@ -98,8 +106,13 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .hover-tooltip .tooltip-row { margin-top:5px; }
 .hover-tooltip .tooltip-sources { margin-top:7px; padding-top:6px; border-top:1px solid #e1e7ef; font-size:12px; color:#4b5b70; }
 .graph-summary { position:absolute; left:12px; bottom:10px; background:#ffffffec; border:1px solid var(--line); border-radius:8px; padding:6px 9px; color:var(--muted); }
-.side-rail { display:flex; flex-direction:column; gap:12px; min-width:0; }
-.detail-panel { padding:16px; min-height:300px; overflow:auto; max-height:756px; }
+.side-rail { min-width:0; min-height:0; display:flex; flex-direction:column; overflow:hidden; }
+.inspector-tabs { flex:none; display:flex; gap:4px; padding:9px; border-bottom:1px solid var(--line); background:#f8fafc; }
+.inspector-tabs button { flex:1; }
+.inspector-tabs button.active { color:#fff; background:var(--blue); border-color:var(--blue); }
+.inspector-view { flex:1; min-height:0; overflow:auto; }
+.inspector-view[hidden] { display:none!important; }
+.detail-panel { padding:16px; border:0; box-shadow:none; border-radius:0; }
 .detail-panel h2 { margin:0 0 5px; font-size:19px; }
 .detail-panel h3 { margin:18px 0 6px; font-size:14px; }
 .detail-panel p { margin:6px 0; }
@@ -109,8 +122,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .state-compare th,.state-compare td { padding:5px 6px; border-bottom:1px solid #e3e9f0; text-align:right; }
 .state-compare th:first-child,.state-compare td:first-child { text-align:left; }
 .detail-placeholder { color:var(--muted); padding-top:35px; text-align:center; }
-.activity-panel { display:none; padding:14px; max-height:440px; overflow:auto; }
-.activity-panel.visible { display:block; }
+.activity-panel { padding:14px; border:0; box-shadow:none; border-radius:0; }
 .activity-panel h2 { margin:0 0 3px; font-size:18px; }
 .activity-panel .transition-label { color:var(--blue); font-weight:850; margin-bottom:10px; }
 .activity-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:5px; align-items:center; margin:8px 0 10px; }
@@ -133,7 +145,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .pill.activity { color:#44556b; background:#e8edf4; }
 .why-changed { margin-top:14px; padding:11px 12px; border-left:4px solid var(--cyan); border-radius:6px; background:#eefbfe; }
 .why-changed h3 { margin-top:0; color:#12647a; }
-.legend { display:flex; flex-wrap:wrap; gap:10px 16px; padding:10px 14px; border-top:1px solid var(--line); background:#fff; }
+.legend { flex:none; display:flex; flex-wrap:wrap; gap:7px 14px; padding:8px 12px; border-top:1px solid var(--line); background:#fff; }
 .legend-item { display:flex; align-items:center; gap:6px; color:#526176; }
 .dot { width:12px; height:12px; border-radius:3px; }
 .dot.historical { opacity:.42; }
@@ -141,11 +153,15 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .source-badge { width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow:0 0 0 1px #8491a2; }
 .line-key { width:26px; height:0; border-top:3px solid; position:relative; }
 .line-key:after { content:'›'; position:absolute; right:-2px; top:-12px; font-size:18px; font-weight:900; }
-.method-note { margin:0 14px 14px; padding:11px 13px; color:#46566b; background:#eef4ff; border-left:4px solid var(--blue); border-radius:6px; }
+.method-note { flex:none; margin:0 12px 10px; padding:8px 11px; color:#46566b; background:#eef4ff; border-left:4px solid var(--blue); border-radius:6px; font-size:12px; }
 @media (max-width:980px) {
+  html,body { height:auto; }
+  body { display:block; overflow:auto; }
   .layout { grid-template-columns:1fr; }
-  .side-rail { display:grid; grid-template-columns:1fr; }
-  .detail-panel { min-height:240px; max-height:none; }
+  .graph-wrap { height:600px; min-height:600px; }
+  .side-rail { height:auto; overflow:visible; }
+  .inspector-view { overflow:visible; }
+  .detail-panel { min-height:240px; }
   .event-card { grid-template-columns:1fr; }
   .ticks { margin-left:0; margin-right:0; }
 }
@@ -168,12 +184,15 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     <button id="nextButton" title="Mốc sau">Sau →</button>
   </div>
   <div class="ticks" id="ticks"></div>
-  <div class="event-card">
-    <div class="event-main"><div class="eyebrow">Trạng thái đang xem</div><div id="timestampTitle"></div><div id="timestampEvent"></div></div>
-    <div><div class="eyebrow">Thông tin công khai</div><div id="publicInfo"></div></div>
-    <div><div class="eyebrow">Thông tin chính thức</div><div id="officialInfo"></div></div>
-  </div>
-  <div class="transition-summary" id="transitionSummary"></div>
+  <details class="timeline-details" id="timelineDetails">
+    <summary><span>Chi tiết mốc và thay đổi</span><span class="timeline-summary-label" id="timelineSummaryLabel"></span></summary>
+    <div class="event-card">
+      <div class="event-main"><div class="eyebrow">Trạng thái đang xem</div><div id="timestampTitle"></div><div id="timestampEvent"></div></div>
+      <div><div class="eyebrow">Thông tin công khai</div><div id="publicInfo"></div></div>
+      <div><div class="eyebrow">Thông tin chính thức</div><div id="officialInfo"></div></div>
+    </div>
+    <div class="transition-summary" id="transitionSummary"></div>
+  </details>
 </section>
 
 <main class="layout">
@@ -224,8 +243,12 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     <p class="method-note" id="methodNote"></p>
   </section>
   <aside class="side-rail">
-    <section class="activity-panel" id="agentActivity"></section>
-    <section class="detail-panel" id="detailPanel"><div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div></section>
+    <nav class="inspector-tabs" aria-label="Bảng thông tin">
+      <button id="activityTab">Hoạt động</button>
+      <button id="detailsTab">Chi tiết</button>
+    </nav>
+    <section class="activity-panel inspector-view" id="agentActivity"></section>
+    <section class="detail-panel inspector-view" id="detailPanel"><div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div></section>
   </aside>
 </main>
 
@@ -242,7 +265,7 @@ const state = {
   showRejected:true, showUndecided:true, onlyNew:false, playing:null,
   transform:{x:0,y:0,k:1}, positions:{arguments:{},viewpoints:{}},
   pinned:{arguments:new Set(),viewpoints:new Set()}, layoutSignature:{arguments:'',viewpoints:''},
-  transitionStage:3, transitionTimers:[]
+  transitionStage:3, transitionTimers:[], inspectorTab:initialMode==='viewpoints'?'activity':'details'
 };
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -397,7 +420,6 @@ function eventHtml(event) {
 }
 function renderAgentActivity() {
   const panel=$('agentActivity');
-  panel.classList.toggle('visible',state.mode==='viewpoints');
   if(state.mode!=='viewpoints')return;
   const snap=SNAPSHOTS[state.time],events=snap.transition_events||[];
   const infoCount=events.filter(e=>e.stage==='new_information').length,interactionCount=events.filter(e=>e.stage==='agent_interaction').length,stateCount=events.filter(e=>e.stage==='state_update').length;
@@ -407,6 +429,16 @@ function renderAgentActivity() {
     return `<div class="activity-stage">${stageLabels[stage]}</div>${eventItems}`;
   }).join('');
   panel.innerHTML=`<h2>Agent Activity</h2><div class="transition-label">${esc(snap.changes.transition)}</div><div class="activity-flow"><span>${infoCount} thông tin mới</span><i>→</i><span>${interactionCount} tương tác</span><i>→</i><span>${stateCount} state update</span></div>${groups}`;
+}
+
+function setInspectorTab(tab) {
+  if(tab==='activity'&&state.mode!=='viewpoints')tab='details';
+  state.inspectorTab=tab;
+  $('agentActivity').hidden=tab!=='activity';
+  $('detailPanel').hidden=tab!=='details';
+  $('activityTab').classList.toggle('active',tab==='activity');
+  $('detailsTab').classList.toggle('active',tab==='details');
+  $('activityTab').style.display=state.mode==='viewpoints'?'block':'none';
 }
 function stateBadgeText(node) {
   const c=node.state_change,parts=[];
@@ -502,6 +534,7 @@ function updateTimeline() {
   $('publicInfo').textContent=t.public_information_available;
   $('officialInfo').textContent=t.official_information_available;
   const c=SNAPSHOTS[state.time].changes||{},changed=(c.changed_statuses||[]).map(x=>`${x.arg_id}: ${x.from} → ${x.to}`),activity=(c.activity_changes||[]).map(x=>`${x.arg_id}: ${x.from} → ${x.to}`),agentChanges=(c.new_viewpoint_interactions||[]).map(x=>`${x.source} → ${x.target} (${x.relation_type}: ${x.relation_ids.join(', ')})`);
+  $('timelineSummaryLabel').textContent=`${c.transition} · +${(c.new_arguments||[]).length} argument · +${(c.new_support_relations||[]).length} support · +${(c.new_attack_relations||[]).length} attack`;
   $('transitionSummary').innerHTML=`<div class="eyebrow">${esc(c.transition||'Snapshot hiện tại')}</div><div class="summary-row"><span class="pill">+${(c.new_arguments||[]).length} argument</span><span class="pill support">+${(c.new_support_relations||[]).length} support</span><span class="pill attack">+${(c.new_attack_relations||[]).length} attack</span><span class="pill">${changed.length} đổi status</span><span class="pill activity">${activity.length} đổi activity</span></div><div class="summary-detail">${[changed.length?'Status: '+changed.join('; '):'',activity.length?'Activity: '+activity.join('; '):'',agentChanges.length?'Tương tác viewpoint mới: '+agentChanges.join('; '):''].filter(Boolean).map(esc).join('<br>')||'Không có thay đổi so với snapshot trước.'}</div>`;
   [...$('ticks').children].forEach((el,i)=>el.classList.toggle('active',i===state.time));
 }
@@ -523,6 +556,7 @@ function stateComparison(event) {
 }
 
 function showNodeDetail(node) {
+  setInspectorTab('details');
   if (state.mode==='viewpoints') {
     const composition=Object.entries(node.source_composition).map(([k,v])=>`<span class="pill">${esc(k)}: ${v}</span>`).join(' ');
     const incident=SNAPSHOTS[state.time].new_viewpoint_interactions.filter(e=>e.source===node.id||e.target===node.id);
@@ -558,6 +592,7 @@ function showNodeDetail(node) {
 }
 
 function showEdgeDetail(edge) {
+  setInspectorTab('details');
   if (state.mode==='viewpoints') {
     $('detailPanel').innerHTML=`<div class="eyebrow">Viewpoint relation tổng hợp</div><h2>${esc(edge.source)} → ${esc(edge.target)}</h2>
       <p><span class="pill ${esc(edge.relation_type)}">${esc(edge.relation_type)}</span> · ${edge.relation_ids.length} quan hệ nền</p>
@@ -578,6 +613,7 @@ function setMode(mode) {
   state.transitionTimers.forEach(clearTimeout);state.transitionTimers=[];state.transitionStage=3;
   state.mode=mode; $('argumentMode').classList.toggle('active',mode==='arguments'); $('viewpointMode').classList.toggle('active',mode==='viewpoints');
   $('argumentFilters').style.display=mode==='arguments'?'flex':'none';
+  setInspectorTab(mode==='viewpoints'?'activity':'details');
   $('methodNote').textContent=mode==='viewpoints' ? MAPPING_METHOD : 'Node và cạnh được dựng trực tiếp từ CSV canonical; không có status, source hoặc relation nào được suy đoán.';
   $('detailPanel').innerHTML='<div class="detail-placeholder">Chọn một node hoặc cạnh để xem provenance và chi tiết.</div>';
   render();
@@ -620,6 +656,7 @@ SNAPSHOTS.forEach((snap,index)=>{const tick=document.createElement('span');tick.
 $('timeSlider').addEventListener('input',e=>setTime(Number(e.target.value)));
 $('prevButton').onclick=()=>setTime(state.time-1); $('nextButton').onclick=()=>setTime(state.time+1); $('playButton').onclick=togglePlay;
 $('argumentMode').onclick=()=>setMode('arguments'); $('viewpointMode').onclick=()=>setMode('viewpoints'); $('resetView').onclick=resetView;
+$('activityTab').onclick=()=>setInspectorTab('activity'); $('detailsTab').onclick=()=>setInspectorTab('details');
 $('argType').onchange=e=>{state.argType=e.target.value;render();};
 ['showSupport','showAttack','showRejected','showUndecided','onlyNew'].forEach(id=>$(id).onchange=e=>{state[id]=e.target.checked;render();});
 setMode(initialMode);
