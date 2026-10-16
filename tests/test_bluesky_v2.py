@@ -10,6 +10,7 @@ from bluesky.v2.agent import initialize_agents
 from bluesky.v2.config import DEFAULT_CONFIG
 from bluesky.v2.simulation import AutonomousArgumentationSimulation
 from bluesky.v2.validation import validate_trace_provenance
+from bluesky.v2.visualizer_v2 import HTML
 
 
 class AutonomousArgumentationV2Tests(unittest.TestCase):
@@ -38,6 +39,12 @@ class AutonomousArgumentationV2Tests(unittest.TestCase):
         self.assertIn("rule", catalog["CTQ-A015"])
         self.assertIn("conclusion", catalog["CTQ-A015"])
         self.assertTrue(catalog["CTQ-A015"]["source_ids"])
+
+    def test_visualizer_exposes_node_and_edge_inspection(self) -> None:
+        self.assertIn('id="hoverTip"', HTML)
+        self.assertIn('class="edge-hit"', HTML)
+        self.assertIn("function interactionPanel()", HTML)
+        self.assertIn("Bấm cạnh để xem P/R/C", HTML)
 
     def test_observation_generation(self) -> None:
         step = self.run_at("t4")["steps"][0]
