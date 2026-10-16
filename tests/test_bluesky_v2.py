@@ -45,6 +45,9 @@ class AutonomousArgumentationV2Tests(unittest.TestCase):
         self.assertIn('class="edge-hit"', HTML)
         self.assertIn("function interactionPanel()", HTML)
         self.assertIn("Bấm cạnh để xem P/R/C", HTML)
+        self.assertIn("previousFrame", HTML)
+        self.assertIn("đang giữ trạng thái trước", HTML)
+        self.assertIn("đang áp dụng thêm/bớt", HTML)
 
     def test_observation_generation(self) -> None:
         step = self.run_at("t4")["steps"][0]
