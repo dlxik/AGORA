@@ -31,6 +31,14 @@ class AutonomousArgumentationV2Tests(unittest.TestCase):
         self.assertEqual(5, sum(len(agent.belief_base) for agent in agents.values()))
         self.assertEqual("contextual", agents["CTX01"].kind)
 
+    def test_argument_catalog_preserves_node_details(self) -> None:
+        catalog = self.trace["argument_catalog"]
+        self.assertEqual(27, len(catalog))
+        self.assertIn("premise", catalog["CTQ-A015"])
+        self.assertIn("rule", catalog["CTQ-A015"])
+        self.assertIn("conclusion", catalog["CTQ-A015"])
+        self.assertTrue(catalog["CTQ-A015"]["source_ids"])
+
     def test_observation_generation(self) -> None:
         step = self.run_at("t4")["steps"][0]
         observation = step["observations"]["VP04"]

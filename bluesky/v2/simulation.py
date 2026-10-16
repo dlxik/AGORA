@@ -143,6 +143,22 @@ class AutonomousArgumentationSimulation:
             },
             "config": self.config.to_dict(),
             "argument_owner": dict(sorted(self.argument_owner.items())),
+            "argument_catalog": {
+                argument["id"]: {
+                    "id": argument["id"],
+                    "arg_type": argument["arg_type"],
+                    "premise": argument["premise"],
+                    "rule": argument["rule"],
+                    "conclusion": argument["conclusion"],
+                    "source_ids": argument["source_ids"],
+                    "source_type": argument["source_type"],
+                    "sources": argument["sources"],
+                    "introduced_at": argument["introduced_at"],
+                    "active_until": argument["active_until"],
+                    "temporal_role": argument["temporal_role"],
+                }
+                for argument in self.snapshots[-1]["arguments"]
+            },
             "timestamps": timestamp_runs,
             "deterministic_log": full_log,
             "limitations": [

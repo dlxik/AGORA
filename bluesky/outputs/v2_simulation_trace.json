@@ -90,6 +90,800 @@
     "CTQ-A026": "VP08",
     "CTQ-A027": "VP01"
   },
+  "argument_catalog": {
+    "CTQ-A001": {
+      "id": "CTQ-A001",
+      "arg_type": "A_K",
+      "premise": "Phát sinh tình huống đặc biệt trong tổ chức kỳ thi cần cơ quan có thẩm quyền cấp quốc gia xử lý.",
+      "rule": "Điểm c khoản 2 Điều 7 Quy chế cho phép Ban Chỉ đạo thi cấp quốc gia quyết định hình thức xử lý phù hợp và, trong trường hợp đặc biệt, trình Bộ trưởng quyết định đình chỉ hoạt động thi hoặc tổ chức thi lại tại một số Hội đồng thi hoặc trong cả nước.",
+      "conclusion": "Ban Chỉ đạo thi cấp quốc gia có thẩm quyền theo Quy chế để quyết định hoặc trình quyết định tổ chức thi lại khi vụ việc thuộc trường hợp đặc biệt.",
+      "source_ids": [
+        "CTQ-S018",
+        "CTQ-S024"
+      ],
+      "source_type": "official_document",
+      "sources": [
+        {
+          "source_id": "CTQ-S018",
+          "title": "Quy chế thi tốt nghiệp trung học phổ thông ban hành kèm theo Thông tư số 24/2024/TT-BGDĐT",
+          "url": "https://vqa.moet.gov.vn/uploads/news/2024_12/final-quy-che-thi-tot-nghiep-thpt.pdf",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S024",
+          "title": "Thông tư số 13/2026/TT-BGDĐT sửa đổi, bổ sung Quy chế thi tốt nghiệp trung học phổ thông",
+          "url": "https://vanban.chinhphu.vn/?docid=217189&pageid=27160",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t1",
+      "active_until": null,
+      "temporal_role": "stable_reference"
+    },
+    "CTQ-A002": {
+      "id": "CTQ-A002",
+      "arg_type": "A_D",
+      "premise": "Ngày 1-2/7, Bộ GDĐT ghi nhận phổ điểm Toán bất thường và cử đoàn công tác xác minh, nhưng chưa kết luận có sai phạm.",
+      "rule": null,
+      "conclusion": "Ở t1, lập trường có căn cứ là khẩn trương xác minh và chưa kết luận trước khi có chứng cứ.",
+      "source_ids": [
+        "CTQ-S031"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S031",
+          "title": "Nghi vấn điểm thi Toán bất thường ở Tuyên Quang, Bộ GD&ĐT lên tiếng",
+          "url": "https://vtv.vn/nghi-van-diem-thi-toan-bat-thuong-o-tuyen-quang-bo-gddt-len-tieng-1002607031116107.htm",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Giáo dục và Đào tạo qua VTV",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t1",
+      "active_until": "t2",
+      "temporal_role": "initial_state"
+    },
+    "CTQ-A003": {
+      "id": "CTQ-A003",
+      "arg_type": "A_D",
+      "premise": "Điểm trung bình Toán và số điểm 10 của CTQ cao vượt đáng kể so với 21 trường chuyên được báo chí đối sánh.",
+      "rule": null,
+      "conclusion": "Kết quả ban đầu tạo nghi vấn hợp lý vượt quá lời giải thích rằng học sinh trường chuyên giỏi nên đương nhiên đạt mức điểm đó.",
+      "source_ids": [
+        "CTQ-S032"
+      ],
+      "source_type": "news",
+      "sources": [
+        {
+          "source_id": "CTQ-S032",
+          "title": "Điểm môn Toán trường chuyên Tuyên Quang vượt xa các trường chuyên cả nước",
+          "url": "https://tienphong.vn/diem-mon-toan-truong-chuyen-tuyen-quang-vuot-xa-cac-truong-chuyen-ca-nuoc-post1856594.tpo",
+          "source_type": "news",
+          "publisher": "Tiền Phong",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t1",
+      "active_until": null,
+      "temporal_role": "initial_state"
+    },
+    "CTQ-A004": {
+      "id": "CTQ-A004",
+      "arg_type": "A_D",
+      "premise": "Ban Chỉ đạo thi tỉnh ban đầu cho biết chưa phát hiện sai sót trong quy trình; CTQ là trường chuyên có học sinh thành tích cao và việc xác minh vẫn tiếp tục.",
+      "rule": null,
+      "conclusion": "Ở t1, cách giải thích lành tính vẫn còn khả dĩ và chưa đủ căn cứ hủy kết quả ban đầu.",
+      "source_ids": [
+        "CTQ-S033"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S033",
+          "title": "Kiểm tra học bạ, bài thi của thí sinh đạt 10 điểm Toán ở Tuyên Quang",
+          "url": "https://vnexpress.net/kiem-tra-hoc-ba-bai-thi-cua-thi-sinh-dat-10-diem-toan-o-tuyen-quang-5093413.html",
+          "source_type": "authority_statement",
+          "publisher": "Tuyen Quang Provincial People's Committee via VnExpress",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t1",
+      "active_until": "t2",
+      "temporal_role": "initial_state"
+    },
+    "CTQ-A005": {
+      "id": "CTQ-A005",
+      "arg_type": "A_K",
+      "premise": "Chỉ thị 20/CT-TTg yêu cầu tổ chức kỳ thi năm 2026 an toàn, nghiêm túc, khách quan, trung thực, công bằng; phân công rõ trách nhiệm và phối hợp bảo đảm an ninh, giám sát.",
+      "rule": null,
+      "conclusion": "Vụ CTQ phải được đánh giá từ t1 theo chuẩn trách nhiệm thể chế của kỳ thi, không chỉ như vấn đề sửa điểm phát sinh về sau.",
+      "source_ids": [
+        "CTQ-S041"
+      ],
+      "source_type": "official_document",
+      "sources": [
+        {
+          "source_id": "CTQ-S041",
+          "title": "Chỉ thị số 20/CT-TTg về việc tổ chức Kỳ thi tốt nghiệp trung học phổ thông và tuyển sinh đại học, giáo dục nghề nghiệp năm 2026",
+          "url": "https://vanban.chinhphu.vn/?classid=0&docid=218136&pageid=27160",
+          "source_type": "official_document",
+          "publisher": "Thủ tướng Chính phủ",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t1",
+      "active_until": null,
+      "temporal_role": "stable_reference"
+    },
+    "CTQ-A006": {
+      "id": "CTQ-A006",
+      "arg_type": "A_D",
+      "premise": "Đến ngày 5/7, cơ quan điều tra xác định thư ký điểm thi đã vào phòng hướng dẫn, nhắc bài môn Toán theo chỉ đạo tạo điều kiện cho thí sinh; ngày 7/7 đã khởi tố bốn bị can.",
+      "rule": null,
+      "conclusion": "Bất thường điểm Toán đã chuyển từ nghi vấn thống kê sang vụ việc có chứng cứ điều tra về sai phạm coi thi.",
+      "source_ids": [
+        "CTQ-S023"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S023",
+          "title": "Khởi tố Trưởng điểm thi Trường THPT Chuyên và 03 bị can liên quan đến Kỳ thi THPT 2026 tại Tuyên Quang",
+          "url": "https://congan.tuyenquang.gov.vn/vi/tin-bai/khoi-to-truong-diem-thi-truong-thpt-chuyen-va-03-bi-can-lien-quan-den-ky-thi-thpt-2026-tai-tuyen-quang?id=39535&type=NEWS",
+          "source_type": "authority_statement",
+          "publisher": "Công an tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t2",
+      "active_until": null,
+      "temporal_role": "evidence_transition"
+    },
+    "CTQ-A007": {
+      "id": "CTQ-A007",
+      "arg_type": "A_D",
+      "premise": "Ở t2, điều tra đã nêu sai phạm của người làm công tác thi nhưng chưa xác định đầy đủ thí sinh nào tham gia hoặc hưởng lợi.",
+      "rule": null,
+      "conclusion": "Cần tiếp tục làm rõ trách nhiệm của từng thí sinh, đồng thời xử lý riêng vấn đề khôi phục tính trung thực của kết quả tại điểm thi.",
+      "source_ids": [
+        "CTQ-S023"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S023",
+          "title": "Khởi tố Trưởng điểm thi Trường THPT Chuyên và 03 bị can liên quan đến Kỳ thi THPT 2026 tại Tuyên Quang",
+          "url": "https://congan.tuyenquang.gov.vn/vi/tin-bai/khoi-to-truong-diem-thi-truong-thpt-chuyen-va-03-bi-can-lien-quan-den-ky-thi-thpt-2026-tai-tuyen-quang?id=39535&type=NEWS",
+          "source_type": "authority_statement",
+          "publisher": "Công an tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t2",
+      "active_until": null,
+      "temporal_role": "evidence_transition"
+    },
+    "CTQ-A008": {
+      "id": "CTQ-A008",
+      "arg_type": "A_D",
+      "premise": "Đánh giá ban đầu của tỉnh nói chưa phát hiện sai sót quy trình, nhưng điều tra sau đó xác định có chỉ đạo tạo điều kiện và hướng dẫn thí sinh trong giờ thi.",
+      "rule": null,
+      "conclusion": "Chứng cứ t2 về sai phạm coi thi phải thay thế nhận định t1 rằng chưa phát hiện sai sót quy trình.",
+      "source_ids": [
+        "CTQ-S033",
+        "CTQ-S023"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S033",
+          "title": "Kiểm tra học bạ, bài thi của thí sinh đạt 10 điểm Toán ở Tuyên Quang",
+          "url": "https://vnexpress.net/kiem-tra-hoc-ba-bai-thi-cua-thi-sinh-dat-10-diem-toan-o-tuyen-quang-5093413.html",
+          "source_type": "authority_statement",
+          "publisher": "Tuyen Quang Provincial People's Committee via VnExpress",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S023",
+          "title": "Khởi tố Trưởng điểm thi Trường THPT Chuyên và 03 bị can liên quan đến Kỳ thi THPT 2026 tại Tuyên Quang",
+          "url": "https://congan.tuyenquang.gov.vn/vi/tin-bai/khoi-to-truong-diem-thi-truong-thpt-chuyen-va-03-bi-can-lien-quan-den-ky-thi-thpt-2026-tai-tuyen-quang?id=39535&type=NEWS",
+          "source_type": "authority_statement",
+          "publisher": "Công an tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t2",
+      "active_until": null,
+      "temporal_role": "evidence_update"
+    },
+    "CTQ-A009": {
+      "id": "CTQ-A009",
+      "arg_type": "A_D",
+      "premise": "Ở t2, chứng cứ mới xác lập sai phạm coi thi môn Toán, còn điều tra chưa hoàn tất và chưa xác lập phạm vi tất cả môn, tất cả phòng.",
+      "rule": null,
+      "conclusion": "Tại t2, chứng cứ khi đó chưa đủ để kết luận phải xử lý tất cả môn, dù cần tiếp tục điều tra.",
+      "source_ids": [
+        "CTQ-S023"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S023",
+          "title": "Khởi tố Trưởng điểm thi Trường THPT Chuyên và 03 bị can liên quan đến Kỳ thi THPT 2026 tại Tuyên Quang",
+          "url": "https://congan.tuyenquang.gov.vn/vi/tin-bai/khoi-to-truong-diem-thi-truong-thpt-chuyen-va-03-bi-can-lien-quan-den-ky-thi-thpt-2026-tai-tuyen-quang?id=39535&type=NEWS",
+          "source_type": "authority_statement",
+          "publisher": "Công an tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t2",
+      "active_until": "t4",
+      "temporal_role": "evidence_transition"
+    },
+    "CTQ-A010": {
+      "id": "CTQ-A010",
+      "arg_type": "A_K",
+      "premise": "Quy chế hợp nhất giao Trưởng điểm thi, cán bộ coi thi và bộ phận liên quan trách nhiệm tổ chức, giám sát, báo cáo đúng quy định; chứng cứ t2 nêu người làm công tác thi trực tiếp hướng dẫn thí sinh môn Toán.",
+      "rule": null,
+      "conclusion": "Chứng cứ t2 cho phép phân loại vụ việc là sai phạm coi thi dựa trên quy tắc, không còn chỉ là bất thường thống kê.",
+      "source_ids": [
+        "CTQ-S042",
+        "CTQ-S023"
+      ],
+      "source_type": "official_document;authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S042",
+          "title": "Văn bản hợp nhất số 02/VBHN-BGDĐT ban hành Quy chế thi tốt nghiệp trung học phổ thông",
+          "url": "https://vanban.chinhphu.vn/?docid=217887&pageid=27160",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S023",
+          "title": "Khởi tố Trưởng điểm thi Trường THPT Chuyên và 03 bị can liên quan đến Kỳ thi THPT 2026 tại Tuyên Quang",
+          "url": "https://congan.tuyenquang.gov.vn/vi/tin-bai/khoi-to-truong-diem-thi-truong-thpt-chuyen-va-03-bi-can-lien-quan-den-ky-thi-thpt-2026-tai-tuyen-quang?id=39535&type=NEWS",
+          "source_type": "authority_statement",
+          "publisher": "Công an tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t2",
+      "active_until": null,
+      "temporal_role": "evidence_transition"
+    },
+    "CTQ-A011": {
+      "id": "CTQ-A011",
+      "arg_type": "A_D",
+      "premise": "Kết quả rà soát của tỉnh xác định khâu coi thi môn Toán có bất thường; điểm Ngữ văn và Ngoại ngữ được đánh giá phù hợp với kết quả học tập, chưa phát hiện dấu hiệu bất thường.",
+      "rule": null,
+      "conclusion": "Đề xuất cho thí sinh tại điểm thi thi lại riêng môn Toán để bảo đảm công bằng, khách quan và quyền lợi chính đáng.",
+      "source_ids": [
+        "CTQ-S001"
+      ],
+      "source_type": "news",
+      "sources": [
+        {
+          "source_id": "CTQ-S001",
+          "title": "Sở Giáo dục và Đào tạo Tuyên Quang đề xuất tổ chức thi lại môn Toán",
+          "url": "https://baochinhphu.vn/so-giao-duc-va-dao-tao-tuyen-quang-de-xuat-to-chuc-thi-lai-mon-toan-102260709160659872.htm",
+          "source_type": "news",
+          "publisher": "Báo Điện tử Chính phủ",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t3",
+      "active_until": "t4",
+      "temporal_role": "initial_claim"
+    },
+    "CTQ-A012": {
+      "id": "CTQ-A012",
+      "arg_type": "A_D",
+      "premise": "Chuyên gia Lê Đông Phương cho rằng sai phạm tại điểm thi có tổ chức và nghiêm trọng; cho thi lại có thể tạo cách xử lý khác với những thí sinh bị hủy kết quả vì vi phạm quy chế.",
+      "rule": null,
+      "conclusion": "Không nên cho thi lại; nên hủy kết quả để xử lý nghiêm minh, sòng phẳng và công bằng với các thí sinh khác.",
+      "source_ids": [
+        "CTQ-S021"
+      ],
+      "source_type": "news",
+      "sources": [
+        {
+          "source_id": "CTQ-S021",
+          "title": "Có nên cho 328 thí sinh đạt 9, 10 điểm môn Toán ở THPT Chuyên Tuyên Quang thi lại?",
+          "url": "https://vov2.vov.vn/giao-duc-dao-tao/co-nen-cho-328-thi-sinh-dat-9-10-diem-mon-toan-o-thpt-chuyen-tuyen-quang-thi-lai",
+          "source_type": "news",
+          "publisher": "VOV2",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t3",
+      "active_until": null,
+      "temporal_role": "initial_claim"
+    },
+    "CTQ-A013": {
+      "id": "CTQ-A013",
+      "arg_type": "A_D",
+      "premise": "Nhiều thành viên diễn đàn cho rằng thi lại đồng loạt có thể tạo thêm cơ hội cho người đã gian lận, đồng thời gây áp lực cho thí sinh không liên quan và khác với cách xử lý các vi phạm khác.",
+      "rule": null,
+      "conclusion": "Cần điều tra, xác định người vi phạm để hủy kết quả hoặc xử lý cá nhân thay vì mặc nhiên cho toàn bộ điểm thi thi lại.",
+      "source_ids": [
+        "CTQ-S022"
+      ],
+      "source_type": "social",
+      "sources": [
+        {
+          "source_id": "CTQ-S022",
+          "title": "Đề xuất thi lại môn Toán tại Trường THPT chuyên Tuyên Quang",
+          "url": "https://voz.vn/t/de-xuat-thi-lai-mon-toan-tai-truong-thpt-chuyen-tuyen-quang.1258978/",
+          "source_type": "social",
+          "publisher": "VOZ",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t3",
+      "active_until": null,
+      "temporal_role": "initial_claim"
+    },
+    "CTQ-A014": {
+      "id": "CTQ-A014",
+      "arg_type": "A_K",
+      "premise": "Ở t3, tỉnh đã đề nghị thi lại môn Toán nhưng Bộ GDĐT khẳng định chưa quyết định, còn phải căn cứ Quy chế, kết quả xác minh đầy đủ và đánh giá tác động.",
+      "rule": null,
+      "conclusion": "Phương án chỉ thi lại môn Toán vẫn chưa có tính ràng buộc ở t3 trong khi cơ quan có thẩm quyền xem xét hồ sơ chứng cứ và pháp lý rộng hơn.",
+      "source_ids": [
+        "CTQ-S048",
+        "CTQ-S042"
+      ],
+      "source_type": "official_document;authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S048",
+          "title": "Bộ Giáo dục và Đào tạo chưa quyết định cho thí sinh Trường chuyên tỉnh Tuyên Quang thi lại môn Toán",
+          "url": "https://nhandan.vn/bo-giao-duc-va-dao-tao-chua-quyet-dinh-cho-thi-sinh-truong-chuyen-tinh-tuyen-quang-thi-lai-mon-toan-post974613.html",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Giáo dục và Đào tạo qua Nhân Dân",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S042",
+          "title": "Văn bản hợp nhất số 02/VBHN-BGDĐT ban hành Quy chế thi tốt nghiệp trung học phổ thông",
+          "url": "https://vanban.chinhphu.vn/?docid=217887&pageid=27160",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t3",
+      "active_until": "t4",
+      "temporal_role": "proposal_review"
+    },
+    "CTQ-A015": {
+      "id": "CTQ-A015",
+      "arg_type": "A_K",
+      "premise": "Bộ GDĐT công bố sai phạm có tính tập thể, diễn ra trên phạm vi toàn điểm thi, làm kết quả không bảo đảm trung thực, khách quan, công bằng; dữ liệu các môn tại điểm thi đều cao hơn các trường chuyên khác.",
+      "rule": null,
+      "conclusion": "Hủy kết quả thi ban đầu của toàn điểm thi và tổ chức thi lại tất cả các môn là biện pháp khôi phục tính tin cậy của kết quả.",
+      "source_ids": [
+        "CTQ-S002",
+        "CTQ-S004",
+        "CTQ-S037",
+        "CTQ-S018",
+        "CTQ-S024"
+      ],
+      "source_type": "authority_statement;news;official_document",
+      "sources": [
+        {
+          "source_id": "CTQ-S002",
+          "title": "Tổ chức thi lại tất cả các môn tại Điểm thi Trường THPT Chuyên Tuyên Quang vào ngày 14-15/8",
+          "url": "https://baochinhphu.vn/to-chuc-thi-lai-tat-ca-cac-mon-tai-diem-thi-truong-thpt-chuyen-tuyen-quang-102260805094314436.htm",
+          "source_type": "news",
+          "publisher": "Báo Điện tử Chính phủ",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S004",
+          "title": "Hủy kết quả thi, tổ chức thi lại cho 328 thí sinh điểm thi THPT Chuyên Tuyên Quang",
+          "url": "https://vtv.vn/huy-ket-qua-thi-to-chuc-thi-lai-cho-328-thi-sinh-diem-thi-thpt-chuyen-tuyen-quang-100260805092935332.htm",
+          "source_type": "news",
+          "publisher": "VTV",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S037",
+          "title": "Bộ Giáo dục: Tổ chức thi lại ở chuyên Tuyên Quang là 'hợp tình, hợp lý'",
+          "url": "https://vnexpress.net/bo-giao-duc-hop-bao-cong-bo-phuong-an-vu-diem-10-toan-bat-thuong-o-chuyen-tuyen-quang-5105261.html",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Giáo dục và Đào tạo qua VnExpress",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S018",
+          "title": "Quy chế thi tốt nghiệp trung học phổ thông ban hành kèm theo Thông tư số 24/2024/TT-BGDĐT",
+          "url": "https://vqa.moet.gov.vn/uploads/news/2024_12/final-quy-che-thi-tot-nghiep-thpt.pdf",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S024",
+          "title": "Thông tư số 13/2026/TT-BGDĐT sửa đổi, bổ sung Quy chế thi tốt nghiệp trung học phổ thông",
+          "url": "https://vanban.chinhphu.vn/?docid=217189&pageid=27160",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t4",
+      "active_until": null,
+      "temporal_role": "official_resolution"
+    },
+    "CTQ-A016": {
+      "id": "CTQ-A016",
+      "arg_type": "A_D",
+      "premise": "Kế hoạch thi lại yêu cầu rà soát nhân sự, tập huấn nghiệp vụ, tăng cường kiểm tra giám sát, kiểm tra thiết bị, phối hợp công an và thông tin trực tiếp cho thí sinh, phụ huynh.",
+      "rule": null,
+      "conclusion": "Các biện pháp bảo đảm được công bố làm tăng độ tin cậy về thủ tục của kỳ thi lại, nhưng vẫn cần bằng chứng chúng đã được thực hiện thực tế.",
+      "source_ids": [
+        "CTQ-S025"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S025",
+          "title": "Tuyên Quang chủ động chuẩn bị, bảo đảm Kỳ thi lại tốt nghiệp THPT năm 2026 diễn ra an toàn, nghiêm túc",
+          "url": "https://pbgdpl.tuyenquang.gov.vn/DetailView/37408/0/Tuyen-Quang-chu-dong-chuan-bi-bao-dam-Ky-thi-lai-tot-nghiep-THPT-nam-2026-dien-ra-an-toan-nghiem-tuc.html",
+          "source_type": "authority_statement",
+          "publisher": "Cổng phổ biến pháp luật tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t4",
+      "active_until": null,
+      "temporal_role": "implementation_support"
+    },
+    "CTQ-A017": {
+      "id": "CTQ-A017",
+      "arg_type": "A_D",
+      "premise": "Bộ GDĐT phân biệt CTQ, nơi kết quả toàn điểm thi không còn đủ tin cậy và chưa thể cá thể hóa đầy đủ, với Quảng Trị, nơi đã xác định cụ thể thí sinh và hành vi vi phạm.",
+      "rule": null,
+      "conclusion": "Thi lại tất cả môn tại CTQ có thể được biện minh theo điều kiện áp dụng riêng mà không đòi mọi vụ sai phạm thi cử đều phải xử lý giống nhau.",
+      "source_ids": [
+        "CTQ-S038"
+      ],
+      "source_type": "authority_statement",
+      "sources": [
+        {
+          "source_id": "CTQ-S038",
+          "title": "Chi tiết lịch thi lại, các mốc thời gian tổ chức thi lại cho thí sinh tại Điểm thi Trường chuyên Tuyên Quang",
+          "url": "https://xaydungchinhsach.chinhphu.vn/bo-gddt-huong-dan-thi-lai-cho-cac-thi-sinh-tai-diem-thi-truong-thpt-chuyen-tuyen-quang-119260806172940304.htm",
+          "source_type": "authority_statement",
+          "publisher": "Cổng Thông tin điện tử Chính phủ",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t4",
+      "active_until": null,
+      "temporal_role": "official_justification"
+    },
+    "CTQ-A018": {
+      "id": "CTQ-A018",
+      "arg_type": "A_D",
+      "premise": "Giữ kết quả đáng ngờ có thể gây bất công cho thí sinh khác; hủy kết quả mà không tổ chức thi lại kịp thời có thể làm thí sinh không vi phạm mất một năm và cơ hội học tập.",
+      "rule": null,
+      "conclusion": "Thi lại tất cả môn dưới kiểm soát tăng cường là thỏa hiệp có thể bảo vệ được giữa việc giữ kết quả không đáng tin và hủy mà không cho cơ hội thay thế kịp thời.",
+      "source_ids": [
+        "CTQ-S037",
+        "CTQ-S046"
+      ],
+      "source_type": "authority_statement;social",
+      "sources": [
+        {
+          "source_id": "CTQ-S037",
+          "title": "Bộ Giáo dục: Tổ chức thi lại ở chuyên Tuyên Quang là 'hợp tình, hợp lý'",
+          "url": "https://vnexpress.net/bo-giao-duc-hop-bao-cong-bo-phuong-an-vu-diem-10-toan-bat-thuong-o-chuyen-tuyen-quang-5105261.html",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Giáo dục và Đào tạo qua VnExpress",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S046",
+          "title": "CHUYÊN TUYÊN QUANG",
+          "url": "https://www.reddit.com/r/vozforums/comments/1vfv7f7/chuy%C3%AAn_tuy%C3%AAn_quang/",
+          "source_type": "social",
+          "publisher": "Reddit",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t4",
+      "active_until": "t5",
+      "temporal_role": "official_resolution"
+    },
+    "CTQ-A019": {
+      "id": "CTQ-A019",
+      "arg_type": "A_D",
+      "premise": "Điểm Toán lần hai phân tán, khác nhau theo lớp chuyên và được chuyên gia đánh giá tương đối phù hợp với các trường chuyên có điều kiện tương đồng ở phía Bắc.",
+      "rule": null,
+      "conclusion": "Phân bố lần hai có cơ sở để được xem là phản ánh đa dạng năng lực tốt hơn sự tập trung bất thường của điểm Toán lần đầu.",
+      "source_ids": [
+        "CTQ-S027"
+      ],
+      "source_type": "news",
+      "sources": [
+        {
+          "source_id": "CTQ-S027",
+          "title": "Điểm thi Toán của học sinh chuyên Tuyên Quang 'tụt dốc', chuyên gia nói gì?",
+          "url": "https://tienphong.vn/diem-thi-toan-cua-hoc-sinh-chuyen-tuyen-quang-tut-doc-chuyen-gia-noi-gi-post1869123.tpo",
+          "source_type": "news",
+          "publisher": "Tiền Phong",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t5",
+      "active_until": null,
+      "temporal_role": "post_retest_reinterpretation"
+    },
+    "CTQ-A020": {
+      "id": "CTQ-A020",
+      "arg_type": "A_D",
+      "premise": "Thí sinh thi lại trong bối cảnh áp lực tâm lý nặng, thời gian ôn tập bị gián đoạn và động cơ dự thi có thể khác lần đầu.",
+      "rule": null,
+      "conclusion": "Chênh lệch điểm giữa hai lần thi không đủ để tự nó chứng minh một thí sinh gian lận hoặc đo trực tiếp năng lực thật của thí sinh đó.",
+      "source_ids": [
+        "CTQ-S009"
+      ],
+      "source_type": "news",
+      "sources": [
+        {
+          "source_id": "CTQ-S009",
+          "title": "Thi lại ở Tuyên Quang: Thầy giáo từng lên tiếng về bất thường ở môn Toán nói gì?",
+          "url": "https://vov.vn/xa-hoi/thi-lai-o-tuyen-quang-thay-giao-tung-len-tieng-ve-bat-thuong-o-mon-toan-noi-gi-post1325368.vov",
+          "source_type": "news",
+          "publisher": "Đài Tiếng nói Việt Nam",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t5",
+      "active_until": null,
+      "temporal_role": "post_retest_counterinterpretation"
+    },
+    "CTQ-A021": {
+      "id": "CTQ-A021",
+      "arg_type": "A_D",
+      "premise": "Thảo luận công khai phân biệt điểm trung bình Toán 6,24 của toàn điểm thi với điểm trung bình 7,38 của riêng lớp chuyên Toán.",
+      "rule": null,
+      "conclusion": "Khi diễn giải kết quả thi lại phải phân biệt số liệu toàn trường với số liệu lớp chuyên trước khi kết luận về thành tích.",
+      "source_ids": [
+        "CTQ-S052"
+      ],
+      "source_type": "social",
+      "sources": [
+        {
+          "source_id": "CTQ-S052",
+          "title": "Tuyên Quang Lều Chõng cho hết vào đây, lập thread ngoài KIA",
+          "url": "https://voz.vn/t/tuyen-quang-leu-chong-cho-het-vao-day-lap-thread-ngoai-kia.1271652/page-49",
+          "source_type": "social",
+          "publisher": "VOZ",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t5",
+      "active_until": null,
+      "temporal_role": "result_qualification"
+    },
+    "CTQ-A022": {
+      "id": "CTQ-A022",
+      "arg_type": "A_K",
+      "premise": "Quy chế tuyển sinh 2026 yêu cầu cơ hội công bằng, đánh giá khách quan đáng tin cậy, xét nguyện vọng hợp lệ và tuyển theo tiêu chí, ngưỡng đã công bố.",
+      "rule": null,
+      "conclusion": "Thí sinh CTQ có kết quả thi lại hợp lệ phải được xét theo chuẩn tuyển sinh 2026 đã công bố, không sử dụng điểm đã hủy.",
+      "source_ids": [
+        "CTQ-S053",
+        "CTQ-S055"
+      ],
+      "source_type": "official_document;news",
+      "sources": [
+        {
+          "source_id": "CTQ-S053",
+          "title": "Thông tư số 06/2026/TT-BGDĐT ban hành Quy chế tuyển sinh các ngành đào tạo trình độ đại học và ngành Giáo dục Mầm non trình độ cao đẳng",
+          "url": "https://vanban.chinhphu.vn/?classid=1&docid=217071&orggroupid=4&pageid=27160",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S055",
+          "title": "Chiều 22.8 sẽ có kết quả xét tuyển ĐH với thí sinh tại chuyên Tuyên Quang",
+          "url": "https://thanhnien.vn/chieu-228-se-co-ket-qua-xet-tuyen-dh-voi-thi-sinh-tai-chuyen-tuyen-quang-185260821105204425.htm",
+          "source_type": "news",
+          "publisher": "Thanh Niên",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t5",
+      "active_until": null,
+      "temporal_role": "official_application"
+    },
+    "CTQ-A023": {
+      "id": "CTQ-A023",
+      "arg_type": "A_D",
+      "premise": "Báo cáo thống kê lần hai cho thấy phân bố khác nhau rõ giữa các môn về cỡ mẫu, điểm trung bình, độ phân tán và tỷ lệ dưới 5 hoặc từ 8 trở lên.",
+      "rule": null,
+      "conclusion": "Kết quả t5 ủng hộ cách hiểu năng lực đa dạng nhưng không xác định thí sinh nào đã tham gia sai phạm lần đầu.",
+      "source_ids": [
+        "CTQ-S054"
+      ],
+      "source_type": "official_document",
+      "sources": [
+        {
+          "source_id": "CTQ-S054",
+          "title": "Báo cáo phân tích thống kê kết quả điểm thi lần 2 của Trường THPT Chuyên Tuyên Quang",
+          "url": "https://bcp.cdnchinhphu.vn/334894974524682240/2026/8/19/bao-cao-thong-ke-lan2-presentation-final-17871051166251817082776.pdf",
+          "source_type": "official_document",
+          "publisher": "Bộ Giáo dục và Đào tạo qua Báo Điện tử Chính phủ",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t5",
+      "active_until": "t6",
+      "temporal_role": "result_evidence"
+    },
+    "CTQ-A024": {
+      "id": "CTQ-A024",
+      "arg_type": "A_D",
+      "premise": "Kết quả điều tra tháng 10 nêu việc tạo điều kiện diễn ra ở tất cả phòng thi và tất cả môn: xếp chỗ, nới lỏng coi thi, để thí sinh trao đổi, giáo viên giải bài và hướng dẫn đáp án.",
+      "rule": null,
+      "conclusion": "Kết quả lần đầu không đáng tin cậy trên toàn điểm thi và tất cả môn, không chỉ riêng môn Toán.",
+      "source_ids": [
+        "CTQ-S029",
+        "CTQ-S030"
+      ],
+      "source_type": "authority_statement;news",
+      "sources": [
+        {
+          "source_id": "CTQ-S029",
+          "title": "Vụ án xảy ra tại Điểm thi Trường THPT Chuyên Tuyên Quang: đã khởi tố 41 bị can",
+          "url": "https://mps.gov.vn/videos/sai-pham-tai-diem-thi-truong-thpt-chuyen-tuyen-quang-xay-ra-tai-tat-ca-cac-phong-thi-voi-tat-ca-cac-mon-thi-1790859360",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Công an",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S030",
+          "title": "Khởi tố 41 bị can trong vụ gian lận thi tốt nghiệp Trung học phổ thông ở Tuyên Quang",
+          "url": "https://nhandan.vn/khoi-to-41-bi-can-trong-vu-gian-lan-thi-tot-nghiep-trung-hoc-pho-thong-o-tuyen-quang-post992371.html",
+          "source_type": "news",
+          "publisher": "Nhân Dân",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t6",
+      "active_until": null,
+      "temporal_role": "late_evidence"
+    },
+    "CTQ-A025": {
+      "id": "CTQ-A025",
+      "arg_type": "A_D",
+      "premise": "Ở t6, điều tra nêu sai phạm trên toàn môi trường thi; chính sách tuyển sinh của Bộ chỉ bảo vệ quyền của thí sinh có kết quả hợp lệ và vẫn xử lý vi phạm cá nhân theo chứng cứ.",
+      "rule": null,
+      "conclusion": "Dù phạm vi điều tra đã mở rộng, chế tài đối với từng thí sinh vẫn phải dựa trên chứng cứ riêng; thi lại toàn điểm vẫn có thể là biện pháp khôi phục tính toàn vẹn.",
+      "source_ids": [
+        "CTQ-S026",
+        "CTQ-S030"
+      ],
+      "source_type": "news",
+      "sources": [
+        {
+          "source_id": "CTQ-S026",
+          "title": "Thi lại ở Tuyên Quang: Bảo đảm quyền xét tuyển đại học của thí sinh có kết quả hợp lệ",
+          "url": "https://www.vietnamplus.vn/thi-lai-o-tuyen-quang-bao-dam-quyen-xet-tuyen-dai-hoc-cua-thi-sinh-co-ket-qua-hop-le-post1131152.vnp",
+          "source_type": "news",
+          "publisher": "VietnamPlus / Thông tấn xã Việt Nam",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S030",
+          "title": "Khởi tố 41 bị can trong vụ gian lận thi tốt nghiệp Trung học phổ thông ở Tuyên Quang",
+          "url": "https://nhandan.vn/khoi-to-41-bi-can-trong-vu-gian-lan-thi-tot-nghiep-trung-hoc-pho-thong-o-tuyen-quang-post992371.html",
+          "source_type": "news",
+          "publisher": "Nhân Dân",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t6",
+      "active_until": null,
+      "temporal_role": "late_qualification"
+    },
+    "CTQ-A026": {
+      "id": "CTQ-A026",
+      "arg_type": "A_D",
+      "premise": "Thông tin ban đầu cấp quốc gia và địa phương nói chưa phát hiện gian lận có tổ chức, kỳ thi an toàn; đến t6, điều tra nêu sai phạm ở tất cả phòng và môn tại CTQ.",
+      "rule": null,
+      "conclusion": "Ở t6, tường thuật an toàn ban đầu không còn là căn cứ tin cậy để đánh giá CTQ; vụ việc phải được hiểu là thất bại phát hiện trên toàn điểm thi.",
+      "source_ids": [
+        "CTQ-S043",
+        "CTQ-S044",
+        "CTQ-S029",
+        "CTQ-S030"
+      ],
+      "source_type": "authority_statement;news",
+      "sources": [
+        {
+          "source_id": "CTQ-S043",
+          "title": "Kết thúc coi thi Kỳ thi tốt nghiệp THPT năm 2026: An toàn, nghiêm túc trong bối cảnh nhiều thách thức mới",
+          "url": "https://vqa.moet.gov.vn/vi/news/tin-tuc-su-kien/ket-thuc-coi-thi-ky-thi-tot-nghiep-thpt-nam-2026-an-toan-nghiem-tuc-trong-boi-canh-nhieu-thach-thuc-moi-273.html",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Giáo dục và Đào tạo, Cục Quản lý chất lượng",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S044",
+          "title": "Bảo đảm an ninh trật tự Kỳ thi tốt nghiệp Trung học phổ thông 2026 tại tỉnh Tuyên Quang",
+          "url": "https://mps.gov.vn/bai-viet/cong-an-tinh-tuyen-quang-bao-dam-an-ninh-trat-tu-ky-thi-tot-nghiep-thpt-2026-1781235007",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Công an / Công an tỉnh Tuyên Quang",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S029",
+          "title": "Vụ án xảy ra tại Điểm thi Trường THPT Chuyên Tuyên Quang: đã khởi tố 41 bị can",
+          "url": "https://mps.gov.vn/videos/sai-pham-tai-diem-thi-truong-thpt-chuyen-tuyen-quang-xay-ra-tai-tat-ca-cac-phong-thi-voi-tat-ca-cac-mon-thi-1790859360",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Công an",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S030",
+          "title": "Khởi tố 41 bị can trong vụ gian lận thi tốt nghiệp Trung học phổ thông ở Tuyên Quang",
+          "url": "https://nhandan.vn/khoi-to-41-bi-can-trong-vu-gian-lan-thi-tot-nghiep-trung-hoc-pho-thong-o-tuyen-quang-post992371.html",
+          "source_type": "news",
+          "publisher": "Nhân Dân",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t6",
+      "active_until": null,
+      "temporal_role": "late_revision"
+    },
+    "CTQ-A027": {
+      "id": "CTQ-A027",
+      "arg_type": "A_D",
+      "premise": "Ở t6, cơ quan chức năng công bố 41 bị can và sai phạm ở tất cả phòng, tất cả môn, nhưng vụ án vẫn đang điều tra và trạng thái tố tụng là khởi tố, chưa xét xử cuối cùng.",
+      "rule": null,
+      "conclusion": "Có thể mở rộng mô hình vụ việc theo chứng cứ t6, còn kết luận tội phạm cá nhân phải để ở trạng thái tạm thời cho đến khi xét xử.",
+      "source_ids": [
+        "CTQ-S029",
+        "CTQ-S030"
+      ],
+      "source_type": "authority_statement;news",
+      "sources": [
+        {
+          "source_id": "CTQ-S029",
+          "title": "Vụ án xảy ra tại Điểm thi Trường THPT Chuyên Tuyên Quang: đã khởi tố 41 bị can",
+          "url": "https://mps.gov.vn/videos/sai-pham-tai-diem-thi-truong-thpt-chuyen-tuyen-quang-xay-ra-tai-tat-ca-cac-phong-thi-voi-tat-ca-cac-mon-thi-1790859360",
+          "source_type": "authority_statement",
+          "publisher": "Bộ Công an",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "CTQ-S030",
+          "title": "Khởi tố 41 bị can trong vụ gian lận thi tốt nghiệp Trung học phổ thông ở Tuyên Quang",
+          "url": "https://nhandan.vn/khoi-to-41-bi-can-trong-vu-gian-lan-thi-tot-nghiep-trung-hoc-pho-thong-o-tuyen-quang-post992371.html",
+          "source_type": "news",
+          "publisher": "Nhân Dân",
+          "verification_status": "verified"
+        }
+      ],
+      "introduced_at": "t6",
+      "active_until": null,
+      "temporal_role": "late_qualification"
+    }
+  },
   "timestamps": [
     {
       "timestamp": "t1",
