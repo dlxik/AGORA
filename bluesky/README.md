@@ -1,5 +1,12 @@
 # AGORA Blue Sky: Temporal Argument Graph and Viewpoint Agents
 
+## Phiên bản
+
+- **V1 — reactive viewpoint agents:** demo và tài liệu hiện tại trong `bluesky/src/`, chạy bằng `python -m bluesky.demo`.
+- **V2 — autonomous argumentative agents:** package và tài liệu tại [`bluesky/v2/`](v2/README.md), chạy bằng `python -m bluesky.v2.demo_v2`. V2 giữ riêng real time `t` và deliberation step `k`, có symbolic reasoning, action policy, interaction protocol và belief revision xác định.
+
+V1 vẫn được giữ nguyên; V2 tái sử dụng loader/temporal snapshots nhưng sinh artifact riêng.
+
 ## Tầm nhìn
 
 Blue Sky mở rộng lõi nghiên cứu AGORA theo chuỗi:
