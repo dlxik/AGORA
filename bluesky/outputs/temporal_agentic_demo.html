@@ -69,13 +69,30 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .node .sub { font-size:10px; font-weight:600; fill:#526176; }
 .edge-visible { fill:none; stroke-width:2.2; opacity:.82; stroke-linecap:round; }
 .agent-edge-old { opacity:.46; }
-.edge-new-interaction { opacity:1; stroke-width:6!important; filter:drop-shadow(0 0 6px currentColor); animation:edgePulse 1.15s ease-in-out 2; }
+.edge-new-interaction { opacity:1; stroke-width:5.5!important; animation:edgePulse 1.15s ease-in-out 2; }
+.edge-new-interaction.support { filter:drop-shadow(0 0 6px #24d694); }
+.edge-new-interaction.attack { filter:drop-shadow(0 0 6px #ff6262); }
+.edge-flow { fill:none; stroke:#fff; stroke-width:1.8; stroke-dasharray:6 13; stroke-linecap:round; opacity:.78; pointer-events:none; animation:edgeFlow .85s linear infinite; }
+.edge-arrow { pointer-events:none; }
+.edge-arrow .arrow-head { stroke:#fff; stroke-width:2.2; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.edge-arrow.support .arrow-head { fill:#159a66; filter:drop-shadow(0 0 3px #159a6699); }
+.edge-arrow.attack .arrow-head { fill:#df4149; filter:drop-shadow(0 0 3px #df414999); }
+.edge-arrow.new.support .arrow-head { fill:#19c984; }
+.edge-arrow.new.attack .arrow-head { fill:#ff4554; }
+.edge-arrow .arrow-ring { fill:none; stroke-width:2.5; vector-effect:non-scaling-stroke; transform-box:fill-box; transform-origin:center; animation:arrowRing 1.15s ease-out infinite; }
+.edge-arrow.support .arrow-ring { stroke:#19c984; }
+.edge-arrow.attack .arrow-ring { stroke:#ff4554; }
 .edge-hit { fill:none; stroke:transparent; stroke-width:14; cursor:pointer; }
 .edge-new { stroke-width:4; filter:drop-shadow(0 0 3px #00a8c7); }
 .edge-new-label { font-size:10px; font-weight:900; fill:#0c5272; text-anchor:middle; paint-order:stroke; stroke:#fff; stroke-width:4px; stroke-linejoin:round; pointer-events:none; }
 .state-badge rect { fill:#153e73; stroke:#fff; stroke-width:2; filter:drop-shadow(0 3px 5px #17304f44); }
 .state-badge text { fill:#fff; font-size:9px; font-weight:850; text-anchor:middle; pointer-events:none; }
 @keyframes edgePulse { 0%,100%{opacity:.78} 50%{opacity:1;stroke-width:8} }
+@keyframes edgeFlow { to { stroke-dashoffset:-38; } }
+@keyframes arrowRing { 0%{opacity:.85;transform:scale(.45)} 100%{opacity:0;transform:scale(1.45)} }
+@media (prefers-reduced-motion:reduce) {
+  .edge-new-interaction,.edge-flow,.edge-arrow .arrow-ring { animation:none; }
+}
 .hover-tooltip { position:absolute; display:none; z-index:15; width:min(430px,calc(100% - 24px)); max-height:430px; overflow:hidden; pointer-events:none; color:#172335; background:#fffffff7; border:1px solid #b8c6d6; border-radius:10px; padding:11px 13px; box-shadow:0 12px 35px #17304f30; backdrop-filter:blur(5px); }
 .hover-tooltip.visible { display:block; }
 .hover-tooltip strong { display:block; margin-bottom:4px; font-size:14px; color:#113a70; }
@@ -193,10 +210,6 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
     </div>
     <div class="graph-wrap" id="graphWrap">
       <svg id="graph" viewBox="0 0 1180 650" role="img" aria-label="Đồ thị lập luận CTQ tương tác">
-        <defs>
-          <marker id="arrowSupport" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#279567"/></marker>
-          <marker id="arrowAttack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d14e4e"/></marker>
-        </defs>
         <rect id="graphBg" width="1180" height="650" fill="transparent"/>
         <g id="viewport"><g id="edges"></g><g id="nodes"></g></g>
       </svg>
@@ -337,9 +350,9 @@ function edgePath(a,b,index=0,total=1,directionSign=1) {
   const borderDistance=Math.min(halfWidth/Math.max(.001,Math.abs(ux)),halfHeight/Math.max(.001,Math.abs(uy)));
   const startCut=Math.min(borderDistance+3,Math.max(4,d/2-4)),endCut=Math.min(borderDistance+10,Math.max(4,d/2-4));
   const x1=a.x+ux*startCut, y1=a.y+uy*startCut, x2=b.x-ux*endCut, y2=b.y-uy*endCut;
-  if(total===1) return {d:`M ${x1} ${y1} L ${x2} ${y2}`,label:{x:(x1+x2)/2,y:(y1+y2)/2-7}};
+  if(total===1) return {d:`M ${x1} ${y1} L ${x2} ${y2}`,label:{x:(x1+x2)/2,y:(y1+y2)/2-7},end:{x:x2,y:y2},angle:Math.atan2(y2-y1,x2-x1)*180/Math.PI};
   const offset=(index-(total-1)/2)*38*directionSign,nx=-uy,ny=ux,cx=(x1+x2)/2+nx*offset,cy=(y1+y2)/2+ny*offset;
-  return {d:`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`,label:{x:(x1+2*cx+x2)/4,y:(y1+2*cy+y2)/4-7}};
+  return {d:`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`,label:{x:(x1+2*cx+x2)/4,y:(y1+2*cy+y2)/4-7},end:{x:x2,y:y2},angle:Math.atan2(y2-cy,x2-cx)*180/Math.PI};
 }
 
 function moveTooltip(event) {
@@ -445,10 +458,20 @@ function render() {
     const visible=document.createElementNS(NS,'path');
     visible.setAttribute('d',p.d);
     const isNewInteraction=state.mode==='viewpoints'&&edge.new_relation_ids.length&&state.transitionStage>=2;
-    visible.setAttribute('class','edge-visible'+(edge.newly_introduced?' edge-new':'')+(state.mode==='viewpoints'&&!isNewInteraction?' agent-edge-old':'')+(isNewInteraction?' edge-new-interaction':''));
-    visible.setAttribute('stroke',edge.relation_type==='support'?'#279567':'#d14e4e');
+    visible.setAttribute('class','edge-visible '+edge.relation_type+(edge.newly_introduced&&state.mode==='arguments'?' edge-new':'')+(state.mode==='viewpoints'&&!isNewInteraction?' agent-edge-old':'')+(isNewInteraction?' edge-new-interaction':''));
+    const edgeColor=edge.relation_type==='support'?'#279567':'#d14e4e';
+    visible.setAttribute('stroke',edgeColor);
     if(state.mode==='viewpoints') visible.setAttribute('stroke-width',String(2+Math.min(6,edge.relation_ids.length*1.25)));
-    visible.setAttribute('marker-end',`url(#arrow${edge.relation_type==='support'?'Support':'Attack'})`);
+    let flow=null;
+    if(isNewInteraction){flow=document.createElementNS(NS,'path');flow.setAttribute('d',p.d);flow.setAttribute('class','edge-flow');}
+    const arrow=document.createElementNS(NS,'g');
+    arrow.setAttribute('class',`edge-arrow ${edge.relation_type}${isNewInteraction?' new':''}`);
+    arrow.setAttribute('transform',`translate(${p.end.x} ${p.end.y}) rotate(${p.angle})`);
+    if(isNewInteraction){const ring=document.createElementNS(NS,'circle');ring.setAttribute('class','arrow-ring');ring.setAttribute('cx',-7);ring.setAttribute('cy',0);ring.setAttribute('r',9);arrow.appendChild(ring);}
+    const arrowHead=document.createElementNS(NS,'path');
+    arrowHead.setAttribute('class','arrow-head');
+    arrowHead.setAttribute('d',isNewInteraction?'M 3 0 L -22 -13 L -16 0 L -22 13 Z':'M 2 0 L -17 -9 L -12 0 L -17 9 Z');
+    arrow.appendChild(arrowHead);
     const hit=document.createElementNS(NS,'path');
     hit.setAttribute('d',p.d); hit.setAttribute('class','edge-hit');
     const title=document.createElementNS(NS,'title');
@@ -458,7 +481,9 @@ function render() {
     hit.appendChild(title); hit.addEventListener('click',e=>{e.stopPropagation();showEdgeDetail(edge);});
     hit.addEventListener('mouseenter',e=>showTooltip(edgeTooltip(edge),e));
     hit.addEventListener('mousemove',moveTooltip); hit.addEventListener('mouseleave',hideTooltip);
-    group.append(visible,hit);
+    group.append(visible);
+    if(flow)group.appendChild(flow);
+    group.append(arrow,hit);
     if(isNewInteraction){const label=document.createElementNS(NS,'text');label.setAttribute('class','edge-new-label');label.setAttribute('x',p.label.x);label.setAttribute('y',p.label.y);label.textContent='NEW';group.appendChild(label);}
     edgesLayer.appendChild(group);
   });
