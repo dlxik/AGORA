@@ -90,31 +90,30 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .node.contextual rect { stroke-dasharray:7 4; }
 .node text { pointer-events:none; font-weight:750; fill:#172335; text-anchor:middle; }
 .node .sub { font-size:10px; font-weight:600; fill:#526176; }
-.edge-visible { fill:none; stroke-width:2.2; opacity:.82; stroke-linecap:round; }
-.agent-edge-old { opacity:.46; }
-.edge-new-interaction { opacity:1; stroke-width:5.5!important; animation:edgePulse 1.15s ease-in-out 2; }
-.edge-new-interaction.support { filter:drop-shadow(0 0 6px #24d694); }
-.edge-new-interaction.attack { filter:drop-shadow(0 0 6px #ff6262); }
-.edge-flow { fill:none; stroke:#fff; stroke-width:1.8; stroke-dasharray:6 13; stroke-linecap:round; opacity:.78; pointer-events:none; animation:edgeFlow .85s linear infinite; }
+.edge-group { opacity:.86; filter:drop-shadow(0 1px 1.5px #17233533); }
+.edge-group.agent-old { opacity:.44; }
+.edge-group.is-new { opacity:1; animation:edgePulse 1.15s ease-in-out 2; }
+.edge-group.is-new.support { filter:drop-shadow(0 0 4px #22bd8299); }
+.edge-group.is-new.attack { filter:drop-shadow(0 0 4px #ee4d5799); }
+.edge-outline,.edge-visible,.edge-flow { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.edge-outline { pointer-events:none; }
+.edge-flow { stroke:#fff; stroke-dasharray:6 13; opacity:.7; pointer-events:none; animation:edgeFlow .85s linear infinite; }
 .edge-arrow { pointer-events:none; }
-.edge-arrow .arrow-head { stroke:#fff; stroke-width:2.2; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
-.edge-arrow.support .arrow-head { fill:#159a66; filter:drop-shadow(0 0 3px #159a6699); }
-.edge-arrow.attack .arrow-head { fill:#df4149; filter:drop-shadow(0 0 3px #df414999); }
-.edge-arrow.new.support .arrow-head { fill:#19c984; }
-.edge-arrow.new.attack .arrow-head { fill:#ff4554; }
-.edge-arrow .arrow-ring { fill:none; stroke-width:2.5; vector-effect:non-scaling-stroke; transform-box:fill-box; transform-origin:center; animation:arrowRing 1.15s ease-out infinite; }
-.edge-arrow.support .arrow-ring { stroke:#19c984; }
-.edge-arrow.attack .arrow-ring { stroke:#ff4554; }
+.edge-arrow .arrow-head { stroke-width:1.4; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.edge-arrow.support .arrow-head { fill:#279567; stroke:#176848; }
+.edge-arrow.attack .arrow-head { fill:#d14e4e; stroke:#953238; }
+.edge-arrow .arrow-ring { fill:none; stroke-width:1.8; vector-effect:non-scaling-stroke; transform-box:fill-box; transform-origin:center; animation:arrowRing 1.15s ease-out infinite; }
+.edge-arrow.support .arrow-ring { stroke:#279567; }
+.edge-arrow.attack .arrow-ring { stroke:#d14e4e; }
 .edge-hit { fill:none; stroke:transparent; stroke-width:14; cursor:pointer; }
-.edge-new { stroke-width:4; filter:drop-shadow(0 0 3px #00a8c7); }
 .edge-new-label { font-size:10px; font-weight:900; fill:#0c5272; text-anchor:middle; paint-order:stroke; stroke:#fff; stroke-width:4px; stroke-linejoin:round; pointer-events:none; }
 .state-badge rect { fill:#153e73; stroke:#fff; stroke-width:2; filter:drop-shadow(0 3px 5px #17304f44); }
 .state-badge text { fill:#fff; font-size:9px; font-weight:850; text-anchor:middle; pointer-events:none; }
-@keyframes edgePulse { 0%,100%{opacity:.78} 50%{opacity:1;stroke-width:8} }
+@keyframes edgePulse { 0%,100%{opacity:.86} 50%{opacity:1} }
 @keyframes edgeFlow { to { stroke-dashoffset:-38; } }
 @keyframes arrowRing { 0%{opacity:.85;transform:scale(.45)} 100%{opacity:0;transform:scale(1.45)} }
 @media (prefers-reduced-motion:reduce) {
-  .edge-new-interaction,.edge-flow,.edge-arrow .arrow-ring { animation:none; }
+  .edge-group.is-new,.edge-flow,.edge-arrow .arrow-ring { animation:none; }
 }
 .hover-tooltip { position:absolute; display:none; z-index:15; width:min(430px,calc(100% - 24px)); max-height:430px; overflow:hidden; pointer-events:none; color:#172335; background:#fffffff7; border:1px solid #b8c6d6; border-radius:10px; padding:11px 13px; box-shadow:0 12px 35px #17304f30; backdrop-filter:blur(5px); }
 .hover-tooltip.visible { display:block; }
@@ -168,8 +167,13 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .dot.historical { opacity:.42; }
 .dot.contextual { border-style:dashed!important; }
 .source-badge { width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow:0 0 0 1px #8491a2; }
-.line-key { width:26px; height:0; border-top:3px solid; position:relative; }
-.line-key:after { content:'›'; position:absolute; right:-2px; top:-12px; font-size:18px; font-weight:900; }
+.legend-arrow { width:32px; height:14px; overflow:visible; }
+.legend-arrow .shaft { fill:none; stroke-width:3; stroke-linecap:round; }
+.legend-arrow .head { stroke-width:1; stroke-linejoin:round; }
+.legend-arrow.support .shaft { stroke:#279567; }
+.legend-arrow.support .head { fill:#279567; stroke:#176848; }
+.legend-arrow.attack .shaft { stroke:#d14e4e; }
+.legend-arrow.attack .head { fill:#d14e4e; stroke:#953238; }
 .method-note { flex:none; margin:0 12px 10px; padding:8px 11px; color:#46566b; background:#eef4ff; border-left:4px solid var(--blue); border-radius:6px; font-size:12px; }
 @media (max-width:980px) {
   html,body { height:auto; }
@@ -243,10 +247,10 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
       <span class="legend-item"><span class="dot" style="background:#dff5ea;border:2px solid #23845b"></span>accepted</span>
       <span class="legend-item"><span class="dot" style="background:#fde5e5;border:2px solid #c94646"></span>rejected</span>
       <span class="legend-item"><span class="dot" style="background:#fff0cd;border:2px solid #b97812"></span>undecided</span>
-      <span class="legend-item"><span class="dot" style="background:white;border:3px dashed #00a8c7"></span>mới tại mốc này</span>
+      <span class="legend-item"><span class="dot" style="background:white;border:3px dashed #00a8c7"></span>mới xuất hiện</span>
       <span class="legend-item"><span class="dot historical" style="background:#dff5ea;border:2px solid #334155"></span>lịch sử (mờ)</span>
-      <span class="legend-item"><span class="line-key" style="border-color:#279567;color:#279567"></span>support</span>
-      <span class="legend-item"><span class="line-key" style="border-color:#d14e4e;color:#d14e4e"></span>attack</span>
+      <span class="legend-item"><svg class="legend-arrow support" viewBox="0 0 34 14" aria-hidden="true"><path class="shaft" d="M1 7 H25"/><path class="head" d="M32 7 L22 1.5 L25 7 L22 12.5 Z"/></svg>support</span>
+      <span class="legend-item"><svg class="legend-arrow attack" viewBox="0 0 34 14" aria-hidden="true"><path class="shaft" d="M1 7 H25"/><path class="head" d="M32 7 L22 1.5 L25 7 L22 12.5 Z"/></svg>attack</span>
       <span class="legend-item"><span class="source-badge" style="background:#2264d1"></span>official_document</span>
       <span class="legend-item"><span class="source-badge" style="background:#7656a8"></span>authority_statement</span>
       <span class="legend-item"><span class="source-badge" style="background:#f09a32"></span>social</span>
@@ -408,7 +412,7 @@ function edgeTooltip(edge) {
   if(state.mode==='viewpoints') return `<strong>${esc(edge.source)} → ${esc(edge.target)}</strong><div class="tooltip-meta">${esc(edge.relation_type)} · ${edge.relation_ids.length} quan hệ argument nền</div>
     <div class="tooltip-row"><b>${edge.new_relation_ids.length?'NEW tại '+esc(SNAPSHOTS[state.time].timestamp.timestamp_id):'Tương tác đã có'}</b></div>
     <div class="tooltip-row"><b>Relation IDs:</b> ${edge.relation_ids.map(esc).join(', ')}</div>
-    <div class="tooltip-row"><b>Mới tại mốc này:</b> ${(edge.new_relation_ids||[]).map(esc).join(', ')||'Không'}</div>
+    <div class="tooltip-row"><b>Mới xuất hiện:</b> ${(edge.new_relation_ids||[]).map(esc).join(', ')||'Không'}</div>
     <div class="tooltip-row"><b>Liên kết nền:</b> ${edge.argument_relations.map(r=>`${esc(r.source_arg)} → ${esc(r.target_arg)}`).join('; ')}</div>
     <div class="tooltip-sources"><b>Evidence:</b> ${edge.evidence_sources.map(esc).join(', ')}</div>`;
   return `<strong>${esc(edge.id)} — ${esc(edge.relation_type)}</strong><div class="tooltip-meta">${esc(edge.source)} → ${esc(edge.target)} · introduced_at: ${esc(edge.introduced_at)} · confidence: ${esc(edge.confidence)}</div>
@@ -478,25 +482,28 @@ function render() {
   data.edges.forEach(edge => {
     const siblings=pairGroups.get([edge.source,edge.target].sort().join('|')),p=edgePath(positionFor(edge.source),positionFor(edge.target),siblings.indexOf(edge),siblings.length,edge.source<edge.target?1:-1);
     const group=document.createElementNS(NS,'g');
-    const visible=document.createElementNS(NS,'path');
-    visible.setAttribute('d',p.d);
     const isNewInteraction=state.mode==='viewpoints'&&edge.new_relation_ids.length&&state.transitionStage>=2;
-    visible.setAttribute('class','edge-visible '+edge.relation_type+(edge.newly_introduced&&state.mode==='arguments'?' edge-new':'')+(state.mode==='viewpoints'&&!isNewInteraction?' agent-edge-old':'')+(isNewInteraction?' edge-new-interaction':''));
-    const edgeColor=edge.relation_type==='support'?'#279567':'#d14e4e';
-    visible.setAttribute('stroke',edgeColor);
-    if(state.mode==='viewpoints') visible.setAttribute('stroke-width',String(2+Math.min(6,edge.relation_ids.length*1.25)));
+    const isNewEdge=isNewInteraction||(state.mode==='arguments'&&edge.newly_introduced);
+    const edgeWidth=state.mode==='viewpoints'?2+Math.min(6,edge.relation_ids.length*1.25):(isNewEdge?3.4:2.2);
+    const arrowScale=Math.max(.55,Math.min(1.3,edgeWidth/4.5));
+    const edgeColor=edge.relation_type==='support'?'#279567':'#d14e4e',edgeDark=edge.relation_type==='support'?'#176848':'#953238';
+    group.setAttribute('class',`edge-group ${edge.relation_type}${state.mode==='viewpoints'&&!isNewInteraction?' agent-old':''}${isNewEdge?' is-new':''}`);
+    const outline=document.createElementNS(NS,'path');
+    outline.setAttribute('d',p.d);outline.setAttribute('class','edge-outline');outline.setAttribute('stroke',edgeDark);outline.setAttribute('stroke-width',String(edgeWidth+1.35));
+    const visible=document.createElementNS(NS,'path');
+    visible.setAttribute('d',p.d);visible.setAttribute('class','edge-visible');visible.setAttribute('stroke',edgeColor);visible.setAttribute('stroke-width',String(edgeWidth));
     let flow=null;
-    if(isNewInteraction){flow=document.createElementNS(NS,'path');flow.setAttribute('d',p.d);flow.setAttribute('class','edge-flow');}
+    if(isNewInteraction){flow=document.createElementNS(NS,'path');flow.setAttribute('d',p.d);flow.setAttribute('class','edge-flow');flow.setAttribute('stroke-width',String(Math.max(1,edgeWidth*.3)));}
     const arrow=document.createElementNS(NS,'g');
-    arrow.setAttribute('class',`edge-arrow ${edge.relation_type}${isNewInteraction?' new':''}`);
-    arrow.setAttribute('transform',`translate(${p.end.x} ${p.end.y}) rotate(${p.angle})`);
-    if(isNewInteraction){const ring=document.createElementNS(NS,'circle');ring.setAttribute('class','arrow-ring');ring.setAttribute('cx',-7);ring.setAttribute('cy',0);ring.setAttribute('r',9);arrow.appendChild(ring);}
+    arrow.setAttribute('class',`edge-arrow ${edge.relation_type}`);
+    arrow.setAttribute('transform',`translate(${p.end.x} ${p.end.y}) rotate(${p.angle}) scale(${arrowScale})`);
+    if(isNewEdge){const ring=document.createElementNS(NS,'circle');ring.setAttribute('class','arrow-ring');ring.setAttribute('cx',-6);ring.setAttribute('cy',0);ring.setAttribute('r',8);arrow.appendChild(ring);}
     const arrowHead=document.createElementNS(NS,'path');
     arrowHead.setAttribute('class','arrow-head');
-    arrowHead.setAttribute('d',isNewInteraction?'M 3 0 L -22 -13 L -16 0 L -22 13 Z':'M 2 0 L -17 -9 L -12 0 L -17 9 Z');
+    arrowHead.setAttribute('d','M 2 0 L -18 -10 L -13 0 L -18 10 Z');
     arrow.appendChild(arrowHead);
     const hit=document.createElementNS(NS,'path');
-    hit.setAttribute('d',p.d); hit.setAttribute('class','edge-hit');
+    hit.setAttribute('d',p.d); hit.setAttribute('class','edge-hit');hit.setAttribute('stroke-width',String(Math.max(14,edgeWidth+10)));
     const title=document.createElementNS(NS,'title');
     title.textContent=state.mode==='arguments'
       ? `${edge.id}: ${edge.source} → ${edge.target} (${edge.relation_type})`
@@ -504,7 +511,7 @@ function render() {
     hit.appendChild(title); hit.addEventListener('click',e=>{e.stopPropagation();showEdgeDetail(edge);});
     hit.addEventListener('mouseenter',e=>showTooltip(edgeTooltip(edge),e));
     hit.addEventListener('mousemove',moveTooltip); hit.addEventListener('mouseleave',hideTooltip);
-    group.append(visible);
+    group.append(outline,visible);
     if(flow)group.appendChild(flow);
     group.append(arrow,hit);
     if(isNewInteraction){const label=document.createElementNS(NS,'text');label.setAttribute('class','edge-new-label');label.setAttribute('x',p.label.x);label.setAttribute('y',p.label.y);label.textContent='NEW';group.appendChild(label);}
@@ -530,7 +537,7 @@ function render() {
     const line2=document.createElementNS(NS,'text'); line2.setAttribute('y',8); line2.setAttribute('font-size','10');
     line2.textContent=state.mode==='arguments'?`${node.arg_type} · ${node.semantic_status}`:truncate(node.name,28);
     const line3=document.createElementNS(NS,'text'); line3.setAttribute('y',23); line3.setAttribute('class','sub');
-    line3.textContent=state.mode==='arguments'?(node.newly_introduced?'Mới tại mốc này':node.activity==='historical'?'Lịch sử · status được giữ':node.temporal_role):`${node.active_argument_ids.length} active · ${node.historical_argument_ids.length} lịch sử`;
+    line3.textContent=state.mode==='arguments'?(node.newly_introduced?'Mới xuất hiện':node.activity==='historical'?'Lịch sử · status được giữ':node.temporal_role):`${node.active_argument_ids.length} active · ${node.historical_argument_ids.length} lịch sử`;
     group.append(halo,rect,title,line1,line2,line3);
     if(state.mode==='arguments'){
       const priority=['official_document','authority_statement','social','news'],type=priority.find(k=>node.sources.some(s=>s.source_type===k))||'news';
@@ -598,14 +605,14 @@ function showNodeDetail(node) {
       <h3>Lập luận khả dụng (${node.arguments.length}/${node.all_argument_ids.length})</h3>${node.arguments.map(argumentBlock).join('')||'<p>Không có.</p>'}
       <h3>Thành phần nguồn</h3><p>${composition||'Không có.'}</p>
       <h3>Tương tác mới có căn cứ</h3>
-      <ul>${incident.map(e=>`<li>${esc(e.source)} → ${esc(e.target)} · ${esc(e.relation_type)} · mới: ${e.new_relation_ids.map(esc).join(', ')}</li>`).join('')||'<li>Không có tương tác liên-viewpoint mới tại mốc này.</li>'}</ul>
+      <ul>${incident.map(e=>`<li>${esc(e.source)} → ${esc(e.target)} · ${esc(e.relation_type)} · mới xuất hiện: ${e.new_relation_ids.map(esc).join(', ')}</li>`).join('')||'<li>Không có tương tác liên-viewpoint mới xuất hiện.</li>'}</ul>
       <div class="why-changed"><h3>WHY THIS CHANGED</h3><p><b>Argument mới active:</b> ${changes.newly_active.map(esc).join(', ')||'Không'}<br><b>Chuyển lịch sử:</b> ${changes.became_historical.map(esc).join(', ')||'Không'}</p><p><b>Đổi phân bố status:</b> ${Object.entries(changes.status_count_changes).map(([k,v])=>`${esc(k)} ${v.from}→${v.to}`).join('; ')||'Không'}<br><b>Đổi quan hệ:</b> ${Object.entries(changes.relation_count_changes).map(([k,v])=>`${esc(k)} ${v.from}→${v.to}`).join('; ')||'Không'}</p></div>
       <h3>Quy tắc dựng agent</h3><p>${esc(MAPPING_METHOD)}</p>`;
     return;
   }
   const explanation=node.change_explanation;
   $('detailPanel').innerHTML=`<div class="eyebrow">Argument node</div><h2>${esc(node.id)} <span class="pill ${esc(node.semantic_status)}">${esc(node.semantic_status)}</span></h2>
-    <p><span class="pill">${esc(node.arg_type)}</span><span class="pill">${esc(node.temporal_role)}</span><span class="pill activity">${esc(node.activity)}</span>${node.newly_introduced?'<span class="pill">mới tại mốc này</span>':''}</p>
+    <p><span class="pill">${esc(node.arg_type)}</span><span class="pill">${esc(node.temporal_role)}</span><span class="pill activity">${esc(node.activity)}</span>${node.newly_introduced?'<span class="pill">mới xuất hiện</span>':''}</p>
     <h3>Premise</h3><p>${esc(node.premise)}</p>
     <h3>Rule</h3><p>${node.rule?esc(node.rule):'<i>null — không có quy tắc được nguồn hỗ trợ trực tiếp</i>'}</p>
     <h3>Conclusion</h3><p>${esc(node.conclusion)}</p>
@@ -621,7 +628,7 @@ function showEdgeDetail(edge) {
   if (state.mode==='viewpoints') {
     $('detailPanel').innerHTML=`<div class="eyebrow">Viewpoint relation tổng hợp</div><h2>${esc(edge.source)} → ${esc(edge.target)}</h2>
       <p><span class="pill ${esc(edge.relation_type)}">${esc(edge.relation_type)}</span> · ${edge.relation_ids.length} quan hệ nền</p>
-      <p><b>Mới tại mốc này:</b> ${edge.new_relation_ids.map(esc).join(', ')||'Không'}</p>
+      <p><b>Mới xuất hiện:</b> ${edge.new_relation_ids.map(esc).join(', ')||'Không'}</p>
       <h3>Quan hệ argument có thể truy nguyên</h3><ul>${edge.argument_relations.map(r=>`<li>${esc(r.relation_id)}: ${esc(r.source_arg)} → ${esc(r.target_arg)}${r.conflict_type?' · '+esc(r.conflict_type):''}</li>`).join('')}</ul>
       <h3>Evidence sources</h3><p>${edge.evidence_sources.map(esc).join(', ')}</p>`;
     return;
