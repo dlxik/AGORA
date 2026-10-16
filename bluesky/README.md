@@ -76,7 +76,7 @@ Không có institutional agent giả. Nội dung thể chế chỉ xuất hiện
 - hover argument để xem premise/rule/conclusion, thời gian, status và nguồn;
 - hover viewpoint agent để xem argument active, phân bố status và thành phần nguồn;
 - hover cạnh có hướng để xem relation/conflict/evidence; click để giữ provenance trong detail panel;
-- cạnh và đầu mũi tên spearhead dùng chung màu, viền, bóng và glow; kích thước đầu tên tỷ lệ trực tiếp với độ dày cạnh. Interaction mới có luồng sáng theo hướng và pulse nhẹ, đồng thời tôn trọng `prefers-reduced-motion`;
+- cạnh và đầu mũi tên spearhead dùng chung màu, viền, bóng và glow; kích thước đầu tên tỷ lệ trực tiếp với độ dày cạnh. Trong cả hai view, cạnh mới dày và sáng hơn, có luồng theo hướng cùng pulse nhẹ; cạnh cũ không có luồng. Riêng Agent Society còn dùng độ dày nền để biểu thị số relation được gộp. Animation tôn trọng `prefers-reduced-motion`;
 - layout force-directed xác định theo topology; node mới khởi tạo gần hàng xóm đã có, node cũ có lực neo để giữ mental map qua các mốc;
 - kéo node sẽ ghim vị trí; nút đặt lại xóa ghim và tính lại layout; cạnh chỉ uốn cong khi nhiều relation chồng cùng một cặp node;
 - phần tóm tắt cạnh timeline báo argument/relation mới, đổi status/activity và tương tác viewpoint mới.
