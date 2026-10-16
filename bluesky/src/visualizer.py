@@ -90,30 +90,20 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .node.contextual rect { stroke-dasharray:7 4; }
 .node text { pointer-events:none; font-weight:750; fill:#172335; text-anchor:middle; }
 .node .sub { font-size:10px; font-weight:600; fill:#526176; }
-.edge-group { opacity:.9; filter:drop-shadow(0 1px 1px #1723352b); }
-.edge-group.agent-old { opacity:.7; }
-.edge-group.is-new { opacity:1; animation:edgePulse 1.15s ease-in-out 2; }
-.edge-group.is-new.support { filter:drop-shadow(0 0 3.5px #18d68a99); }
-.edge-group.is-new.attack { filter:drop-shadow(0 0 3.5px #ff566499); }
-.edge-outline,.edge-visible,.edge-flow { fill:none; stroke-linecap:round; stroke-linejoin:round; }
-.edge-outline { pointer-events:none; }
+.edge-group { opacity:1; filter:drop-shadow(0 1px 1.5px #17233530); }
+.edge-group.is-old { opacity:.78; }
+.edge-visible,.edge-flow { fill:none; stroke-linecap:round; stroke-linejoin:round; }
 .edge-flow { stroke:#fff; stroke-dasharray:6 13; opacity:.7; pointer-events:none; animation:edgeFlow .85s linear infinite; }
 .edge-arrow { pointer-events:none; }
-.edge-arrow .arrow-head { stroke-width:1.05; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
-.edge-arrow.support .arrow-head { fill:#16b978; stroke:#0b7f50; }
-.edge-arrow.attack .arrow-head { fill:#ef4d5a; stroke:#b52d3a; }
-.edge-arrow .arrow-ring { fill:none; stroke-width:1.8; vector-effect:non-scaling-stroke; transform-box:fill-box; transform-origin:center; animation:arrowRing 1.15s ease-out infinite; }
-.edge-arrow.support .arrow-ring { stroke:#16b978; }
-.edge-arrow.attack .arrow-ring { stroke:#ef4d5a; }
+.edge-arrow .arrow-head { stroke:none; }
+.edge-arrow.support .arrow-head { fill:#16b978; }
+.edge-arrow.attack .arrow-head { fill:#ef4d5a; }
 .edge-hit { fill:none; stroke:transparent; stroke-width:14; cursor:pointer; }
-.edge-new-label { font-size:10px; font-weight:900; fill:#0c5272; text-anchor:middle; paint-order:stroke; stroke:#fff; stroke-width:4px; stroke-linejoin:round; pointer-events:none; }
 .state-badge rect { fill:#153e73; stroke:#fff; stroke-width:2; filter:drop-shadow(0 3px 5px #17304f44); }
 .state-badge text { fill:#fff; font-size:9px; font-weight:850; text-anchor:middle; pointer-events:none; }
-@keyframes edgePulse { 0%,100%{opacity:.86} 50%{opacity:1} }
 @keyframes edgeFlow { to { stroke-dashoffset:-38; } }
-@keyframes arrowRing { 0%{opacity:.85;transform:scale(.45)} 100%{opacity:0;transform:scale(1.45)} }
 @media (prefers-reduced-motion:reduce) {
-  .edge-group.is-new,.edge-flow,.edge-arrow .arrow-ring { animation:none; }
+  .edge-flow,.legend-flow .stream { animation:none; }
 }
 .hover-tooltip { position:absolute; display:none; z-index:15; width:min(430px,calc(100% - 24px)); max-height:430px; overflow:hidden; pointer-events:none; color:#172335; background:#fffffff7; border:1px solid #b8c6d6; border-radius:10px; padding:11px 13px; box-shadow:0 12px 35px #17304f30; backdrop-filter:blur(5px); }
 .hover-tooltip.visible { display:block; }
@@ -174,7 +164,9 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
 .legend-arrow.support .head { fill:#16b978; stroke:#0b7f50; }
 .legend-arrow.attack .shaft { stroke:#ef4d5a; }
 .legend-arrow.attack .head { fill:#ef4d5a; stroke:#b52d3a; }
-.new-edge-key { padding:1px 5px; border-radius:4px; color:#075b78; background:#e8fbff; border:1px solid #00a8c7; font-size:9px; font-weight:900; box-shadow:0 0 4px #00a8c755; }
+.legend-flow { width:32px; height:12px; overflow:visible; }
+.legend-flow .base { fill:none; stroke:#16b978; stroke-width:4; stroke-linecap:round; }
+.legend-flow .stream { fill:none; stroke:#fff; stroke-width:1.2; stroke-dasharray:4 7; animation:edgeFlow .85s linear infinite; }
 .method-note { flex:none; margin:0 12px 10px; padding:8px 11px; color:#46566b; background:#eef4ff; border-left:4px solid var(--blue); border-radius:6px; font-size:12px; }
 @media (max-width:980px) {
   html,body { height:auto; }
@@ -252,7 +244,7 @@ select { padding:6px 8px; border:1px solid #bdc9d7; border-radius:7px; backgroun
       <span class="legend-item"><span class="dot historical" style="background:#dff5ea;border:2px solid #334155"></span>lịch sử (mờ)</span>
       <span class="legend-item"><svg class="legend-arrow support" viewBox="0 0 34 14" aria-hidden="true"><path class="shaft" d="M1 7 H25"/><path class="head" d="M32 7 L22 1.5 L25 7 L22 12.5 Z"/></svg>support</span>
       <span class="legend-item"><svg class="legend-arrow attack" viewBox="0 0 34 14" aria-hidden="true"><path class="shaft" d="M1 7 H25"/><path class="head" d="M32 7 L22 1.5 L25 7 L22 12.5 Z"/></svg>attack</span>
-      <span class="legend-item"><span class="new-edge-key">NEW</span>cạnh mới: dày + luồng</span>
+      <span class="legend-item"><svg class="legend-flow" viewBox="0 0 34 12" aria-hidden="true"><path class="base" d="M1 6 H33"/><path class="stream" d="M1 6 H33"/></svg>cạnh mới: có luồng</span>
       <span class="legend-item"><span class="source-badge" style="background:#2264d1"></span>official_document</span>
       <span class="legend-item"><span class="source-badge" style="background:#7656a8"></span>authority_statement</span>
       <span class="legend-item"><span class="source-badge" style="background:#f09a32"></span>social</span>
@@ -486,13 +478,9 @@ function render() {
     const group=document.createElementNS(NS,'g');
     const isNewInteraction=state.mode==='viewpoints'&&edge.new_relation_ids.length&&state.transitionStage>=2;
     const isNewEdge=isNewInteraction||(state.mode==='arguments'&&edge.newly_introduced);
-    const baseWidth=state.mode==='viewpoints'?1.8+Math.min(4.8,edge.relation_ids.length*1.05):2.2;
-    const edgeWidth=isNewEdge?baseWidth*1.35+.25:baseWidth;
-    const arrowScale=Math.max(.55,Math.min(1.3,edgeWidth/4.5));
-    const edgeColor=edge.relation_type==='support'?'#16b978':'#ef4d5a',edgeDark=edge.relation_type==='support'?'#0b7f50':'#b52d3a';
-    group.setAttribute('class',`edge-group ${edge.relation_type}${state.mode==='viewpoints'&&!isNewInteraction?' agent-old':''}${isNewEdge?' is-new':''}`);
-    const outline=document.createElementNS(NS,'path');
-    outline.setAttribute('d',p.d);outline.setAttribute('class','edge-outline');outline.setAttribute('stroke',edgeDark);outline.setAttribute('stroke-width',String(edgeWidth+.85));
+    const edgeWidth=2.8,arrowScale=.82;
+    const edgeColor=edge.relation_type==='support'?'#16b978':'#ef4d5a';
+    group.setAttribute('class',`edge-group ${edge.relation_type} ${isNewEdge?'is-new':'is-old'}`);
     const visible=document.createElementNS(NS,'path');
     visible.setAttribute('d',p.d);visible.setAttribute('class','edge-visible');visible.setAttribute('stroke',edgeColor);visible.setAttribute('stroke-width',String(edgeWidth));
     let flow=null;
@@ -500,10 +488,9 @@ function render() {
     const arrow=document.createElementNS(NS,'g');
     arrow.setAttribute('class',`edge-arrow ${edge.relation_type}`);
     arrow.setAttribute('transform',`translate(${p.end.x} ${p.end.y}) rotate(${p.angle}) scale(${arrowScale})`);
-    if(isNewEdge){const ring=document.createElementNS(NS,'circle');ring.setAttribute('class','arrow-ring');ring.setAttribute('cx',-6);ring.setAttribute('cy',0);ring.setAttribute('r',8);arrow.appendChild(ring);}
     const arrowHead=document.createElementNS(NS,'path');
     arrowHead.setAttribute('class','arrow-head');
-    arrowHead.setAttribute('d','M 2 0 L -18 -10 L -13 0 L -18 10 Z');
+    arrowHead.setAttribute('d','M 3 0 L -13 -9 L -11 -3 L -19 -3 L -19 3 L -11 3 L -13 9 Z');
     arrow.appendChild(arrowHead);
     const hit=document.createElementNS(NS,'path');
     hit.setAttribute('d',p.d); hit.setAttribute('class','edge-hit');hit.setAttribute('stroke-width',String(Math.max(14,edgeWidth+10)));
@@ -514,10 +501,9 @@ function render() {
     hit.appendChild(title); hit.addEventListener('click',e=>{e.stopPropagation();showEdgeDetail(edge);});
     hit.addEventListener('mouseenter',e=>showTooltip(edgeTooltip(edge),e));
     hit.addEventListener('mousemove',moveTooltip); hit.addEventListener('mouseleave',hideTooltip);
-    group.append(outline,visible);
+    group.append(visible);
     if(flow)group.appendChild(flow);
     group.append(arrow,hit);
-    if(isNewInteraction){const label=document.createElementNS(NS,'text');label.setAttribute('class','edge-new-label');label.setAttribute('x',p.label.x);label.setAttribute('y',p.label.y);label.textContent='NEW';group.appendChild(label);}
     edgesLayer.appendChild(group);
   });
 
