@@ -70,7 +70,7 @@ class SocietyDynamicsEngine:
             for row in interactions
             if row.get("target_agent") and row["action_type"] in {"ATTACK", "CHALLENGE", "CHALLENGE_INVALID_GROUNDING"}
         }
-        for pair in set(self.conflict_streak) | attacked_pairs:
+        for pair in sorted(set(self.conflict_streak) | attacked_pairs):
             self.conflict_streak[pair] = self.conflict_streak[pair] + 1 if pair in attacked_pairs else 0
             if self.conflict_streak[pair] == self.config.persistent_conflict_steps:
                 relevant = [row for row in interactions if row.get("target_agent") and tuple(sorted((row["actor_agent"], row["target_agent"]))) == pair]

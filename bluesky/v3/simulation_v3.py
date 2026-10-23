@@ -20,6 +20,7 @@ from .explanation_v3 import society_step_log
 from .institutional_policy import InstitutionalActionPolicy
 from .metrics_v3 import SocietyMetricsV3
 from .prevalence import StructuralPrevalenceCalculator
+from .prioritization import RiskMonitoringEngine
 from .semantics import WeightedBipolarSemantics
 from .society_dynamics import SocietyDynamicsEngine
 from .viewpoint_dynamics import RuntimeSocietyStructure, ViewpointDynamics
@@ -339,6 +340,9 @@ class DynamicSocietySimulation:
                 "Weighted bipolar semantics is an explainable baseline, not ASPIC+ and not factual truth.",
             ],
         }
+        result["risk_monitoring"] = RiskMonitoringEngine(
+            self.data, self.snapshots, result, self.config
+        ).build()
         if verbose:
             print("\n".join(full_log))
         return result

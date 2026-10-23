@@ -436,6 +436,58 @@
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
         },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
+        },
         "ablations": {
           "source_quality": true,
           "relation_confidence": true,
@@ -877,6 +929,58 @@
           "confidence_gap_threshold": 0.08,
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
+        },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
         },
         "ablations": {
           "source_quality": true,
@@ -1323,6 +1427,58 @@
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
         },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
+        },
         "ablations": {
           "source_quality": true,
           "relation_confidence": true,
@@ -1765,6 +1921,58 @@
           "confidence_gap_threshold": 0.08,
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
+        },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
         },
         "ablations": {
           "source_quality": true,
@@ -2211,6 +2419,58 @@
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
         },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
+        },
         "ablations": {
           "source_quality": true,
           "relation_confidence": true,
@@ -2656,6 +2916,58 @@
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
         },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
+        },
         "ablations": {
           "source_quality": true,
           "relation_confidence": true,
@@ -3098,6 +3410,58 @@
           "confidence_gap_threshold": 0.08,
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
+        },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
         },
         "ablations": {
           "source_quality": true,
@@ -3560,6 +3924,58 @@
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
         },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
+        },
         "ablations": {
           "source_quality": false,
           "relation_confidence": true,
@@ -4004,6 +4420,58 @@
           "confidence_gap_threshold": 0.08,
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
+        },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
         },
         "ablations": {
           "source_quality": true,
@@ -4451,6 +4919,58 @@
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
         },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
+        },
         "ablations": {
           "source_quality": true,
           "relation_confidence": true,
@@ -4893,6 +5413,58 @@
           "confidence_gap_threshold": 0.08,
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
+        },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
         },
         "ablations": {
           "source_quality": true,
@@ -5337,6 +5909,58 @@
           "confidence_gap_threshold": 0.08,
           "consensus_threshold": 0.72,
           "fragmentation_threshold": 0.25
+        },
+        "conflict": {
+          "relation_confidence": {
+            "high": 1.0,
+            "medium": 0.7
+          },
+          "authority_weights": {
+            "official_document": 1.0,
+            "authority_statement": 0.85,
+            "news": 0.55,
+            "social": 0.35
+          },
+          "verification_weights": {
+            "verified": 1.0,
+            "verified_copy": 0.9,
+            "partially_verified": 0.65,
+            "needs_human_review": 0.4
+          },
+          "status_validity": {
+            "accepted": 1.0,
+            "undecided": 0.6,
+            "rejected": 0.25
+          },
+          "historical_multiplier": 0.35
+        },
+        "steering": {
+          "linkage_weights": {
+            "direct_relation": 0.45,
+            "reverse_response_relation": 0.2,
+            "interaction_reaches_target_owner": 0.2,
+            "linked_belief_revision": 0.15
+          },
+          "canonical_relation_semantic_floor": 0.85,
+          "semantic_method": "canonical_relation_else_conclusion_token_jaccard",
+          "medium_evidence_threshold": 0.2,
+          "strong_evidence_threshold": 0.75
+        },
+        "risk": {
+          "alpha": 0.5,
+          "beta": 0.2,
+          "gamma": 0.3,
+          "low_threshold": 0.3,
+          "medium_threshold": 0.5,
+          "high_threshold": 0.7,
+          "risk_alert_threshold": 0.7,
+          "high_conflict_threshold": 0.7,
+          "high_steering_threshold": 0.25,
+          "risk_increase_threshold": 0.1,
+          "conflict_increase_threshold": 0.1,
+          "steering_persistence_windows": 2,
+          "assessment_medium_threshold": 0.35,
+          "assessment_high_threshold": 0.75
         },
         "ablations": {
           "source_quality": true,

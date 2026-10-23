@@ -19,6 +19,7 @@ from bluesky.v3.semantics import WeightedBipolarSemantics
 from bluesky.v3.simulation_v3 import DynamicSocietySimulation
 from bluesky.v3.society_dynamics import SocietyDynamicsEngine
 from bluesky.v3.validation_v3 import validate_v3_trace
+from bluesky.v3.visualizer_v3 import HTML as V3_HTML
 from bluesky.v3.viewpoint_dynamics import RuntimeSocietyStructure, ViewpointDynamics
 
 
@@ -178,6 +179,22 @@ class DynamicAgentSocietyV3Tests(unittest.TestCase):
         events = engine.detect("t1", 1, self._minimal_metrics("A"), [interaction])
         self.assertIn(SocietyEventType.PERSISTENT_CONFLICT.value, {row["event_type"] for row in events})
 
+    def test_persistent_conflict_event_order_is_stable(self) -> None:
+        engine = SocietyDynamicsEngine(DEFAULT_V3_CONFIG.dynamics, DEFAULT_V3_CONFIG.viewpoint_dynamics)
+        interactions = [
+            {
+                "interaction_id": f"I-{actor}", "action_id": f"ACT-{actor}",
+                "actor_agent": actor, "target_agent": target, "action_type": "ATTACK",
+                "source_argument_id": "X", "target_argument_id": "Y",
+                "relation_ids": ["R"], "evidence_source_ids": ["S"],
+            }
+            for actor, target in [("B", "C"), ("A", "D")]
+        ]
+        engine.detect("t1", 0, self._minimal_metrics("A"), interactions)
+        events = engine.detect("t1", 1, self._minimal_metrics("A"), interactions)
+        conflicts = [row["involved_agents"] for row in events if row["event_type"] == "PERSISTENT_CONFLICT"]
+        self.assertEqual([["A", "D"], ["B", "C"]], conflicts)
+
     def test_fragmentation_detection(self) -> None:
         engine = SocietyDynamicsEngine(DEFAULT_V3_CONFIG.dynamics, DEFAULT_V3_CONFIG.viewpoint_dynamics)
         events = engine.detect("t1", 0, self._minimal_metrics("A", 1.0), [])
@@ -221,6 +238,11 @@ class DynamicAgentSocietyV3Tests(unittest.TestCase):
         supported = self.trace["supported_agent_types"]
         self.assertIn("not instantiated", supported["personal"])
         self.assertIn("not instantiated", supported["organization"])
+
+    def test_v3_inherits_draggable_node_layout(self) -> None:
+        self.assertIn("function initNodeDragging()", V3_HTML)
+        self.assertIn("manualPositions:loadLayout()", V3_HTML)
+        self.assertIn("resetLayout", V3_HTML)
 
 
 if __name__ == "__main__":

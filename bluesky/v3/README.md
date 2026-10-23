@@ -167,6 +167,46 @@ V3 kế thừa trực tiếp V2 template/design language và thêm:
 - so sánh heuristic ↔ semantics trong inspector;
 - dominant badge, cohesion halo, split/persistent-conflict encoding;
 - toàn bộ hover/click provenance và playback `t`, `k`, `t+k` của V2.
+- kéo-thả node linh hoạt, tự cập nhật cạnh, lưu bố cục riêng của V3 và đặt lại bằng nút `Bố cục`.
+
+## Manager Risk Monitoring
+
+Top-level switch giữ nguyên workspace `Agent Society` và mở thêm `Risk Monitoring` để trả lời: public argument `x ∈ A_D` nào cần được quản lý xem xét trong cửa sổ quan sát ngày thật `H=[H_l,H_u]`. Demo tạo các cửa sổ current-to-date `H_t=[2026-07-01,t]`; `k` chỉ cung cấp interaction/revision evidence, không được dùng làm thời gian thật.
+
+Conflict chỉ dùng canonical attack trực tiếp, không suy diễn mâu thuẫn từ text:
+
+```text
+c(x,k,H) = Attack(x,k,H)
+           × RelationConfidence(x,k)
+           × Validity(k,H)
+           × Authority(k)
+C(x,H) = max_{k ∈ A_K(H)} c(x,k,H)
+```
+
+`Attack=1` chỉ khi có directed canonical attack `x→k`. Confidence dùng `high=1`, `medium=0.7`. Validity yêu cầu thời gian hiệu lực giao H, sau đó dùng endpoint status `accepted=1`, `undecided=0.6`, `rejected=0.25`, nhân `0.35` nếu historical. Authority là max trên nguồn của `k`: source-type weight nhân verification weight; mapping nằm hoàn toàn trong `ConflictConfig`.
+
+Pairwise influence và steering:
+
+```text
+I(A,B) = T(A,B) × L(A,B) × P(A,B)
+S(x,H) = Σ I(x,x_j) / max(1, |A_D(H)| - 1)
+```
+
+`T=1` chỉ khi introduction timestamp của A sớm hơn B; cùng mốc hoặc future-to-past bằng 0. `L` là linkage-evidence proxy có trọng số: direct relation `0.45`, reverse response relation `0.20`, V3 interaction từ A tới owner của B `0.20`, linked belief revision của B `0.15`. `P` ưu tiên canonical relation với floor `0.85`, nếu không dùng Jaccard token của conclusion. Từng component, relation, interaction, revision và matched token được lưu; đây không phải bằng chứng A gây ra B. `STRONG` đòi explicit exposure/reference và downstream change, nên không được tạo khi CTQ không có metadata đó.
+
+Risk và ranking:
+
+```text
+RS(x,H) = αC + βS + γCS
+α=0.5, β=0.2, γ=0.3
+Rank_H(B) = sort RS giảm dần, tie-break bằng argument ID
+```
+
+Band mặc định: `LOW <0.30`, `MEDIUM [0.30,0.50)`, `MEDIUM_HIGH [0.50,0.70)`, `HIGH ≥0.70`. `assessment_quality` được báo riêng, không nhân vào RS. Toàn bộ coefficient/threshold nằm trong `config_v3.py` và UI đọc trực tiếp config đã serialize.
+
+Manager View có ranking table, C/S/RS detail, maximizing A_K conflict, top downstream influence, provenance, risk trend t1–t6, deterministic alerts và nút `Inspect in Agent Society`. Drill-down giữ mốc `t`, chọn owner viewpoint và mở belief tương ứng trong inspector hiện hữu.
+
+Conflict/Steering/Risk đều là baseline operationalizations. Steering không chứng minh quan hệ nhân quả; risk là ưu tiên review, không phải kết luận một lập luận có hại hoặc sai sự thật.
 
 ## 15. Chạy
 

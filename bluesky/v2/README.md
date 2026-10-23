@@ -108,7 +108,7 @@ Mọi revision có:
 
 ## 13. UI và output
 
-UI giữ baseline bố cục V1, nhưng có hai trục độc lập `t` và `k`. Graph chỉ hiện action V2 thực thi tại bước đang chọn. Panel phải có Reasoning, Activity Log và Society Metrics; phase animation làm rõ `OBSERVE → REASON → ACT → REVISE`.
+UI giữ baseline bố cục V1, nhưng có hai trục độc lập `t` và `k`. Graph chỉ hiện action V2 thực thi tại bước đang chọn. Panel phải có Reasoning, Activity Log và Society Metrics; phase animation làm rõ `OBSERVE → REASON → ACT → REVISE`. Node có thể kéo-thả; vị trí tùy chỉnh được giữ xuyên suốt các mốc `t/k`, lưu trong trình duyệt và có nút đặt lại bố cục.
 
 - HTML: `bluesky/outputs/autonomous_agent_demo_v2.html`
 - Trace: `bluesky/outputs/v2_simulation_trace.json`

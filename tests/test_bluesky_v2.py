@@ -133,6 +133,12 @@ class AutonomousArgumentationV2Tests(unittest.TestCase):
                 self.assertGreaterEqual(metrics["conflict_intensity"], 0.0)
                 self.assertLessEqual(metrics["conflict_intensity"], 1.0)
 
+    def test_ui_supports_persistent_node_dragging(self) -> None:
+        self.assertIn("function initNodeDragging()", HTML)
+        self.assertIn("manualPositions:loadLayout()", HTML)
+        self.assertIn("layoutStorageKey", HTML)
+        self.assertIn("resetLayout", HTML)
+
 
 if __name__ == "__main__":
     unittest.main()

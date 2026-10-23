@@ -4,7 +4,7 @@
 
 - **V1 — reactive viewpoint agents:** demo và tài liệu hiện tại trong `bluesky/src/`, chạy bằng `python -m bluesky.demo`.
 - **V2 — autonomous argumentative agents:** package và tài liệu tại [`bluesky/v2/`](v2/README.md), chạy bằng `python -m bluesky.v2.demo_v2`. V2 giữ riêng real time `t` và deliberation step `k`, có symbolic reasoning, action policy, interaction protocol và belief revision xác định.
-- **V3 — dynamic agent society:** package và tài liệu tại [`bluesky/v3/`](v3/README.md), chạy bằng `python -m bluesky.v3.demo_v3`. V3 tái sử dụng V1/V2 và bổ sung argumentation semantics, dynamic-viewpoint candidates, structural prevalence, institutional protocol và society events.
+- **V3 — dynamic agent society:** package và tài liệu tại [`bluesky/v3/`](v3/README.md), chạy bằng `python -m bluesky.v3.demo_v3`. V3 tái sử dụng V1/V2, có cả `Agent Society` và manager-facing `Risk Monitoring`, đồng thời bổ sung argumentation semantics, dynamic-viewpoint candidates, structural prevalence, institutional protocol và society events.
 
 V1 và V2 vẫn được giữ nguyên; mỗi version sinh package, trace và visualization độc lập.
 
