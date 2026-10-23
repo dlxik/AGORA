@@ -171,7 +171,19 @@ V3 kế thừa trực tiếp V2 template/design language và thêm:
 
 ## Manager Risk Monitoring
 
-Top-level switch giữ nguyên workspace `Agent Society` và mở thêm `Risk Monitoring` để trả lời: public argument `x ∈ A_D` nào cần được quản lý xem xét trong cửa sổ quan sát ngày thật `H=[H_l,H_u]`. Demo tạo các cửa sổ current-to-date `H_t=[2026-07-01,t]`; `k` chỉ cung cấp interaction/revision evidence, không được dùng làm thời gian thật.
+Top-level switch giữ nguyên workspace `Agent Society` và mở thêm `Risk Monitoring` để trả lời: public argument `x ∈ A_D` nào cần được quản lý xem xét trong cửa sổ quan sát `H`. `k` chỉ cung cấp interaction/revision evidence, không được dùng làm thời gian thật.
+
+### Observation Window Semantics
+
+Dataset CTQ hiện tại được tổ chức theo sáu snapshot mốc sự kiện `t1...t6`, không phải chuỗi quan sát đầy đủ theo từng ngày. Vì vậy cửa sổ phân tích được định nghĩa là:
+
+```text
+H = [t_start, t_end], với t_start và t_end thuộc {t1, ..., t6}
+```
+
+Engine tính trước toàn bộ `6 × 7 / 2 = 21` cửa sổ hợp lệ, từ `t1__t1` đến `t6__t6`. Mỗi cửa sổ chạy lại Conflict, Steering, Risk và Ranking bằng đúng `start_index/end_index`; frontend chỉ chọn kết quả đã tính, không lọc giả từ điểm toàn kỳ. UI cho phép chọn hai biên snapshot và các preset: từ đầu đến hiện tại, toàn kỳ, hai mốc gần nhất và ba mốc gần nhất. Không có calendar picker hay cửa sổ ngày tùy ý.
+
+Chuỗi trend được giữ riêng cho các cửa sổ cộng dồn `t1→t1, t1→t2, ..., t1→t6`. Một cửa sổ tùy chọn như `t3→t5` chỉ là lát cắt phân tích, không được diễn giải như một điểm mới trong chuỗi thời gian cộng dồn. Cửa sổ ngày tùy ý chỉ nên được bổ sung sau khi có dữ liệu event-level hoặc daily đủ liên tục.
 
 Conflict chỉ dùng canonical attack trực tiếp, không suy diễn mâu thuẫn từ text:
 
@@ -203,6 +215,14 @@ Rank_H(B) = sort RS giảm dần, tie-break bằng argument ID
 ```
 
 Band mặc định: `LOW <0.30`, `MEDIUM [0.30,0.50)`, `MEDIUM_HIGH [0.50,0.70)`, `HIGH ≥0.70`. `assessment_quality` được báo riêng, không nhân vào RS. Toàn bộ coefficient/threshold nằm trong `config_v3.py` và UI đọc trực tiếp config đã serialize.
+
+Các thẻ tổng hợp và panel chi tiết hiển thị trực tiếp ba quy tắc ngưỡng cấu hình:
+
+- Xung đột cao khi `C(x,H) ≥ high_conflict_threshold` (mặc định `0.70`).
+- Định hướng cao khi `S(x,H) ≥ high_steering_threshold` (mặc định `0.25`).
+- Rủi ro cao khi `RS(x,H) ≥ risk_alert_threshold` (mặc định `0.70`).
+
+UI đọc các giá trị này từ `risk_monitoring.methodology.config.risk`; JavaScript không giữ một bản sao ngưỡng riêng.
 
 Manager View có ranking table, C/S/RS detail, maximizing A_K conflict, top downstream influence, provenance, risk trend t1–t6, deterministic alerts và nút `Inspect in Agent Society`. Drill-down giữ mốc `t`, chọn owner viewpoint và mở belief tương ứng trong inspector hiện hữu.
 

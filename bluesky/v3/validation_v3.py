@@ -72,6 +72,11 @@ def validate_v3_trace(
     else:
         for window_id, window in risk_monitoring["by_window"].items():
             counts["risk_windows"] += 1
+            start_index = window["start_index"]
+            end_index = window["end_index"]
+            expected_window_id = f"{window['start_snapshot']}__{window['end_snapshot']}"
+            if start_index > end_index or window_id != expected_window_id:
+                errors.append(f"{window_id}: biên snapshot không hợp lệ")
             rows = window["ranked_arguments"]
             expected = sorted(rows, key=lambda row: (-row["risk_score"], row["argument_id"]))
             if rows != expected:

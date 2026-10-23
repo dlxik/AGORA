@@ -8,6 +8,7 @@ from bluesky.src.temporal_graph import build_temporal_snapshots
 from bluesky.src.viewpoint import add_viewpoint_layers
 from bluesky.v3.config_v3 import DEFAULT_V3_CONFIG
 from bluesky.v3.conflict import ConflictEvaluator
+from bluesky.v3.prioritization import RiskMonitoringEngine
 from bluesky.v3.risk import RiskEvaluator
 from bluesky.v3.simulation_v3 import DynamicSocietySimulation
 from bluesky.v3.steering import SteeringEvaluator
@@ -24,6 +25,9 @@ class ManagerRiskMonitoringTests(unittest.TestCase):
         cls.conflict = ConflictEvaluator(cls.data, cls.snapshots, DEFAULT_V3_CONFIG.conflict)
         cls.steering = SteeringEvaluator(
             cls.data, cls.snapshots, cls.trace, DEFAULT_V3_CONFIG.steering
+        )
+        cls.engine = RiskMonitoringEngine(
+            cls.data, cls.snapshots, cls.trace, DEFAULT_V3_CONFIG
         )
 
     def test_conflict_uses_max_pair_and_preserves_provenance(self) -> None:
@@ -116,6 +120,83 @@ class ManagerRiskMonitoringTests(unittest.TestCase):
                 sorted(rows, key=lambda row: (-row["risk_score"], row["argument_id"])),
             )
 
+    def test_all_valid_snapshot_windows_are_precomputed(self) -> None:
+        monitoring = self.trace["risk_monitoring"]
+        expected = {
+            f"t{start}__t{end}"
+            for start in range(1, 7)
+            for end in range(start, 7)
+        }
+        self.assertEqual(21, len(monitoring["by_window"]))
+        self.assertEqual(expected, set(monitoring["by_window"]))
+        self.assertEqual(
+            {f"t{index}": f"t1__t{index}" for index in range(1, 7)},
+            monitoring["cumulative_windows"],
+        )
+
+    def test_invalid_reverse_snapshot_window_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "start=4 > end=2"):
+            self.engine.build_window(4, 2)
+
+    def test_custom_window_eligibility_excludes_future_and_earlier_only_arguments(self) -> None:
+        rank = {f"t{index}": index - 1 for index in range(1, 7)}
+        t2_t5 = self.trace["risk_monitoring"]["by_window"]["t2__t5"]
+        self.assertTrue(all(
+            1 <= rank[row["introduced_at"]] <= 4
+            for row in t2_t5["ranked_arguments"]
+        ))
+        t4_t6 = self.trace["risk_monitoring"]["by_window"]["t4__t6"]
+        self.assertTrue(all(
+            3 <= rank[row["introduced_at"]] <= 5
+            for row in t4_t6["ranked_arguments"]
+        ))
+
+    def test_ranking_is_recomputed_for_each_selected_window(self) -> None:
+        monitoring = self.trace["risk_monitoring"]["by_window"]
+        cumulative = [
+            (row["argument_id"], row["risk_score"])
+            for row in monitoring["t1__t5"]["ranked_arguments"]
+        ]
+        analytical = [
+            (row["argument_id"], row["risk_score"])
+            for row in monitoring["t3__t5"]["ranked_arguments"]
+        ]
+        self.assertNotEqual(cumulative, analytical)
+        self.assertEqual(
+            self.engine.build_window(2, 4),
+            self.engine.build_window(2, 4),
+        )
+
+    def test_summary_and_argument_flags_use_configured_thresholds(self) -> None:
+        config = DEFAULT_V3_CONFIG.risk
+        for window in self.trace["risk_monitoring"]["by_window"].values():
+            rows = window["ranked_arguments"]
+            self.assertEqual(
+                sum(row["conflict_score"] >= config.high_conflict_threshold for row in rows),
+                window["high_conflict_count"],
+            )
+            self.assertEqual(
+                sum(row["steering_score"] >= config.high_steering_threshold for row in rows),
+                window["high_steering_count"],
+            )
+            self.assertEqual(
+                sum(row["risk_score"] >= config.risk_alert_threshold for row in rows),
+                window["high_risk_count"],
+            )
+            for row in rows:
+                self.assertEqual(
+                    row["conflict_score"] >= config.high_conflict_threshold,
+                    row["above_conflict_threshold"],
+                )
+                self.assertEqual(
+                    row["steering_score"] >= config.high_steering_threshold,
+                    row["above_steering_threshold"],
+                )
+                self.assertEqual(
+                    row["risk_score"] >= config.risk_alert_threshold,
+                    row["above_risk_threshold"],
+                )
+
     def test_trace_and_ui_expose_manager_view_without_removing_v3(self) -> None:
         self.assertIn("risk_monitoring", self.trace)
         self.assertIn("Xã hội tác tử", HTML)
@@ -123,6 +204,12 @@ class ManagerRiskMonitoringTests(unittest.TestCase):
         self.assertIn('class="risk-side"', HTML)
         self.assertIn("Đồ thị ↗", HTML)
         self.assertIn("function inspectInSociety", HTML)
+        self.assertIn("snapshot_options", HTML)
+        self.assertIn("cfg.high_conflict_threshold", HTML)
+        self.assertIn("cfg.high_steering_threshold", HTML)
+        self.assertIn("cfg.risk_alert_threshold", HTML)
+        self.assertIn("Cửa sổ H được xác định theo các mốc quan sát", HTML)
+        self.assertNotIn('type="date"', HTML)
         self.assertNotIn("Top arguments to review", HTML)
         self.assertNotIn("Assessment quality", HTML)
         self.assertNotIn("Inspect in Agent Society", HTML)
