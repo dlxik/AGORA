@@ -120,6 +120,8 @@ class ManagerRiskMonitoringTests(unittest.TestCase):
         self.assertIn("risk_monitoring", self.trace)
         self.assertIn("Xã hội tác tử", HTML)
         self.assertIn("Giám sát rủi ro", HTML)
+        self.assertIn('class="risk-side"', HTML)
+        self.assertIn("Đồ thị ↗", HTML)
         self.assertIn("function inspectInSociety", HTML)
         self.assertNotIn("Top arguments to review", HTML)
         self.assertNotIn("Assessment quality", HTML)
