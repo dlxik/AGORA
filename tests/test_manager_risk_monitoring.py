@@ -118,9 +118,12 @@ class ManagerRiskMonitoringTests(unittest.TestCase):
 
     def test_trace_and_ui_expose_manager_view_without_removing_v3(self) -> None:
         self.assertIn("risk_monitoring", self.trace)
-        self.assertIn("Agent Society", HTML)
-        self.assertIn("Risk Monitoring", HTML)
+        self.assertIn("Xã hội tác tử", HTML)
+        self.assertIn("Giám sát rủi ro", HTML)
         self.assertIn("function inspectInSociety", HTML)
+        self.assertNotIn("Top arguments to review", HTML)
+        self.assertNotIn("Assessment quality", HTML)
+        self.assertNotIn("Inspect in Agent Society", HTML)
         for label in ("Lập luận", "Hoạt động", "Xã hội", "Sự kiện", "Chỉ số"):
             self.assertIn(label, HTML)
 

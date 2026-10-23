@@ -124,7 +124,7 @@ class ConflictEvaluator:
                 "source_ids": source_ids,
                 "explanation": (
                     f"c={attack:.1f}×{confidence:.4f}×{validity:.4f}×{authority:.4f}={score:.4f}; "
-                    "only a canonical directed attack counts."
+                    "chỉ tính quan hệ tấn công có hướng đã được ghi nhận chính tắc."
                 ),
             })
         ranked = sorted(pairs, key=lambda row: (-row["score"], row["reference_argument_id"]))

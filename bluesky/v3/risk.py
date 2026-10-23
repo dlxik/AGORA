@@ -42,8 +42,8 @@ class RiskEvaluator:
             "score": score,
             "conflict_evidence_quality": conflict_quality,
             "steering_evidence_quality": steering_quality,
-            "rule": "mean(grounded conflict evidence, strongest pairwise steering evidence level)",
-            "note": "Assessment quality is displayed separately and is not multiplied into RS.",
+            "rule": "trung bình(bằng chứng xung đột có căn cứ, mức bằng chứng định hướng theo cặp mạnh nhất)",
+            "note": "Chất lượng đánh giá được hiển thị riêng và không được nhân vào RS.",
         }
 
     def evaluate(self, argument_id: str, conflict: dict[str, Any], steering: dict[str, Any]) -> dict[str, Any]:
@@ -71,7 +71,7 @@ class RiskEvaluator:
             "assessment_quality": self.assessment_quality(conflict, steering),
             "formula": "RS(x,H)=alpha*C(x,H)+beta*S(x,H)+gamma*C(x,H)*S(x,H)",
             "explanation": risk_explanation(argument_id, c, s, score),
-            "limitation": "Baseline operationalization of f(C,S); configurable and not empirically calibrated.",
+            "limitation": "Cách vận hành cơ sở của f(C,S); có thể cấu hình và chưa được hiệu chỉnh thực nghiệm.",
         }
 
     def alerts(

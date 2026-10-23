@@ -147,7 +147,7 @@ class SteeringEvaluator:
                 "components": components,
                 "weights": self.config.linkage_weights,
                 "score": linkage,
-                "limitation": "Observable structural linkage; not proof of exposure or causality.",
+                "limitation": "Liên kết cấu trúc quan sát được; không phải bằng chứng về tiếp xúc hay quan hệ nhân quả.",
             },
             "semantic_position_proxy": {
                 "method": self.config.semantic_method,
@@ -155,16 +155,16 @@ class SteeringEvaluator:
                 "canonical_relation_floor_applied": grounded_relation,
                 "lexical_jaccard": rounded(lexical),
                 "matched_tokens": matched,
-                "limitation": "Canonical linkage or lexical overlap is a deterministic suitability proxy.",
+                "limitation": "Liên kết chính tắc hoặc độ trùng từ vựng chỉ là chỉ báo phù hợp tất định.",
             },
             "relation_ids": relation_ids,
             "interaction_ids": [row["interaction_id"] for row in linked_interactions],
             "revision_ids": [row["revision_id"] for row in linked_revisions],
             "evidence_level": level,
             "explanation": (
-                f"{source_id} {'precedes' if temporal else 'does not precede'} {target_id}; "
+                f"{source_id} {'xuất hiện trước' if temporal else 'không xuất hiện trước'} {target_id}; "
                 f"I={temporal:.1f}×{linkage:.4f}×{semantic:.4f}={influence:.4f}. "
-                "This is structural association, not a causal claim."
+                "Đây là liên hệ cấu trúc, không phải khẳng định nhân quả."
             ),
         }
 

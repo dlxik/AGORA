@@ -116,7 +116,7 @@ class RiskMonitoringEngine:
             }
         return {
             "methodology": {
-                "scope": "Rank_H(B) over B(H) subset of A_D only",
+                "scope": "Rank_H(B) chỉ áp dụng trên B(H), là tập con của A_D",
                 "conflict_formula": "C(x,H)=max_{k in A_K(H)} Attack*RelationConfidence*Validity*Authority",
                 "influence_formula": "I(A,B)=T(A,B)*L(A,B)*P(A,B)",
                 "steering_formula": "S(x,H)=sum_{j!=i} I(x,x_j)/max(1,|A_D(H)|-1)",
@@ -134,10 +134,10 @@ class RiskMonitoringEngine:
                     "tau_R": self.config.risk.risk_alert_threshold,
                 },
                 "limitations": [
-                    "Conflict counts only explicit canonical directed attacks; no text-only contradiction is invented.",
-                    "Steering is a linkage evidence proxy, not proven causal exposure or influence.",
-                    "Risk is a configurable review-prioritization baseline, not factual harmfulness.",
-                    "k is used only as simulation evidence; H is real-world day-level time.",
+                    "Xung đột chỉ tính quan hệ tấn công có hướng chính tắc và tường minh; không tự tạo mâu thuẫn từ văn bản.",
+                    "Định hướng là chỉ báo bằng chứng liên kết, không phải ảnh hưởng hay tiếp xúc nhân quả đã được chứng minh.",
+                    "Rủi ro là đường cơ sở có thể cấu hình để ưu tiên rà soát, không phải mức độ gây hại thực tế.",
+                    "k chỉ được dùng làm bằng chứng mô phỏng; H là thời gian thực theo ngày.",
                 ],
             },
             "by_window": by_window,
